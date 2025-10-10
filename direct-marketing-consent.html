@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Increasing Direct Marketing Consent Rates - Gustav Thunberg</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satoshi:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <h1 class="brand-text">G.Thunberg</h1>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html#work" class="nav-link">Work</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="theme-toggle desktop-only" aria-label="Toggle theme">
+                <span class="theme-icon"></span>
+            </button>
+            <button class="hamburger-menu" aria-label="Open menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay">
+            <button class="mobile-menu-close" aria-label="Close menu">
+                <span class="close-line"></span>
+                <span class="close-line"></span>
+            </button>
+            <div class="mobile-menu-content">
+                <div class="mobile-nav-links">
+                    <a href="index.html#work" class="mobile-nav-link">Work</a>
+                    <a href="index.html#about" class="mobile-nav-link">About</a>
+                    <a href="index.html#contact" class="mobile-nav-link">Contact</a>
+                </div>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="article-main">
+        <!-- Hero Section with Video -->
+        <section class="article-hero">
+            <div class="video-container">
+                <video
+                    id="hero-video"
+                    class="hero-video"
+                    muted
+                    playsinline
+                    poster="material/Drm mock image.png?v=2"
+                >
+                    <source src="material/Drm mock.mov?v=2" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <img
+                    id="hero-image"
+                    src="material/Drm mock image.png?v=2"
+                    alt="Direct Marketing Consent UX"
+                    class="hero-image hidden"
+                >
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="article-content">
+            <div class="container">
+                <section class="article-intro">
+                    <h1 class="article-title">Improving opt-in rates</h1>
+                    <p class="article-subtitle">For Direct Marketing</p>
+                    <div class="article-meta">
+                        <span class="meta-item">A/B Testing</span>
+                        <span class="meta-item">Conversion Optimization</span>
+                        <span class="meta-item">UX/UI</span>
+                    </div>
+                </section>
+                 <section class="content-section">
+                    <h2 class="section-heading">Terminology</h2>
+                    <p class="content-text">
+                        What do we mean when we say certain words. 
+                    </p>
+                    <div class="solution-points">
+                        <div class="solution-point">
+                            <h3 class="point-title">Direct marketing</h3>
+                            <p class="point-text">Refers to all communication being sent by the CRM team via email to the customer. This can be news, offers or recommendations.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Personalised ads</h3>
+                            <p class="point-text">Refers to sharing user registration data for marketing purposes. E.g Storytel ads more apparent on social media channels.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Soft opt-in</h3>
+                            <p class="point-text">Refers to a more lenient regulations towards consent in certain market. For instance possibility to pre-checking the consentbox for the user.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Strict opt-in</h3>
+                            <p class="point-text">For some markets we need to be more aware of the legality of direct marketing. In these markets we should leave the consent boxes unchecked and let the user actively opt in by themself.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Assumed consent</h3>
+                            <p class="point-text">In some very lenient markets we have the option to not even ask the user for their consent, and just assume their consent on signup.</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="content-section">
+                    <h2 class="section-heading">Problem statement</h2>
+                    <p class="content-text">
+                        What are we trying to solve?
+                    </p>
+                     <h3 class="point-title">The current implementation</h3>
+                     <p class="content-text">
+                        At the time the direct marketing consent was merged together with the create account buttons as well as the terms & conditions on the create account screen.
+                    </p>
+                    <ls>
+                        <p class="content-text">
+                       - It competed with the primary CTA's
+                    </p>
+                      <p class="content-text">
+                       - It was not prominent enough.
+                    </p>
+                    </ls>
+                    <img
+                    src="material/current.png"
+                    alt="old create account screen for Storytel"
+                    class="hero-image"
+                     >
+                   
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">Discovery</h2>
+                    <p class="content-text">
+                        When we jumped into discovery there was one question that was present at all times. 
+                        - "How do we improve the consent rates without of negatively impacting the user experience?"
+                        It was important for us that we did not fall into dark patterns in the UX. We want more user to opt in but we want users who are truly finding a value of getting news and book recommendations in the email inbox. 
+
+                    </p>
+                    <img
+                    src="material/Proccess 1.png"
+                    alt="old create account screen for Storytel"
+                    class="hero-image"
+                     >
+                     <img
+                    src="material/Process 2.png"
+                    alt="old create account screen for Storytel"
+                    class="hero-image"
+                     >
+                      <img
+                    src="material/Process3.png"
+                    alt="old create account screen for Storytel"
+                    class="hero-image"
+                     >
+                     <p class="content-text">
+                        Throughout the discovery we started formulating 3 hypothesis that would lead to become the solution we pursued to validate. 
+                    </p>
+                    <div class="solution-points">
+                        <div class="solution-point">
+                            <h3 class="point-title">Make information prominent</h3>
+                            <p class="point-text">We don't serve us or the user when displaying the information in small print, complicated legal copy or by trying to trick the user to consent.  </p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Removing cognitive load</h3>
+                            <p class="point-text">Signing up requires many actions from a user and we risk missing the users that are interested in direct marketing when we let that action compete with SSO buttons and primary CTA's</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Adding delight</h3>
+                            <p class="point-text">By adding delight in terms of micro animations or illustrated elements we turn an otherwise mundane decision into a more interesting experience, we make the user stop a minute to really think if this is something interested for them.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">The Solution</h2>
+                    <p class="content-text">
+                        We launched a project to completely overhaul the consent experience. Our approach was twofold:
+                    </p>
+                      <img
+                    src="material/DRM solution.png"
+                    alt="old create account screen for Storytel"
+                    class="hero-image"
+                     >
+                    <div class="solution-points">
+                        <div class="solution-point">
+                            <h3 class="point-title">Differentiated UX</h3>
+                            <p class="point-text">We tailored the UX to comply with the specific legislation of each market. This meant implementing different flows for "opt-in," "opt-out," and "assumed consent" markets.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Optimized UX</h3>
+                            <p class="point-text">We ran an experiment to test new user interface (UI) designs. The winning solution was to move the direct marketing consent checkbox to a separate screen that appeared after the account creation step. This change significantly reduced clutter and cognitive load, putting a clear focus on the consent decision.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">The Results</h2>
+                    <p class="content-text">
+                        The project's success was immediate and significant. We not only improved our opt-in rate but also saw no negative impact on our core subscription conversion rates.
+                    </p>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-number">27% → 50%</div>
+                            <div class="result-label">Overall Opt-in Rate</div>
+                            <div class="result-description">Successfully increased across all markets and platforms</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-number">4.7% → 45%</div>
+                            <div class="result-label">Android Performance</div>
+                            <div class="result-description">Direct marketing consent rate on Android</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-number">3% → 26%</div>
+                            <div class="result-label">Apple Performance</div>
+                            <div class="result-description">Direct marketing consent rate on Apple</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-number">9% → 15%</div>
+                            <div class="result-label">Personalized Marketing</div>
+                            <div class="result-description">Positive spillover effect on personalization opt-ins</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">The Impact</h2>
+                    <p class="content-text">
+                        By expanding our audience with a higher permission rate, we were able to significantly boost conversion rates across all our customer relationship management (CRM) communications.
+                    </p>
+                    <div class="impact-stats">
+                        <div class="impact-stat">
+                            <div class="stat-value">2,282</div>
+                            <div class="stat-label">Additional conversions per month</div>
+                        </div>
+                        <div class="impact-stat">
+                            <div class="stat-value">27,386</div>
+                            <div class="stat-label">Extra conversions annually</div>
+                        </div>
+                        <div class="impact-stat">
+                            <div class="stat-value">21M SEK</div>
+                            <div class="stat-label">Estimated additional annual revenue</div>
+                        </div>
+                    </div>
+                    <p class="content-text">
+                        This project proved that a simple, user-centric redesign can have a massive, measurable business impact.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <div class="back-to-work">
+                        <a href="index.html#work" class="btn-secondary">← Back to Work</a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Video autoplay and fallback functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('hero-video');
+            const image = document.getElementById('hero-image');
+
+            if (video && image) {
+                // Try to play video
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        // Video started playing successfully
+                        console.log('Video is playing');
+                    }).catch(function(error) {
+                        // Auto-play was prevented, show image instead
+                        console.log('Video autoplay prevented:', error);
+                        showFallbackImage();
+                    });
+                }
+
+                // When video ends, switch to image
+                video.addEventListener('ended', function() {
+                    showFallbackImage();
+                });
+
+                function showFallbackImage() {
+                    video.style.display = 'none';
+                    image.classList.remove('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

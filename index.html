@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gustav Thunberg - Product Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satoshi:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <h1 class="brand-text">G.Thunberg</h1>
+            </div>
+            <div class="nav-menu">
+                <a href="#work" class="nav-link">Work</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="theme-toggle desktop-only" aria-label="Toggle theme">
+                <span class="theme-icon"></span>
+            </button>
+            <button class="hamburger-menu" aria-label="Open menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay">
+            <button class="mobile-menu-close" aria-label="Close menu">
+                <span class="close-line"></span>
+                <span class="close-line"></span>
+            </button>
+            <div class="mobile-menu-content">
+                <div class="mobile-nav-links">
+                    <a href="#work" class="mobile-nav-link">Work</a>
+                    <a href="#about" class="mobile-nav-link">About</a>
+                    <a href="#contact" class="mobile-nav-link">Contact</a>
+                </div>
+                <button class="theme-toggle mobile-theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title kinetic-title">Gustav Thunberg</h1>
+                <h2 class="hero-subtitle">Product Designer</h2>
+                <p class="hero-description">Creating intuitive digital experiences through thoughtful design and systematic thinking</p>
+                <div class="hero-cta">
+                    <a href="#work" class="btn-primary">View Work</a>
+                    <a href="#contact" class="btn-secondary">Get in Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="work">
+            <div class="container">
+                <h2 class="section-title">Selected Work</h2>
+                <div class="work-grid">
+                    <article class="work-item" onclick="window.location.href='direct-marketing-consent.html'">
+                        <div class="work-image">
+                            <img src="material/drm mock image.png" alt="Direct Marketing Consent UX" class="work-img">
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">Increasing Direct Marketing Consent Rates 📈</h3>
+                            <p class="work-description">Redesigned consent UX increasing opt-in rates from 27% to 50%, driving 21M SEK additional annual revenue</p>
+                            <div class="work-tags">
+                                <span class="tag">UX Research</span>
+                                <span class="tag">A/B Testing</span>
+                                <span class="tag">Conversion Optimization</span>
+                                <span class="tag">Data-Driven Design</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="work-item">
+                        <div class="work-image">
+                            <div class="placeholder-image">Project Image</div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">Mobile Banking App</h3>
+                            <p class="work-description">End-to-end design of a secure mobile banking experience focusing on accessibility</p>
+                            <div class="work-tags">
+                                <span class="tag">Mobile Design</span>
+                                <span class="tag">Accessibility</span>
+                                <span class="tag">User Testing</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="work-item">
+                        <div class="work-image">
+                            <div class="placeholder-image">Project Image</div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">E-commerce Platform</h3>
+                            <p class="work-description">Design system and checkout flow optimization for a sustainable fashion marketplace</p>
+                            <div class="work-tags">
+                                <span class="tag">Design Systems</span>
+                                <span class="tag">E-commerce</span>
+                                <span class="tag">Conversion Optimization</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="work-item">
+                        <div class="work-image">
+                            <div class="placeholder-image">Project Image</div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">AI Writing Assistant</h3>
+                            <p class="work-description">Interface design for an AI-powered content creation tool used by 10k+ writers</p>
+                            <div class="work-tags">
+                                <span class="tag">AI/ML Interface</span>
+                                <span class="tag">Content Tools</span>
+                                <span class="tag">User Onboarding</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2 class="section-title">About</h2>
+                        <p class="about-description">
+                            I'm a product designer working at Storytel with 4+ years of experience creating digital products. 
+                            I Currently resides in Stockholm Sweden with my wonderful girlfriend and our beloved pup Bonnie.
+                        </p>
+
+                        <div class="about-stats">
+                            <div class="stat">
+                                <span class="stat-number">4+</span>
+                                <span class="stat-label">Years Experience</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">Environments</span>
+                                <span class="stat-label">Andorid/iOS/Web</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="placeholder-image">
+                             <img src="material/Profile 2.jpg" alt="profile" class="placeholder-image">
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Let's Work Together</h2>
+                <p class="contact-description">
+                    I'm always interested in new opportunities and collaborations. 
+                    Feel free to reach out if you'd like to discuss a project.
+                </p>
+                <div class="contact-links">
+                    <button id="copy-email-btn" class="contact-link" data-email="gustav.thunberg@gmail.com">
+                        <i class="fa-regular fa-copy contact-icon"></i>
+                        gustav.thunberg@gmail.com
+                    </button>
+                    <a href="https://www.linkedin.com/in/gustav-thunberg-a86b50168/" class="contact-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-linkedin contact-icon"></i>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=2"></script>
+</body>
+</html>
