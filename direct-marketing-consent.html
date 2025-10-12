@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Satoshi:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -51,6 +52,16 @@
     </header>
 
     <main class="article-main">
+        <!-- Back Navigation -->
+        <div class="article-back-nav">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Back</span>
+                </a>
+            </div>
+        </div>
+
         <!-- Hero Section with Video -->
         <section class="article-hero">
             <div class="video-container">
@@ -99,18 +110,6 @@
                             <h3 class="point-title">Personalised ads</h3>
                             <p class="point-text">Refers to sharing user registration data for marketing purposes. E.g Storytel ads more apparent on social media channels.</p>
                         </div>
-                        <div class="solution-point">
-                            <h3 class="point-title">Soft opt-in</h3>
-                            <p class="point-text">Refers to a more lenient regulations towards consent in certain market. For instance possibility to pre-checking the consentbox for the user.</p>
-                        </div>
-                        <div class="solution-point">
-                            <h3 class="point-title">Strict opt-in</h3>
-                            <p class="point-text">For some markets we need to be more aware of the legality of direct marketing. In these markets we should leave the consent boxes unchecked and let the user actively opt in by themself.</p>
-                        </div>
-                        <div class="solution-point">
-                            <h3 class="point-title">Assumed consent</h3>
-                            <p class="point-text">In some very lenient markets we have the option to not even ask the user for their consent, and just assume their consent on signup.</p>
-                        </div>
                     </div>
                 </section>
                 <section class="content-section">
@@ -141,9 +140,8 @@
                 <section class="content-section">
                     <h2 class="section-heading">Discovery</h2>
                     <p class="content-text">
-                        When we jumped into discovery there was one question that was present at all times. 
-                        - "How do we improve the consent rates without of negatively impacting the user experience?"
-                        It was important for us that we did not fall into dark patterns in the UX. We want more user to opt in but we want users who are truly finding a value of getting news and book recommendations in the email inbox. 
+                        When we jumped into discovery, one question remained present throughout: 'How do we improve consent rates without negatively impacting the user experience? 
+                       It was critical that we avoided dark patterns in the UX. While we wanted more users to opt in, we only wanted users who genuinely valued receiving news and book recommendations in their inbox.
 
                     </p>
                     <img
@@ -162,20 +160,20 @@
                     class="hero-image"
                      >
                      <p class="content-text">
-                        Throughout the discovery we started formulating 3 hypothesis that would lead to become the solution we pursued to validate. 
+                        Throughout discovery, we formulated 3 hypotheses that would become the solutions we pursued and validated.
                     </p>
                     <div class="solution-points">
                         <div class="solution-point">
-                            <h3 class="point-title">Make information prominent</h3>
-                            <p class="point-text">We don't serve us or the user when displaying the information in small print, complicated legal copy or by trying to trick the user to consent.  </p>
+                            <h3 class="point-title">Make the information prominent</h3>
+                            <p class="point-text">Small print, complicated legal jargon, and deceptive tactics serve neither us nor our users. </p>
                         </div>
                         <div class="solution-point">
                             <h3 class="point-title">Removing cognitive load</h3>
-                            <p class="point-text">Signing up requires many actions from a user and we risk missing the users that are interested in direct marketing when we let that action compete with SSO buttons and primary CTA's</p>
+                            <p class="point-text">When sign-up competes with SSO buttons and primary CTAs, we risk losing users who genuinely want to receive our communications.</p>
                         </div>
                         <div class="solution-point">
-                            <h3 class="point-title">Adding delight</h3>
-                            <p class="point-text">By adding delight in terms of micro animations or illustrated elements we turn an otherwise mundane decision into a more interesting experience, we make the user stop a minute to really think if this is something interested for them.</p>
+                            <h3 class="point-title">Adding user delight</h3>
+                            <p class="point-text">Adding delight through micro-animations and illustrations transforms an otherwise mundane decision into something worth pausing for—giving users a moment to genuinely reflect on their interest.</p>
                         </div>
                     </div>
                 </section>
@@ -183,23 +181,13 @@
                 <section class="content-section">
                     <h2 class="section-heading">The Solution</h2>
                     <p class="content-text">
-                        We launched a project to completely overhaul the consent experience. Our approach was twofold:
+                        An improved sign-up flow with dedicated space for users to consider both account creation and opt-in preferences. 
                     </p>
                       <img
                     src="material/DRM solution.png"
                     alt="old create account screen for Storytel"
                     class="hero-image"
                      >
-                    <div class="solution-points">
-                        <div class="solution-point">
-                            <h3 class="point-title">Differentiated UX</h3>
-                            <p class="point-text">We tailored the UX to comply with the specific legislation of each market. This meant implementing different flows for "opt-in," "opt-out," and "assumed consent" markets.</p>
-                        </div>
-                        <div class="solution-point">
-                            <h3 class="point-title">Optimized UX</h3>
-                            <p class="point-text">We ran an experiment to test new user interface (UI) designs. The winning solution was to move the direct marketing consent checkbox to a separate screen that appeared after the account creation step. This change significantly reduced clutter and cognitive load, putting a clear focus on the consent decision.</p>
-                        </div>
-                    </div>
                 </section>
 
                 <section class="content-section">
@@ -215,12 +203,12 @@
                         </div>
                         <div class="result-card">
                             <div class="result-number">4.7% → 45%</div>
-                            <div class="result-label">Android Performance</div>
+                            <div class="result-label">Android</div>
                             <div class="result-description">Direct marketing consent rate on Android</div>
                         </div>
                         <div class="result-card">
                             <div class="result-number">3% → 26%</div>
-                            <div class="result-label">Apple Performance</div>
+                            <div class="result-label">iOS</div>
                             <div class="result-description">Direct marketing consent rate on Apple</div>
                         </div>
                         <div class="result-card">
@@ -239,11 +227,11 @@
                     <div class="impact-stats">
                         <div class="impact-stat">
                             <div class="stat-value">2,282</div>
-                            <div class="stat-label">Additional conversions per month</div>
+                            <div class="stat-label">Estima additional conversions per month</div>
                         </div>
                         <div class="impact-stat">
                             <div class="stat-value">27,386</div>
-                            <div class="stat-label">Extra conversions annually</div>
+                            <div class="stat-label">Estimated extra conversions annually</div>
                         </div>
                         <div class="impact-stat">
                             <div class="stat-value">21M SEK</div>

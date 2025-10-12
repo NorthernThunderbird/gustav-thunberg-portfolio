@@ -1160,3 +1160,34 @@ a:focus-visible {
     transform: translateX(0) translateY(0);
   }
 }
+
+/* Article Back Navigation */
+.article-back-nav {
+  padding: var(--space-lg) 0;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 0.9375rem;
+  transition: all var(--timing-fast) ease;
+}
+
+.back-link:hover {
+  color: var(--color-text-primary);
+  transform: translateX(-4px);
+}
+
+.back-link i {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .article-back-nav {
+    padding: var(--space-md) 0;
+  }
+}
