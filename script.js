@@ -154,13 +154,8 @@ class ScrollAnimator {
       const scrollY = window.pageYOffset;
       const header = document.querySelector('.header');
 
-      // Header background opacity based on scroll
-      if (header) {
-        const opacity = Math.min(scrollY / 100, 1);
-        header.style.backgroundColor = `rgba(${
-          getComputedStyle(document.documentElement).getPropertyValue('--color-background').includes('#ffffff') ? '255, 255, 255' : '10, 10, 10'
-        }, ${0.8 + opacity * 0.2})`;
-      }
+      // Header background - removed dynamic background color
+      // Now using CSS variables only for instant theme switching
 
       // Parallax effect for hero content
       const heroContent = document.querySelector('.hero-content');
