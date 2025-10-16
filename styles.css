@@ -957,6 +957,17 @@ a:focus-visible {
   color: var(--color-text-secondary);
 }
 
+.content-section img.hero-image {
+  width: 100%;
+  height: auto;
+  max-width: 564px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
 .solution-points {
   display: flex;
   flex-direction: column;
