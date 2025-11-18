@@ -1359,8 +1359,9 @@ a:focus-visible {
 
 @media (max-width: 768px) {
   .content-video-wrapper {
-    max-width: 100%;
+    max-width: calc(100% - var(--space-2xl));
     margin-left: var(--space-md);
     margin-right: var(--space-md);
+    border-radius: var(--radius-md);
   }
 }
