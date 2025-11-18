@@ -1213,7 +1213,7 @@ a:focus-visible {
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
-  max-width: 900px;
+  max-width: 564px;
 }
 
 .data-table table {
@@ -1246,14 +1246,14 @@ a:focus-visible {
 
 .data-table th:first-child,
 .data-table td:first-child {
-  width: 80px;
+  width: 60px;
 }
 
 .data-table th:nth-child(3),
 .data-table td:nth-child(3),
 .data-table th:nth-child(4),
 .data-table td:nth-child(4) {
-  width: 150px;
+  width: 110px;
   text-align: center;
 }
 
