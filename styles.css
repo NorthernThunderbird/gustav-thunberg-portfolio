@@ -1208,11 +1208,12 @@ a:focus-visible {
 
 /* Data Tables */
 .data-table {
-  margin: var(--space-2xl) 0;
+  margin: var(--space-2xl) auto;
   overflow-x: auto;
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
+  max-width: 900px;
 }
 
 .data-table table {
@@ -1281,6 +1282,9 @@ a:focus-visible {
 @media (max-width: 768px) {
   .data-table {
     font-size: 0.875rem;
+    max-width: 100%;
+    margin-left: var(--space-md);
+    margin-right: var(--space-md);
   }
 
   .data-table th,
