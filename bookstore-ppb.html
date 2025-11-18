@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducing Book Store & 20,000 New English Titles - Gustav Thunberg</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satoshi:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <h1 class="brand-text">G.Thunberg</h1>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html#work" class="nav-link">Work</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon"></span>
+                </button>
+                <button class="hamburger-menu" aria-label="Open menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay">
+            <button class="mobile-menu-close" aria-label="Close menu">
+                <span class="close-line"></span>
+                <span class="close-line"></span>
+            </button>
+            <div class="mobile-menu-content">
+                <div class="mobile-nav-links">
+                    <a href="index.html#work" class="mobile-nav-link">Work</a>
+                    <a href="index.html#about" class="mobile-nav-link">About</a>
+                    <a href="index.html#contact" class="mobile-nav-link">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="article-main">
+        <!-- Back Navigation -->
+        <div class="article-back-nav">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Back</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="article-hero">
+            <div class="video-container">
+                <img
+                    src="material/Hero final ppb.png"
+                    alt="Storytel Pay Per Book"
+                    class="hero-image"
+                >
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="article-content">
+            <div class="container">
+                <section class="article-intro">
+                    <h1 class="article-title">Introducing book store & 20,000 new English titles to Storytel</h1>
+                    <p class="article-subtitle">Expanding the Content Catalog with Pay Per Book</p>
+                    <div class="article-meta">
+                        <span class="meta-item">UX/UI</span>
+                        <span class="meta-item">Discovery</span>
+                        <span class="meta-item">User Research</span>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <p class="content-text">
+                        This case study details the UX design and research process for the introduction of Pay Per Book (PPB), a new hybrid monetization model for the Storytel audio entertainment platform. The goal was to overcome content gaps and strengthen the platform's position against growing competition.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">🎯 The Challenge: Bridging the Content Gap</h2>
+                    <p class="content-text">
+                        Storytel, a primarily all-you-can-eat subscription service, needed to expand its content offering, particularly for English-language titles. The market share for English-language books was growing in core regions, such as Sweden, where it increased from 15% to 18% over five years.
+                    </p>
+                    <p class="content-text">
+                        The strategic objective was to broaden the catalog to become the "ultimate destination for all audio stories" and ensure customers had no reason to use competitors like Audible in the Nordic countries. This required introducing a new model without negatively impacting the core subscription experience.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">💡 The Solution: Introducing a Hybrid Purchase Model</h2>
+                    <p class="content-text">
+                        The team launched the Pay Per Book (PPB) feature, a new model allowing listeners to buy titles not included in the standard streaming subscription. The design team's challenge statement was: "How do we become the best provider of English-language (purchasable) content in the core markets?".
+                    </p>
+                    <p class="content-text">
+                        The solution was structured around a multi-stream product development process (Discover, Solve, Deliver) and focused on three core areas:
+                    </p>
+                    <div class="solution-points">
+                        <div class="solution-point">
+                            <h3 class="point-title">Content Expansion</h3>
+                            <p class="point-text">The initial launch focused exclusively on adding new catalogs of English-language titles.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Subscriber Benefit</h3>
+                            <p class="point-text">Existing subscribers would receive a discounted price on PPB titles, providing a clear value-add to their membership.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Seamless Integration</h3>
+                            <p class="point-text">The core task for UX/UI was creating flows for web and app to sell and display the product.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">🧪 UX Research & Design Validation</h2>
+                    <p class="content-text">
+                        The design team progressed through benchmarking competitors like Apple Bookstore and Amazon Prime Video and extensive internal research to test the concept's understandability and desirability.
+                    </p>
+
+                    <h3 class="subsection-heading">1. Signifier Testing: Clarifying the New Content</h3>
+                    <p class="content-text">
+                        To successfully integrate PPB titles into the existing experience (e.g., the 'Recommended for you' sections), it was crucial to differentiate purchasable content with a clear, discreet signifier.
+                    </p>
+                    <p class="content-text">
+                        Five variants were tested with users on their discoverability (Q1) and understandability (Q2):
+                    </p>
+
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Variant</th>
+                                    <th>Signifier</th>
+                                    <th>Q1 Success Rate (Discoverability)</th>
+                                    <th>Q2 Success Rate (Understandability)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>Shopping cart icon</td>
+                                    <td>45%</td>
+                                    <td>76%</td>
+                                </tr>
+                                <tr>
+                                    <td>B</td>
+                                    <td>Basket icon</td>
+                                    <td>55.5%</td>
+                                    <td>81%</td>
+                                </tr>
+                                <tr>
+                                    <td>C</td>
+                                    <td>Price ("Från 119 kr")</td>
+                                    <td>75%</td>
+                                    <td>71%</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>D</td>
+                                    <td>"Köp" / "Buy" text label</td>
+                                    <td>79%</td>
+                                    <td>88%</td>
+                                </tr>
+                                <tr>
+                                    <td>E</td>
+                                    <td>"Butik" / "Store" text label</td>
+                                    <td>65%</td>
+                                    <td>70%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="content-text">
+                        <strong>Conclusion:</strong> Variant D ("Köp" / "Buy") performed the best, with the highest success rate for both discoverability (79%) and in-context understandability (88%). Crucially, it had a low association with users guessing it meant buying a physical book.
+                    </p>
+
+                    <h3 class="subsection-heading">2. Concept Understandability & User Concerns</h3>
+                    <p class="content-text">
+                        Interviews revealed several key user concerns that the UX design had to address:
+                    </p>
+
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User Group</th>
+                                    <th>What Worked Well</th>
+                                    <th>Core Concerns / UX Challenge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Subscribers (Unlimited)</td>
+                                    <td>Understood books were for sale and not in subscription. Understood the member discount.</td>
+                                    <td>"Why aren't they included in Unlimited?". Worry about the Unlimited catalog changing for the worse. Uncertainty about what "owning" a digital book meant if they cancelled their subscription.</td>
+                                </tr>
+                                <tr>
+                                    <td>Non-Subscribers</td>
+                                    <td>Understood the model included both subscription and purchase options. Understood the discount if they signed up for a trial.</td>
+                                    <td>Uncertainty about how the trial/renewal period worked. Assumed paid books would be the "good" ones and free books would be lower quality. Unsure what books were included/excluded from the subscription on the home screen.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="content-text">
+                        <strong>Key Design Takeaways:</strong>
+                    </p>
+                    <ul class="content-list">
+                        <li>Emphasize PPB is on top of Unlimited</li>
+                        <li>Make it crystal clear that purchased books are kept forever even after subscription cancellation</li>
+                        <li>Clarity on Trial/Subscription terms for non-subscribers before account creation</li>
+                    </ul>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">🚀 The Final Deliverable: A New Purchase Experience</h2>
+                    <p class="content-text">
+                        The final design incorporated a new dedicated entry point, clear purchase flows, and transparent discount messaging (reached "Deliver" phase in Jan 2025).
+                    </p>
+
+                    <div class="solution-points">
+                        <div class="solution-point">
+                            <h3 class="point-title">Dedicated Store Entry Point</h3>
+                            <p class="point-text">A "Store" chip/tab was added next to "Tips" on the Home screen to serve as a clear, distinctive entry point for purchasable content. An in-app banner was implemented on the Home screen for existing subscribers, announcing the new purchase option and the membership discount.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Purchase Flow (Subscriber)</h3>
+                            <p class="point-text">The Book Detail Page features a prominent card for purchase, showing the member discount (e.g., "30% off for Subscribers") and the discounted price (e.g., 77 kr instead of 110 kr). A Confirmation Purchase step ensures the user is aware of the final price, discount applied, and the legal text stating that the content is delivered immediately and the right to withdraw is lost.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Purchase Flow (Non-Subscriber)</h3>
+                            <p class="point-text">The Book Detail Page presents the full price and features an orange banner prompting the user to "Subscribe to get 30% off". Tapping the banner displays an upselling screen highlighting the discount, 1 million stories, and other subscriber benefits to encourage subscription before purchase.</p>
+                        </div>
+                        <div class="solution-point">
+                            <h3 class="point-title">Post-Purchase and Access</h3>
+                            <p class="point-text">Purchased books are immediately accessible and clearly visible in the user's Bookshelf, identified by a "Purchased" filter chip. A banner appears after purchase: "Thank you for your purchase! Enjoy your book".</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">📈 The Impact</h2>
+                    <p class="content-text">
+                        The Pay Per Book initiative is a major strategic step, allowing Storytel to compete with a broader catalog and test a new business model. The rigorous UX process, from testing signifiers to addressing user concerns about the "Unlimited" promise, ensured the new model was introduced with clear, user-centric flows.
+                    </p>
+                    <p class="content-text">
+                        By differentiating purchasable content and transparently promoting the subscriber discount, the project sets a foundation for expanding the content offering without alienating the core subscription base.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <div class="back-to-work">
+                        <a href="index.html#work" class="btn-secondary">← Back to Work</a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

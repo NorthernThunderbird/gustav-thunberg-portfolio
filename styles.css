@@ -1205,3 +1205,113 @@ a:focus-visible {
     padding: var(--space-md) 0;
   }
 }
+
+/* Data Tables */
+.data-table {
+  margin: var(--space-2xl) 0;
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-primary);
+}
+
+.data-table thead {
+  background: var(--color-text-primary);
+  color: var(--color-background);
+}
+
+.data-table th {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.data-table td {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-surface-hover);
+  transition: background var(--timing-fast) ease;
+}
+
+.data-table .highlight-row {
+  background: rgba(255, 235, 59, 0.1);
+}
+
+.data-table .highlight-row:hover {
+  background: rgba(255, 235, 59, 0.15);
+}
+
+@media (max-width: 768px) {
+  .data-table {
+    font-size: 0.875rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.8125rem;
+  }
+}
+
+/* Subsection Headings */
+.subsection-heading {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: var(--space-2xl) 0 var(--space-lg);
+  font-family: var(--font-primary);
+}
+
+@media (max-width: 768px) {
+  .subsection-heading {
+    font-size: 1.25rem;
+  }
+}
+
+/* Content Lists */
+.content-list {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--space-lg) 0;
+}
+
+.content-list li {
+  position: relative;
+  padding-left: var(--space-xl);
+  margin-bottom: var(--space-md);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  font-family: var(--font-primary);
+}
+
+.content-list li::before {
+  content: "•";
+  position: absolute;
+  left: var(--space-md);
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .content-list li {
+    font-size: 1rem;
+  }
+}
