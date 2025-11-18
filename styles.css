@@ -1299,8 +1299,9 @@ a:focus-visible {
   font-size: 1.5rem;
   font-weight: 500;
   color: var(--color-text-primary);
-  margin: var(--space-2xl) 0 var(--space-lg);
+  margin: var(--space-2xl) auto var(--space-lg);
   font-family: var(--font-primary);
+  max-width: 564px;
 }
 
 @media (max-width: 768px) {
@@ -1313,7 +1314,8 @@ a:focus-visible {
 .content-list {
   list-style: none;
   padding-left: 0;
-  margin: var(--space-lg) 0;
+  margin: var(--space-lg) auto;
+  max-width: 564px;
 }
 
 .content-list li {
