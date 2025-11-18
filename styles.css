@@ -1217,8 +1217,10 @@ a:focus-visible {
 
 .data-table table {
   width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   font-family: var(--font-primary);
+  table-layout: auto;
 }
 
 .data-table thead {
@@ -1239,6 +1241,24 @@ a:focus-visible {
   border-bottom: 1px solid var(--color-border);
   font-size: 0.9375rem;
   color: var(--color-text-primary);
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  width: 80px;
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3),
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+  width: 150px;
+  text-align: center;
+}
+
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+  width: auto;
 }
 
 .data-table tbody tr:last-child td {
