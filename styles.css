@@ -1341,3 +1341,26 @@ a:focus-visible {
     font-size: 1rem;
   }
 }
+
+/* Content Video Wrapper */
+.content-video-wrapper {
+  max-width: 564px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.content-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .content-video-wrapper {
+    max-width: 100%;
+    margin-left: var(--space-md);
+    margin-right: var(--space-md);
+  }
+}
