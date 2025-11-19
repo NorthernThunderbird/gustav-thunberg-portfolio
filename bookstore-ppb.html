@@ -256,7 +256,6 @@
                                 <video
                                     class="content-video"
                                     autoplay
-                                    loop
                                     muted
                                     playsinline
                                 >
@@ -267,8 +266,6 @@
                             <div class="video-gallery-item">
                                 <video
                                     class="content-video"
-                                    autoplay
-                                    loop
                                     muted
                                     playsinline
                                 >
@@ -278,8 +275,12 @@
                             </div>
                         </div>
                         <div class="video-gallery-pagination" id="videoPagination">
-                            <button class="pagination-dot active" data-index="0" aria-label="View video 1"></button>
-                            <button class="pagination-dot" data-index="1" aria-label="View video 2"></button>
+                            <button class="pagination-dot active" data-index="0" aria-label="View video 1">
+                                <span class="pagination-dot-progress"></span>
+                            </button>
+                            <button class="pagination-dot" data-index="1" aria-label="View video 2">
+                                <span class="pagination-dot-progress"></span>
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -342,19 +343,69 @@
             const gallery = document.getElementById('videoGallery');
             const pagination = document.getElementById('videoPagination');
             const dots = pagination.querySelectorAll('.pagination-dot');
+            const videos = gallery.querySelectorAll('video');
+            let currentIndex = 0;
 
             // Update active dot based on scroll position
             function updateActiveDot() {
                 const scrollLeft = gallery.scrollLeft;
                 const itemWidth = gallery.offsetWidth;
-                const currentIndex = Math.round(scrollLeft / itemWidth);
+                const newIndex = Math.round(scrollLeft / itemWidth);
 
-                dots.forEach((dot, index) => {
-                    if (index === currentIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
+                if (newIndex !== currentIndex) {
+                    // Pause previous video and reset
+                    if (videos[currentIndex]) {
+                        videos[currentIndex].pause();
+                        videos[currentIndex].currentTime = 0;
                     }
+
+                    currentIndex = newIndex;
+
+                    // Update dots and play new video
+                    dots.forEach((dot, index) => {
+                        const progress = dot.querySelector('.pagination-dot-progress');
+                        if (index === currentIndex) {
+                            dot.classList.add('active');
+                            progress.style.width = '8px'; // Start with small dot
+                        } else {
+                            dot.classList.remove('active');
+                            progress.style.width = '0';
+                        }
+                    });
+
+                    // Play new video
+                    if (videos[currentIndex]) {
+                        videos[currentIndex].play();
+                    }
+                }
+            }
+
+            // Update progress bar based on video playback
+            function updateProgress() {
+                const activeVideo = videos[currentIndex];
+                if (activeVideo && activeVideo.duration) {
+                    const progress = (activeVideo.currentTime / activeVideo.duration) * 100;
+                    const activeDot = dots[currentIndex];
+                    const progressBar = activeDot.querySelector('.pagination-dot-progress');
+
+                    // Progress from 8px (small dot) to 24px (full pill)
+                    const progressWidth = 8 + ((24 - 8) * (progress / 100));
+                    progressBar.style.width = progressWidth + 'px';
+
+                    // Auto-advance when video completes
+                    if (activeVideo.currentTime >= activeVideo.duration - 0.1) {
+                        const nextIndex = (currentIndex + 1) % videos.length;
+                        scrollToVideo(nextIndex);
+                    }
+                }
+            }
+
+            // Scroll to specific video
+            function scrollToVideo(index) {
+                const itemWidth = gallery.offsetWidth;
+                gallery.scrollTo({
+                    left: itemWidth * index,
+                    behavior: 'smooth'
                 });
             }
 
@@ -364,13 +415,21 @@
             // Handle dot click
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', () => {
-                    const itemWidth = gallery.offsetWidth;
-                    gallery.scrollTo({
-                        left: itemWidth * index,
-                        behavior: 'smooth'
-                    });
+                    scrollToVideo(index);
                 });
             });
+
+            // Update progress for all videos
+            videos.forEach((video, index) => {
+                video.addEventListener('timeupdate', function() {
+                    if (index === currentIndex) {
+                        updateProgress();
+                    }
+                });
+            });
+
+            // Initialize
+            updateActiveDot();
         });
     </script>
 </body>

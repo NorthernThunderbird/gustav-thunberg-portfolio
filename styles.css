@@ -1387,24 +1387,35 @@ a:focus-visible {
 }
 
 .pagination-dot {
-  width: 8px;
+  width: 24px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 4px;
   border: none;
   background: var(--color-border);
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .pagination-dot:hover {
   background: var(--color-text-secondary);
 }
 
-.pagination-dot.active {
-  width: 24px;
-  border-radius: 4px;
+.pagination-dot-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
   background: var(--color-text-primary);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+.pagination-dot.active .pagination-dot-progress {
+  width: 8px;
 }
 
 @media (max-width: 768px) {
