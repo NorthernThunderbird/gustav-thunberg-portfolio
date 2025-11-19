@@ -11,6 +11,27 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <script>
+        // Authentication check
+        (function() {
+            const AUTH_KEY = 'portfolio_auth';
+            const SEVEN_HOURS = 7 * 60 * 60 * 1000;
+
+            const auth = localStorage.getItem(AUTH_KEY);
+            if (!auth) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const authData = JSON.parse(auth);
+            const now = new Date().getTime();
+
+            if (now - authData.timestamp >= SEVEN_HOURS) {
+                localStorage.removeItem(AUTH_KEY);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
 
     <header class="header">
         <nav class="nav">
