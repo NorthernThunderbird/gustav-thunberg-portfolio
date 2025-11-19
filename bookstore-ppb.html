@@ -250,17 +250,37 @@
                 </section>
 
                 <section class="content-section">
-                    <div class="content-video-wrapper">
-                        <video
-                            class="content-video"
-                            autoplay
-                            loop
-                            muted
-                            playsinline
-                        >
-                            <source src="material/ppb-web-purchase-flow.mov" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                    <div class="video-gallery-container">
+                        <div class="video-gallery" id="videoGallery">
+                            <div class="video-gallery-item">
+                                <video
+                                    class="content-video"
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                >
+                                    <source src="material/app explore to purchase.mov" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="video-gallery-item">
+                                <video
+                                    class="content-video"
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                >
+                                    <source src="material/ppb-web-purchase-flow.mov" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                        <div class="video-gallery-pagination" id="videoPagination">
+                            <button class="pagination-dot active" data-index="0" aria-label="View video 1"></button>
+                            <button class="pagination-dot" data-index="1" aria-label="View video 2"></button>
+                        </div>
                     </div>
                 </section>
 
@@ -316,5 +336,42 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Video Gallery Pagination
+        document.addEventListener('DOMContentLoaded', function() {
+            const gallery = document.getElementById('videoGallery');
+            const pagination = document.getElementById('videoPagination');
+            const dots = pagination.querySelectorAll('.pagination-dot');
+
+            // Update active dot based on scroll position
+            function updateActiveDot() {
+                const scrollLeft = gallery.scrollLeft;
+                const itemWidth = gallery.offsetWidth;
+                const currentIndex = Math.round(scrollLeft / itemWidth);
+
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            // Handle scroll event
+            gallery.addEventListener('scroll', updateActiveDot);
+
+            // Handle dot click
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    const itemWidth = gallery.offsetWidth;
+                    gallery.scrollTo({
+                        left: itemWidth * index,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
