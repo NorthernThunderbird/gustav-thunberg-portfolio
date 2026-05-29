@@ -1,244 +1,868 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gustav Thunberg - Product Designer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Satoshi:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gustav Thunberg — Product Designer</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+/* ─── TOKENS ─── */
+:root {
+  /* DARK theme is the default — :root values match the dark scheme */
+  --bg:               #111111;
+  --surface:          #1a1a1a;
+  --border:           rgba(255,255,255,0.1);
+  --text-1:           #ffffff;
+  --text-2:           rgba(255,255,255,0.55);
+  --text-3:           rgba(255,255,255,0.3);
+  --accent:           #0066ff;
+
+  --nav-bg:           rgba(17,17,17,0.85);
+  --nav-bg-scrolled:  rgba(17,17,17,0.97);
+  --nav-border:       rgba(255,255,255,0.08);
+  --section-bg:       rgba(17,17,17,0.7);
+  --contact-bg:       rgba(20,20,20,0.85);
+  --footer-bg:        rgba(17,17,17,0.9);
+
+  --card-bg:          rgba(255,255,255,0.04);
+  --card-bg-hover:    rgba(255,255,255,0.07);
+  --card-border:      rgba(255,255,255,0.08);
+  --card-border-hover:rgba(255,255,255,0.18);
+  --card-meta:        rgba(255,255,255,0.5);
+  --card-arrow:       rgba(255,255,255,0.35);
+  --card-arrow-hover: rgba(255,255,255,0.8);
+
+  --tag-bg:           rgba(255,255,255,0.06);
+  --tag-border:       rgba(255,255,255,0.1);
+  --tag-text:         rgba(255,255,255,0.45);
+
+  --contact-btn-bg:       rgba(255,255,255,0.06);
+  --contact-btn-bg-hover: rgba(255,255,255,0.1);
+  --contact-btn-border:   rgba(255,255,255,0.12);
+  --contact-btn-icon:     rgba(255,255,255,0.4);
+
+  --btn-secondary-border: rgba(255,255,255,0.22);
+  --btn-secondary-hover-bg: rgba(255,255,255,0.08);
+
+  --theme-btn-border:       rgba(255,255,255,0.15);
+  --theme-btn-border-hover: rgba(255,255,255,0.4);
+  --theme-btn-hover-bg:     rgba(255,255,255,0.08);
+
+  --hairline:         rgba(255,255,255,0.08);
+  --footer-muted:     rgba(255,255,255,0.25);
+  --card-badge-bg:    rgba(0,0,0,0.55);
+  --card-badge-text:  #ffffff;
+
+  /* Ripple canvas dot color, as r,g,b triplet */
+  --ripple-rgb:       255,255,255;
+
+  --sh-sm: 0 1px 3px rgba(0,0,0,0.5);
+  --sh-md: 0 4px 12px rgba(0,0,0,0.6);
+  --sh-lg: 0 12px 32px rgba(0,0,0,0.7);
+
+  --font:     'Satoshi', -apple-system, system-ui, sans-serif;
+  --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --fast:     150ms;
+  --normal:   250ms;
+  --slow:     500ms;
+}
+
+[data-theme="light"] {
+  --bg:               #f6f4ef;
+  --surface:          #ffffff;
+  --border:           rgba(0,0,0,0.08);
+  --text-1:           #0a0a0a;
+  --text-2:           rgba(0,0,0,0.6);
+  --text-3:           rgba(0,0,0,0.4);
+  --accent:           #0066ff;
+
+  --nav-bg:           rgba(246,244,239,0.82);
+  --nav-bg-scrolled:  rgba(246,244,239,0.97);
+  --nav-border:       rgba(0,0,0,0.08);
+  --section-bg:       rgba(246,244,239,0.7);
+  --contact-bg:       rgba(255,255,255,0.85);
+  --footer-bg:        rgba(246,244,239,0.9);
+
+  --card-bg:          rgba(255,255,255,0.7);
+  --card-bg-hover:    rgba(255,255,255,0.95);
+  --card-border:      rgba(0,0,0,0.08);
+  --card-border-hover:rgba(0,0,0,0.18);
+  --card-meta:        rgba(0,0,0,0.55);
+  --card-arrow:       rgba(0,0,0,0.35);
+  --card-arrow-hover: rgba(0,0,0,0.8);
+
+  --tag-bg:           rgba(0,0,0,0.04);
+  --tag-border:       rgba(0,0,0,0.08);
+  --tag-text:         rgba(0,0,0,0.55);
+
+  --contact-btn-bg:       rgba(0,0,0,0.04);
+  --contact-btn-bg-hover: rgba(0,0,0,0.07);
+  --contact-btn-border:   rgba(0,0,0,0.12);
+  --contact-btn-icon:     rgba(0,0,0,0.45);
+
+  --btn-secondary-border: rgba(0,0,0,0.18);
+  --btn-secondary-hover-bg: rgba(0,0,0,0.05);
+
+  --theme-btn-border:       rgba(0,0,0,0.15);
+  --theme-btn-border-hover: rgba(0,0,0,0.4);
+  --theme-btn-hover-bg:     rgba(0,0,0,0.05);
+
+  --hairline:         rgba(0,0,0,0.08);
+  --footer-muted:     rgba(0,0,0,0.35);
+  --card-badge-bg:    rgba(255,255,255,0.85);
+  --card-badge-text:  #111111;
+
+  --ripple-rgb:       20,20,20;
+
+  --sh-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --sh-md: 0 4px 12px rgba(0,0,0,0.10);
+  --sh-lg: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+/* ─── BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-1);
+  line-height: 1.6;
+  transition: background var(--normal) var(--ease), color var(--normal) var(--ease);
+  overflow-x: hidden;
+}
+
+/* All main sections sit above the fixed canvas */
+.nav, .hero, .section, .contact-section, .footer { position: relative; z-index: 1; }
+
+/* Sections get a semi-transparent bg so text stays readable */
+.section { background: var(--section-bg); backdrop-filter: blur(0px); }
+.contact-section { background: var(--contact-bg); border-top: 1px solid var(--hairline); }
+.footer { background: var(--footer-bg); border-top: 1px solid var(--hairline); }
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: rgba(0,102,255,0.12); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--nav-border);
+  transition: background 300ms var(--ease), border-color 300ms var(--ease), box-shadow 300ms var(--ease);
+}
+.nav.scrolled { box-shadow: var(--sh-md); background: var(--nav-bg-scrolled); }
+.brand { color: var(--text-1); }
+.nav-links a { color: var(--text-2); }
+.nav-links a:hover, .nav-links a.active { color: var(--text-1); }
+
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: 14px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.brand {
+  font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.03em;
+  color: var(--text-1); cursor: pointer;
+  transition: opacity var(--fast) ease, color var(--normal) ease;
+}
+.brand:hover { opacity: 0.8; }
+
+.nav-links {
+  display: flex; gap: 28px; align-items: center; list-style: none; margin: 0; padding: 0;
+}
+
+.nav-links a {
+  font-size: 0.875rem; color: var(--text-2); font-weight: 500;
+  transition: color 200ms ease;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text-1); }
+
+.theme-btn {
+  width: 34px; height: 34px; border-radius: 99px;
+  border: 1px solid var(--theme-btn-border); background: transparent; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text-2); font-size: 0.95rem;
+  transition: all 200ms ease;
+  flex-shrink: 0;
+}
+.theme-btn:hover { color: var(--text-1); border-color: var(--theme-btn-border-hover); background: var(--theme-btn-hover-bg); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: flex-start;
+  text-align: left;
+  padding: 120px 32px 80px 10vw;
+  position: relative; overflow: hidden;
+  background: transparent;
+}
+.hero-title { color: var(--text-1); }
+.hero-eyebrow, .hero-role, .hero-desc { color: var(--text-2); }
+.btn-primary { background: var(--text-1); color: var(--bg); border-color: var(--text-1); }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: var(--sh-md); }
+.btn-secondary { background: transparent; color: var(--text-1); border-color: var(--btn-secondary-border); }
+.btn-secondary:hover { background: var(--btn-secondary-hover-bg); transform: translateY(-2px); }
+
+.hero-content {
+  max-width: 780px;
+  position: relative; z-index: 2;
+  animation: fadeUp 0.6s var(--ease) forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before {
+  content: ''; flex: none; width: 32px; height: 1px; background: var(--accent);
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 9vw, 5.5rem);
+  font-weight: 700; letter-spacing: -0.05em; line-height: 1.0;
+  margin-bottom: 20px;
+  color: var(--text-1);
+  animation: kineticWeight 2s var(--ease) forwards;
+  cursor: default;
+}
+.hero-title:hover { animation: none; font-variation-settings: 'wght' 300; }
+
+.hero-role {
+  font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 400;
+  color: var(--text-2); letter-spacing: -0.01em; margin-bottom: 20px;
+}
+
+.hero-desc {
+  font-size: 1.0625rem; color: var(--text-2); line-height: 1.7;
+  max-width: 560px; margin: 0 auto 40px 0;
+}
+
+.hero-actions {
+  display: flex; gap: 12px; justify-content: flex-start; flex-wrap: wrap;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  padding: 11px 24px; border-radius: 8px; font-size: 0.9375rem;
+  font-weight: 500; font-family: var(--font); cursor: pointer;
+  transition: all var(--fast) var(--ease); border: 1px solid transparent;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+
+.btn-primary {
+  background: var(--text-1); color: var(--bg);
+  border-color: var(--text-1);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--sh-md); opacity: 0.88; }
+
+.btn-secondary {
+  background: transparent; color: var(--text-1); border-color: var(--border);
+}
+.btn-secondary:hover { background: var(--surface); transform: translateY(-2px); }
+
+/* ─── SECTION ─── */
+.section { padding: 96px 32px; }
+
+.section-inner { max-width: 1160px; margin: 0 auto; }
+
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 56px;
+}
+
+.section-label {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-3); display: flex;
+  align-items: center; gap: 10px;
+}
+.section-label::before {
+  content: ''; width: 24px; height: 1px; background: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 400;
+  letter-spacing: -0.03em; color: var(--text-1); line-height: 1.2;
+}
+
+.section-count {
+  font-size: 0.8125rem; color: var(--text-3); font-variant-numeric: tabular-nums;
+}
+
+/* ─── WORK GRID ─── */
+.work-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
+}
+
+.work-card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 16px; overflow: hidden; cursor: pointer;
+  transition: transform var(--normal) var(--ease), box-shadow var(--normal) var(--ease), border-color var(--normal) ease, background var(--normal) ease;
+}
+.work-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sh-lg);
+  border-color: var(--card-border-hover);
+  background: var(--card-bg-hover);
+}
+.work-card.coming-soon { cursor: default; opacity: 0.5; }
+.work-card.coming-soon:hover { transform: none; box-shadow: none; border-color: var(--card-border); background: var(--card-bg); }
+
+.work-card:first-child .card-img { height: 220px; }
+
+.card-img {
+  height: 220px; overflow: hidden; position: relative;
+}
+.card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--slow) var(--ease);
+}
+.work-card:hover .card-img img { transform: scale(1.04); }
+
+.card-badge {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--card-badge-bg); backdrop-filter: blur(8px);
+  color: var(--card-badge-text); font-size: 0.75rem; letter-spacing: 0.04em;
+  padding: 4px 10px; border-radius: 99px;
+}
+
+.card-body { padding: 24px; }
+
+.card-meta {
+  font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1.05rem; font-weight: 500; letter-spacing: -0.02em;
+  color: var(--text-1); line-height: 1.35; margin-bottom: 10px;
+}
+
+.card-desc {
+  font-size: 0.875rem; color: var(--card-meta); line-height: 1.6;
+  margin-bottom: 16px; max-width: none;
+}
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.card-arrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; color: var(--card-arrow);
+  margin-top: 16px; transition: all var(--fast) var(--ease);
+  font-weight: 500; letter-spacing: 0.02em;
+}
+.work-card:hover .card-arrow { color: var(--card-arrow-hover); transform: translateX(4px); }
+.tag {
+  font-size: 0.75rem; color: var(--tag-text);
+  background: var(--tag-bg); border: 1px solid var(--tag-border);
+  padding: 3px 10px; border-radius: 4px; letter-spacing: 0.02em; white-space: nowrap;
+}
+
+/* ─── ABOUT ─── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
+}
+
+.about-body { display: flex; flex-direction: column; gap: 20px; }
+
+.about-text {
+  font-size: 1.05rem; color: var(--text-2); line-height: 1.75; max-width: none;
+}
+
+.about-stats {
+  display: flex; gap: 40px; padding-top: 8px;
+}
+
+.stat-num {
+  font-size: 2.5rem; font-weight: 300; color: var(--accent);
+  letter-spacing: -0.04em; line-height: 1; display: block;
+}
+
+.stat-label {
+  font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.06em;
+  text-transform: uppercase; margin-top: 4px; display: block;
+}
+
+.about-img {
+  height: 480px; border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+.about-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ─── CONTACT ─── */
+.contact-section {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 96px 32px; text-align: center;
+}
+
+.contact-inner { max-width: 600px; margin: 0 auto; }
+
+.contact-title {
+  font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 400;
+  letter-spacing: -0.04em; color: var(--text-1); line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.contact-sub {
+  font-size: 1.0625rem; color: var(--text-2); line-height: 1.7;
+  margin-bottom: 40px; max-width: none;
+}
+
+.contact-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+.contact-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 22px; border-radius: 10px;
+  background: var(--contact-btn-bg); color: var(--text-1);
+  border: 1px solid var(--contact-btn-border); cursor: pointer;
+  font-family: var(--font); font-size: 0.9375rem; font-weight: 400;
+  transition: all var(--fast) var(--ease);
+}
+.contact-btn:hover { transform: translateY(-2px); box-shadow: var(--sh-md); background: var(--contact-btn-bg-hover); }
+.contact-btn i { font-size: 1.1rem; color: var(--contact-btn-icon); }
+
+/* ─── FOOTER ─── */
+.footer {
+  padding: 28px 32px; border-top: 1px solid var(--border);
+}
+.footer-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-copy { font-size: 0.8125rem; color: var(--footer-muted); }
+.footer-brand { font-size: 0.875rem; font-weight: 700; letter-spacing: -0.03em; color: var(--footer-muted); }
+
+/* ─── SNACKBAR ─── */
+.snackbar {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text-1); color: var(--bg);
+  padding: 10px 20px; border-radius: 8px;
+  font-size: 0.9rem; font-weight: 400; font-family: var(--font);
+  box-shadow: var(--sh-lg); opacity: 0;
+  transition: all 280ms cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none; z-index: 9999; white-space: nowrap;
+}
+.snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes kineticWeight {
+  from { font-variation-settings: 'wght' 300; }
+  to   { font-variation-settings: 'wght' 700; }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal[data-delay="1"] { transition-delay: 80ms; }
+.reveal[data-delay="2"] { transition-delay: 160ms; }
+.reveal[data-delay="3"] { transition-delay: 240ms; }
+.reveal[data-delay="4"] { transition-delay: 320ms; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .hero { padding-left: 32px; }
+  .work-grid { grid-template-columns: 1fr; }
+  .work-card:first-child { grid-column: span 1; }
+  .work-card:first-child .card-img { height: 240px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-img { height: 320px; }
+  .about-stats { gap: 24px; }
+}
+
+@media (max-width: 640px) {
+  .nav-inner { padding: 14px 20px; }
+  .nav-links { gap: 18px; }
+  .section { padding: 64px 20px; }
+  .hero { padding: 100px 20px 64px; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+</style>
 </head>
 <body>
-    <script>
-        // Authentication check
-        (function() {
-            const AUTH_KEY = 'portfolio_auth';
-            const SEVEN_HOURS = 7 * 60 * 60 * 1000;
 
-            const auth = localStorage.getItem(AUTH_KEY);
-            if (!auth) {
-                window.location.href = 'login.html';
-                return;
-            }
+<script>
+// ─── AUTHENTICATION CHECK ───
+(function() {
+    const AUTH_KEY = 'portfolio_auth';
+    const SEVEN_HOURS = 7 * 60 * 60 * 1000;
 
-            const authData = JSON.parse(auth);
-            const now = new Date().getTime();
+    const auth = localStorage.getItem(AUTH_KEY);
+    if (!auth) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-            if (now - authData.timestamp >= SEVEN_HOURS) {
-                localStorage.removeItem(AUTH_KEY);
-                window.location.href = 'login.html';
-            }
-        })();
-    </script>
+    const authData = JSON.parse(auth);
+    const now = new Date().getTime();
 
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                <h1 class="brand-text">G.Thunberg</h1>
-            </div>
-            <div class="nav-menu">
-                <a href="#work" class="nav-link">Work</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <span class="theme-icon"></span>
-                </button>
-                <button class="hamburger-menu" aria-label="Open menu">
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                </button>
-            </div>
-        </nav>
+    if (now - authData.timestamp >= SEVEN_HOURS) {
+        localStorage.removeItem(AUTH_KEY);
+        window.location.href = 'login.html';
+    }
+})();
+</script>
 
-        <!-- Mobile Menu Overlay -->
-        <div class="mobile-menu-overlay">
-            <button class="mobile-menu-close" aria-label="Close menu">
-                <span class="close-line"></span>
-                <span class="close-line"></span>
-            </button>
-            <div class="mobile-menu-content">
-                <div class="mobile-nav-links">
-                    <a href="#work" class="mobile-nav-link">Work</a>
-                    <a href="#about" class="mobile-nav-link">About</a>
-                    <a href="#contact" class="mobile-nav-link">Contact</a>
-                </div>
-            </div>
+<canvas id="rippleCanvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">G.Thunberg</a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Product Designer · Stockholm</div>
+    <h1 class="hero-title">Gustav Thunberg</h1>
+    <p class="hero-role">Currently designing at Storytel</p>
+    <p class="hero-desc">Creating intuitive digital experiences through thoughtful design and systematic thinking.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-primary">View Work</a>
+      <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="section" id="work">
+  <div class="section-inner">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Selected Work</div>
+      </div>
+      <span class="section-count">4 projects</span>
+    </div>
+
+    <div class="work-grid">
+
+      <!-- Card 1 — featured -->
+      <article class="work-card reveal" data-delay="1" onclick="window.location.href='bookstore-ppb.html'">
+        <div class="card-img">
+          <img src="material/Hero final ppb.png" alt="Storytel Book Store">
+          <span class="card-badge">Storytel · 2024</span>
         </div>
-    </header>
-
-    <main class="main">
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="hero-title kinetic-title">Gustav Thunberg</h1>
-                <h2 class="hero-subtitle">Product Designer</h2>
-                <p class="hero-description">Creating intuitive digital experiences through thoughtful design and systematic thinking</p>
-                <div class="hero-cta">
-                    <a href="#work" class="btn-primary">View Work</a>
-                    <a href="#contact" class="btn-secondary">Get in Touch</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="work" class="work">
-            <div class="container">
-                <h2 class="section-title">Selected Work</h2>
-                <div class="work-grid">
-                     <article class="work-item" onclick="window.location.href='bookstore-ppb.html'">
-                        <div class="work-image">
-                            <img src="material/Hero final ppb.png" alt="Pay per book" class="work-img">
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">Introducing book store & 20 000 new english titles to Storytel</h3>
-                            <p class="work-description">Redefined our content streaming model and included for the first time ever individual purchasable books.</p>
-                            <div class="work-tags">
-                                <span class="tag">UX/UI</span>
-                                <span class="tag">Discovery</span>
-                                <span class="tag">User research</span>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="work-item" onclick="window.location.href='direct-marketing-consent.html'">
-                        <div class="work-image">
-                            <img src="material/drm_hero.png" alt="Direct Marketing Consent UX" class="work-img">
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">Improving opt-in rates</h3>
-                            <p class="work-description">Redesigned consent UX increasing opt-in rates from 27% to 50%.</p>
-                            <div class="work-tags">
-                                <span class="tag">UX/UI</span>
-                                <span class="tag">A/B Testing</span>
-                                <span class="tag">Conversion Optimization</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="work-item">
-                         <div class="work-image">
-                            <img src="material/hero_batch_upload.png" alt="batch upload project" class="work-img">
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">Reimagining Content Ingestion for Publishers</h3>
-                            <p class="work-description">A comprehensive redesign of how small and medium-sized publishers upload and manage their content within the Storytel platform.</p>
-                            <div class="work-tags">
-                                <span class="tag">Coming soon</span>
-                                <!-- <span class="tag">B2B</span>
-                                <span class="tag">UI/UX</span>
-                                <span class="tag">User research</span> -->
-                            </div>
-                        </div>
-                    </article>
-                      <article class="work-item">
-                         <div class="work-image">
-                            <img src="material/hero_web_signup.png" alt="Web signup redesign" class="work-img">
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">Redesigning the web signup flow</h3>
-                            <p class="work-description">A total redesign of the Web signup to apply new Storytel brand and improving the UX for better conversion.</p>
-                            <div class="work-tags">
-                                <span class="tag">Coming soon</span>
-                                <!-- <span class="tag">B2B</span>
-                                <span class="tag">UI/UX</span>
-                                <span class="tag">User research</span> -->
-                            </div>
-                        </div>
-                    </article>
-
-
-<!-- Placeholders for now -->
-                    <!-- <article class="work-item">
-                        <div class="work-image">
-                            <div class="placeholder-image">Project Image</div>
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">E-commerce Platform</h3>
-                            <p class="work-description">Design system and checkout flow optimization for a sustainable fashion marketplace</p>
-                            <div class="work-tags">
-                                <span class="tag">Design Systems</span>
-                                <span class="tag">E-commerce</span>
-                                <span class="tag">Conversion Optimization</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="work-item">
-                        <div class="work-image">
-                            <div class="placeholder-image">Project Image</div>
-                        </div>
-                        <div class="work-content">
-                            <h3 class="work-title">AI Writing Assistant</h3>
-                            <p class="work-description">Interface design for an AI-powered content creation tool used by 10k+ writers</p>
-                            <div class="work-tags">
-                                <span class="tag">AI/ML Interface</span>
-                                <span class="tag">Content Tools</span>
-                                <span class="tag">User Onboarding</span>
-                            </div>
-                        </div>
-                    </article> --> 
-
-<!-- Placeholders for now -->
-
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="about">
-            <div class="container">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <h2 class="section-title">About</h2>
-                        <p class="about-description">
-                            I'm a product designer working at Storytel with 3+ years of experience creating digital products. 
-                            I Currently resides in Stockholm Sweden with my wonderful girlfriend and our beloved pup Bonnie.
-                        </p>
-
-                        <!-- <div class="about-stats">
-                            <div class="stat">
-                                <span class="stat-number">3+</span>
-                                <span class="stat-label">Years Experience</span>
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="about-image">
-                        <div class="placeholder-image">
-                             <img src="material/Profile 2.jpg" alt="profile" class="placeholder-image">
-                        </div>
-                
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2 class="section-title">Let's Work Together</h2>
-                <p class="contact-description">
-                    I'm always interested in new opportunities and collaborations. 
-                    Feel free to reach out if you'd like to discuss a project.
-                </p>
-                <div class="contact-links">
-                    <button id="copy-email-btn" class="contact-link" data-email="gustav.thunberg@gmail.com">
-                        <i class="fa-regular fa-copy contact-icon"></i>
-                        gustav.thunberg@gmail.com
-                    </button>
-                    <a href="https://www.linkedin.com/in/gustav-thunberg-a86b50168/" class="contact-link" target="_blank" rel="noopener noreferrer">
-                        <i class="fa-brands fa-linkedin contact-icon"></i>
-                        LinkedIn
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+        <div class="card-body">
+          <div class="card-meta">UX/UI · Mobile & Web</div>
+          <h3 class="card-title">Introducing a book store &amp; 20 000 new English titles to Storytel</h3>
+          <p class="card-desc">Redefined our content streaming model and included for the first time ever individual purchasable books — opening an entirely new revenue stream.</p>
+          <div class="card-tags">
+            <span class="tag">UX/UI</span>
+            <span class="tag">Discovery</span>
+            <span class="tag">User Research</span>
+          </div>
+          <div class="card-arrow">Read case study →</div>
         </div>
-    </footer>
+      </article>
 
-    <script src="script.js?v=2"></script>
+      <!-- Card 2 -->
+      <article class="work-card reveal" data-delay="2" onclick="window.location.href='direct-marketing-consent.html'">
+        <div class="card-img">
+          <img src="material/drm_hero.png" alt="Direct Marketing Consent">
+          <span class="card-badge">Storytel · 2023</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">UX/UI · Conversion</div>
+          <h3 class="card-title">Improving opt-in rates</h3>
+          <p class="card-desc">Redesigned consent UX increasing opt-in rates from 27% to 50%.</p>
+          <div class="card-tags">
+            <span class="tag">UX/UI</span>
+            <span class="tag">A/B Testing</span>
+            <span class="tag">Conversion Optimization</span>
+          </div>
+          <div class="card-arrow">Read case study →</div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="work-card coming-soon reveal" data-delay="3">
+        <div class="card-img">
+          <img src="material/hero_batch_upload.png" alt="Content Ingestion">
+          <span class="card-badge">Coming soon</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">B2B · Publisher Tools</div>
+          <h3 class="card-title">Reimagining Content Ingestion for Publishers</h3>
+          <p class="card-desc">A comprehensive redesign of how small and medium-sized publishers upload and manage their content within the Storytel platform.</p>
+          <div class="card-tags">
+            <span class="tag">Coming soon</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="work-card coming-soon reveal" data-delay="4">
+        <div class="card-img">
+          <img src="material/hero_web_signup.png" alt="Web Signup">
+          <span class="card-badge">Coming soon</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">Web · Conversion</div>
+          <h3 class="card-title">Redesigning the web signup flow</h3>
+          <p class="card-desc">A total redesign of the Web signup to apply new Storytel brand and improving the UX for better conversion.</p>
+          <div class="card-tags">
+            <span class="tag">Coming soon</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-body">
+        <div class="section-label">About</div>
+        <h2 class="section-title">Product designer<br>based in Stockholm.</h2>
+        <p class="about-text">
+          I'm a product designer working at Storytel with 3+ years of experience creating digital products. I care deeply about the details that make products feel right — the transitions, the feedback, the moments between states.
+        </p>
+        <p class="about-text">
+          I currently reside in Stockholm, Sweden with my wonderful girlfriend and our beloved pup Bonnie.
+        </p>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">27→50</span>
+            <span class="stat-label">% Opt-in rate lift</span>
+          </div>
+        </div>
+        <div>
+          <a href="#contact" class="btn btn-secondary" style="display:inline-flex;margin-top:8px;">Get in touch</a>
+        </div>
+      </div>
+      <div class="about-img reveal">
+        <img src="material/Profile 2.jpg" alt="Gustav Thunberg">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title">Let's work<br>together.</h2>
+    <p class="contact-sub">I'm always interested in new opportunities and collaborations. Feel free to reach out if you'd like to discuss a project.</p>
+    <div class="contact-links">
+      <button class="contact-btn" id="copyEmailBtn">
+        <i class="fa-regular fa-copy"></i>
+        gustav.thunberg@gmail.com
+      </button>
+      <a href="https://www.linkedin.com/in/gustav-thunberg-a86b50168/" class="contact-btn" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-linkedin"></i>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-copy">© 2024 Gustav Thunberg. All rights reserved.</span>
+    <span class="footer-brand">G.Thunberg</span>
+  </div>
+</footer>
+
+<!-- SNACKBAR -->
+<div class="snackbar" id="snackbar">Email copied to clipboard</div>
+
+<script>
+// ─── THEME ───
+const root = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+
+function getTheme() { return localStorage.getItem('gt-theme') || 'dark'; }
+function setTheme(t) {
+  root.setAttribute('data-theme', t);
+  localStorage.setItem('gt-theme', t);
+}
+setTheme(getTheme());
+themeBtn.addEventListener('click', () => {
+  setTheme(getTheme() === 'light' ? 'dark' : 'light');
+});
+
+// ─── NAV SCROLL ───
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  const isScrolled = window.scrollY > 40;
+  nav.classList.toggle('scrolled', isScrolled);
+  // Active link
+  const sections = ['work','about','contact'];
+  const links = document.querySelectorAll('.nav-links a');
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+  });
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === `#${current}` || (!current && l.getAttribute('href') === '#work'));
+  });
+}, { passive: true });
+
+// ─── REVEAL ON SCROLL ───
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// ─── EMAIL COPY ───
+const snackbar = document.getElementById('snackbar');
+function showSnack(msg) {
+  snackbar.textContent = msg;
+  snackbar.classList.add('show');
+  setTimeout(() => snackbar.classList.remove('show'), 2600);
+}
+document.getElementById('copyEmailBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText('gustav.thunberg@gmail.com').catch(() => {});
+  showSnack('Email copied to clipboard');
+});
+</script>
+
+<script>
+// ─── 3D DOT RIPPLE ───
+(function () {
+  const canvas = document.getElementById('rippleCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, scrollY = 0;
+
+  // Grid config
+  const SPACING   = 36;    // px between dots in X/Y
+  const FADE_R    = 480;   // radial fade distance from ripple center (px)
+  const Z_AMP     = 1.0;   // how much Z wave affects apparent size/opacity
+  const WAVE_FREQ = 0.012; // spatial frequency of wave
+  const WAVE_SPEED= 0.018; // time speed
+  const PARALLAX  = 0.25;  // how much ripple center shifts with scroll
+  // Perspective projection
+  const FL        = 320;   // focal length
+  const Z_SCALE   = 90;    // max Z displacement in virtual units
+  const BASE_SIZE = 1.8;   // dot radius at z=0
+
+  let t = 0;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const rippleRgb = (getComputedStyle(document.documentElement).getPropertyValue('--ripple-rgb').trim() || '255,255,255');
+
+    // Ripple epicenter — right side, center height with parallax
+    const epicX = W * 0.76;
+    const epicY = H * 0.50 - scrollY * PARALLAX;
+
+    // Grid bounds: cover full canvas plus margin
+    const cols = Math.ceil(W / SPACING) + 2;
+    const rows = Math.ceil(H / SPACING) + 2;
+
+    const dotsArr = [];
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const bx = col * SPACING - SPACING * 0.5;
+        const by = row * SPACING - SPACING * 0.5;
+
+        // Distance from epicenter for radial fade
+        const dx = bx - epicX;
+        const dy = by - epicY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Radial opacity gate — zero beyond FADE_R
+        const radialT = Math.max(0, 1 - dist / FADE_R);
+        if (radialT < 0.01) continue;
+
+        // 3D wave: Z value from ripple wave emanating from epicenter
+        const phase = dist * WAVE_FREQ - t;
+        const zNorm = Math.sin(phase);          // -1 → +1
+        const z     = zNorm * Z_SCALE;          // virtual depth units
+
+        // Perspective projection: project (bx, by, z) onto screen
+        const scale  = FL / (FL - z);           // >1 when coming forward
+        const sx     = epicX + (bx - epicX) * scale;
+        const sy     = epicY + (by - epicY) * scale;
+
+        // Dot size: larger when close (high z), smaller when far
+        const r = Math.max(0.3, BASE_SIZE * scale);
+
+        // Opacity: bright at peak (z>0), dim at trough (z<0)
+        //   radialT controls the 500px fade envelope
+        const depthAlpha = (zNorm + 1) / 2;     // 0 → 1 (trough → peak)
+        const alpha = depthAlpha * depthAlpha * radialT * 0.7;
+
+        dotsArr.push({ sx, sy, r, alpha, z });
+      }
+    }
+
+    // Sort back-to-front so foreground dots paint over background ones
+    dotsArr.sort((a, b) => a.z - b.z);
+
+    for (const d of dotsArr) {
+      if (d.alpha < 0.012) continue;
+      ctx.beginPath();
+      ctx.arc(d.sx, d.sy, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rippleRgb},${d.alpha.toFixed(3)})`;
+      ctx.fill();
+    }
+
+    t += WAVE_SPEED;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  resize();
+  draw();
+})();
+</script>
 </body>
 </html>
