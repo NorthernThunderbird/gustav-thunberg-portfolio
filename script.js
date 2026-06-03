@@ -672,14 +672,14 @@ class App {
     try {
       // Initialize core modules
       this.modules.errorHandler = new ErrorHandler();
-      this.modules.themeManager = new ThemeManager();
+      // Theme toggle is owned by the global nav.js component (was ThemeManager)
       this.modules.performanceMonitor = new PerformanceMonitor();
 
       // Initialize UI modules
       this.modules.scrollAnimator = new ScrollAnimator();
       this.modules.smoothScroller = new SmoothScroller();
       this.modules.interactionEnhancer = new InteractionEnhancer();
-      this.modules.mobileMenuManager = new MobileMenuManager();
+      // Mobile menu is owned by the global nav.js component (was MobileMenuManager)
       this.modules.emailCopyHandler = new EmailCopyHandler();
 
       // Mark app as initialized
