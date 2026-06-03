@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Access - Gustav Thunberg</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,11 +14,13 @@
         }
 
         :root {
-            --color-background: #ffffff;
+            --color-background: #f6f4ef;
             --color-text-primary: #1a1a1a;
             --color-text-secondary: #666666;
-            --color-border: #e0e0e0;
+            --color-border: #d8d4cc;
+            --color-accent: #0066ff;
             --color-error: #ef4444;
+            --ripple-rgb: 20,20,20;
             --font-primary: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
             --space-md: 0.75rem;
             --space-lg: 1.25rem;
@@ -29,10 +32,11 @@
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --color-background: #0a0a0a;
+                --color-background: #111111;
                 --color-text-primary: #f5f5f5;
                 --color-text-secondary: #a3a3a3;
-                --color-border: #262626;
+                --color-border: #2a2a2a;
+                --ripple-rgb: 255,255,255;
             }
         }
 
@@ -43,36 +47,118 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: var(--space-lg);
+            justify-content: flex-start;
+            padding: var(--space-2xl) 2rem;
+        }
+
+        /* Top-left brand navbar */
+        .login-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 10;
+            padding: 14px 2rem;
+        }
+
+        .login-nav-brand {
+            font-size: 1.0625rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--color-text-primary);
+            text-decoration: none;
         }
 
         .login-container {
-            max-width: 400px;
+            max-width: 440px;
             width: 100%;
+            position: relative;
+            z-index: 1;
+            text-align: left;
         }
 
         .login-header {
-            text-align: center;
             margin-bottom: var(--space-2xl);
         }
 
         .login-title {
-            font-size: 1.5rem;
-            font-weight: 500;
+            font-size: 1.75rem;
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
             margin-bottom: var(--space-md);
         }
 
         .login-subtitle {
             font-size: 0.9375rem;
+            line-height: 1.6;
             color: var(--color-text-secondary);
         }
 
+        /* Email / LinkedIn copy buttons — same as the index contact section */
+        .contact-links {
+            display: flex;
+            gap: 12px;
+            margin-top: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.04);
+            color: var(--color-text-primary);
+            border: 1px solid rgba(0,0,0,0.12);
+            cursor: pointer;
+            font-family: var(--font-primary);
+            font-size: 0.9375rem;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.07);
+        }
+
+        .contact-btn i {
+            font-size: 1.1rem;
+            color: rgba(0,0,0,0.45);
+        }
+
+        .snackbar {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--color-text-primary);
+            color: var(--color-background);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: var(--font-primary);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 280ms cubic-bezier(0.4,0,0.2,1);
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+
+        .snackbar.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Form blends with the page — no card */
         .login-form {
-            background: var(--color-background);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-2xl);
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
         }
 
         .form-group {
@@ -140,13 +226,35 @@
         .submit-btn:active {
             opacity: 0.8;
         }
+
+        @media (prefers-color-scheme: dark) {
+            .contact-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+            .contact-btn:hover { background: rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+            .contact-btn i { color: rgba(255,255,255,0.4); }
+        }
     </style>
 </head>
 <body>
+    <canvas id="rippleCanvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+
+    <header class="login-nav">
+        <a href="login.html" class="login-nav-brand">G.Thunberg</a>
+    </header>
+
     <div class="login-container">
         <div class="login-header">
-            <h1 class="login-title">G.Thunberg</h1>
-            <p class="login-subtitle">Enter password to view portfolio</p>
+            <h1 class="login-title">Want access to my portfolio?</h1>
+            <p class="login-subtitle">Reach out on email or LinkedIn and I'll send you the password.</p>
+            <div class="contact-links">
+                <button class="contact-btn" id="copyEmailBtn">
+                    <i class="fa-regular fa-copy"></i>
+                    gustav.thunberg@gmail.com
+                </button>
+                <a href="https://www.linkedin.com/in/gustav-thunberg-a86b50168/" class="contact-btn" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin"></i>
+                    LinkedIn
+                </a>
+            </div>
         </div>
 
         <form class="login-form" id="loginForm" autocomplete="on">
@@ -168,6 +276,8 @@
             <button type="submit" class="submit-btn">Access Portfolio</button>
         </form>
     </div>
+
+    <div class="snackbar" id="snackbar">Email copied to clipboard</div>
 
     <script>
         const CORRECT_PASSWORD = 'Bonnie';
@@ -229,8 +339,107 @@
             }
         });
 
+        // Copy email to clipboard (same behaviour as the index contact buttons)
+        const snackbar = document.getElementById('snackbar');
+        function showSnack(msg) {
+            snackbar.textContent = msg;
+            snackbar.classList.add('show');
+            setTimeout(() => snackbar.classList.remove('show'), 2600);
+        }
+        document.getElementById('copyEmailBtn').addEventListener('click', () => {
+            navigator.clipboard.writeText('gustav.thunberg@gmail.com').catch(() => {});
+            showSnack('Email copied to clipboard');
+        });
+
         // Check authentication on page load
         checkAuth();
+    </script>
+
+    <script>
+    // ─── 3D DOT FIELD — intro opening wave easing seamlessly into a looping idle float ───
+    (function () {
+      const canvas = document.getElementById('rippleCanvas');
+      const ctx    = canvas.getContext('2d');
+      let W, H;
+
+      const SPACING   = 36;
+      const FADE_R    = 480;
+      const FL        = 320;
+      const BASE_SIZE = 1.8;
+      const WAVE_FREQ = 0.012;
+      const INTRO_RATE = 1.70;
+      const IDLE_RATE  = 0.50;
+      const Z_INTRO    = 90;
+      const Z_IDLE     = 34;
+      const INTRO_SEC  = 1.5;
+
+      const start = performance.now();
+      let last  = start;
+      let phase = 0;
+
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+      function draw() {
+        const now = performance.now();
+        const dt  = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        const elapsed = (now - start) / 1000;
+
+        let blend = elapsed / INTRO_SEC;
+        blend = blend < 0 ? 0 : blend > 1 ? 1 : blend;
+        blend = 1 - (1 - blend) * (1 - blend) * (1 - blend);
+
+        const rate = INTRO_RATE + (IDLE_RATE - INTRO_RATE) * blend;
+        const amp  = Z_INTRO    + (Z_IDLE    - Z_INTRO)   * blend;
+        phase += rate * dt;
+
+        ctx.clearRect(0, 0, W, H);
+        const rippleRgb = (getComputedStyle(document.documentElement).getPropertyValue('--ripple-rgb').trim() || '255,255,255');
+
+        const epicX = W * 0.76;
+        const epicY = H * 0.50;
+        const cols = Math.ceil(W / SPACING) + 2;
+        const rows = Math.ceil(H / SPACING) + 2;
+        const dotsArr = [];
+
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const bx = col * SPACING - SPACING * 0.5;
+            const by = row * SPACING - SPACING * 0.5;
+            const dx = bx - epicX;
+            const dy = by - epicY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const radialT = Math.max(0, 1 - dist / FADE_R);
+            if (radialT < 0.01) continue;
+            const zNorm = Math.sin(dist * WAVE_FREQ - phase);
+            const z = zNorm * amp;
+            const scale = FL / (FL - z);
+            const sx = epicX + dx * scale;
+            const sy = epicY + dy * scale;
+            const r  = Math.max(0.3, BASE_SIZE * scale);
+            const depth = (zNorm + 1) / 2;
+            const introAlpha = depth * depth * radialT * 0.7;
+            const idleAlpha  = radialT * (0.4 + 0.28 * depth);
+            const alpha = introAlpha * (1 - blend) + idleAlpha * blend;
+            if (alpha < 0.012) continue;
+            dotsArr.push({ sx, sy, r, alpha, z });
+          }
+        }
+
+        dotsArr.sort((a, b) => a.z - b.z);
+        for (const d of dotsArr) {
+          ctx.beginPath();
+          ctx.arc(d.sx, d.sy, d.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${rippleRgb},${d.alpha.toFixed(3)})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+      draw();
+    })();
     </script>
 </body>
 </html>

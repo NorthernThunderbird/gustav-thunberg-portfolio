@@ -278,10 +278,10 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.8125rem; color: var(--text-3); font-variant-numeric: tabular-nums;
 }
 
-/* ─── WORK GRID — horizontal scroll on all sizes ─── */
+/* ─── WORK — infinite centered carousel ─── */
 .work-grid {
-  display: flex; gap: 24px;
-  overflow-x: auto; scroll-snap-type: x proximity;
+  display: flex; gap: 24px; position: relative;
+  overflow-x: auto; scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 8px;
   scrollbar-width: none;
@@ -289,18 +289,20 @@ a { color: inherit; text-decoration: none; }
 .work-grid::-webkit-scrollbar { display: none; }
 
 .work-card {
-  flex: 0 0 440px; scroll-snap-align: start;
+  flex: 0 0 52%; scroll-snap-align: center;
+  opacity: 0.8;                       /* off-centre cards are dimmed */
   background: var(--card-bg); border: 1px solid var(--card-border);
   border-radius: 16px; overflow: hidden; cursor: pointer;
-  transition: transform var(--normal) var(--ease), box-shadow var(--normal) var(--ease), border-color var(--normal) ease, background var(--normal) ease;
+  transition: opacity 350ms var(--ease), transform var(--normal) var(--ease), box-shadow var(--normal) var(--ease), border-color var(--normal) ease, background var(--normal) ease;
 }
+.work-card.is-active { opacity: 1; }  /* the centred card is fully opaque */
 .work-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--sh-lg);
   border-color: var(--card-border-hover);
   background: var(--card-bg-hover);
 }
-.work-card.coming-soon { cursor: default; opacity: 0.5; }
+.work-card.coming-soon { cursor: default; }
 .work-card.coming-soon:hover { transform: none; box-shadow: none; border-color: var(--card-border); background: var(--card-bg); }
 
 .work-card:first-child .card-img { height: 220px; }
@@ -510,16 +512,15 @@ a { color: inherit; text-decoration: none; }
     gap: 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 20px;
     -webkit-overflow-scrolling: touch;
-    padding: 0 20px 14px;
+    padding: 0 0 14px;
     scrollbar-width: none;
   }
   .work-grid::-webkit-scrollbar { display: none; }
-  /* One card per view — 20px padding on both sides at rest (incl. the first card) */
+  /* Centered card with peeks of the neighbours on both sides */
   .work-card {
-    flex: 0 0 calc(100vw - 40px);
-    scroll-snap-align: start;
+    flex: 0 0 78%;
+    scroll-snap-align: center;
   }
   .work-card .card-img,
   .work-card:first-child .card-img { height: 170px; }
@@ -596,7 +597,7 @@ a { color: inherit; text-decoration: none; }
     <div class="work-grid">
 
       <!-- Card 1 — featured -->
-      <article class="work-card reveal" data-delay="1" onclick="window.location.href='bookstore-ppb.html'">
+      <article class="work-card" onclick="window.location.href='bookstore-ppb.html'">
         <div class="card-img">
           <img src="material/Hero final ppb.png" alt="Storytel Book Store">
           <span class="card-badge">Storytel · 2024</span>
@@ -615,7 +616,7 @@ a { color: inherit; text-decoration: none; }
       </article>
 
       <!-- Card 2 -->
-      <article class="work-card reveal" data-delay="2" onclick="window.location.href='direct-marketing-consent.html'">
+      <article class="work-card" onclick="window.location.href='direct-marketing-consent.html'">
         <div class="card-img">
           <img src="material/drm_hero.png" alt="Direct Marketing Consent">
           <span class="card-badge">Storytel · 2023</span>
@@ -634,7 +635,7 @@ a { color: inherit; text-decoration: none; }
       </article>
 
       <!-- Card 3 -->
-      <article class="work-card coming-soon reveal" data-delay="3">
+      <article class="work-card coming-soon">
         <div class="card-img">
           <img src="material/hero_batch_upload.png" alt="Content Ingestion">
           <span class="card-badge">Coming soon</span>
@@ -650,7 +651,7 @@ a { color: inherit; text-decoration: none; }
       </article>
 
       <!-- Card 4 -->
-      <article class="work-card coming-soon reveal" data-delay="4">
+      <article class="work-card coming-soon">
         <div class="card-img">
           <img src="material/hero_web_signup.png" alt="Web Signup">
           <span class="card-badge">Coming soon</span>
@@ -659,6 +660,22 @@ a { color: inherit; text-decoration: none; }
           <div class="card-meta">Web · Conversion</div>
           <h3 class="card-title">Redesigning the web signup flow</h3>
           <p class="card-desc">A total redesign of the Web signup to apply new Storytel brand and improving the UX for better conversion.</p>
+          <div class="card-tags">
+            <span class="tag">Coming soon</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="work-card coming-soon">
+        <div class="card-img">
+          <img src="material/Genie hero.png" alt="Genie — personal story companion">
+          <span class="card-badge">Coming soon</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">AI · Mobile App</div>
+          <h3 class="card-title">Genie — the personal story companion</h3>
+          <p class="card-desc">An AI story companion that helps readers find their next book through natural conversation.</p>
           <div class="card-tags">
             <span class="tag">Coming soon</span>
           </div>
@@ -878,6 +895,83 @@ updateRippleVisibility();
 
   resize();
   draw();
+})();
+</script>
+
+<script>
+// ─── WORK — infinite centered carousel ───
+(function () {
+  const grid = document.querySelector('.work-grid');
+  if (!grid || grid.dataset.carousel) return;
+  grid.dataset.carousel = '1';
+
+  const originals = Array.from(grid.children);
+  const n = originals.length;
+  if (n < 2) return;
+
+  // Clone whole sets on both sides so a single fling never reaches an edge
+  const COPIES = 3;
+  for (let i = 0; i < COPIES; i++) {
+    originals.forEach(c => grid.appendChild(c.cloneNode(true)));
+    originals.slice().reverse().forEach(c => grid.insertBefore(c.cloneNode(true), grid.firstChild));
+  }
+  const homeIndex = COPIES * n;
+  const hasScrollEnd = 'onscrollend' in window;
+  let idle;
+
+  const cards = Array.from(grid.children);   // 3 × n
+  let setW = 0;
+
+  function measure() { setW = cards[n].offsetLeft - cards[0].offsetLeft; }
+
+  function nearestIndex() {
+    const center = grid.scrollLeft + grid.clientWidth / 2;
+    let bi = 0, bd = Infinity;
+    for (let i = 0; i < cards.length; i++) {
+      const c = cards[i];
+      const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - center);
+      if (d < bd) { bd = d; bi = i; }
+    }
+    return bi;
+  }
+
+  function updateActive() {
+    const bi = nearestIndex();
+    for (let i = 0; i < cards.length; i++) cards[i].classList.toggle('is-active', i === bi);
+  }
+
+  function centerIndex(i) {
+    const c = cards[i];
+    grid.scrollLeft = c.offsetLeft - (grid.clientWidth - c.offsetWidth) / 2;
+  }
+
+  // Runs only once scrolling has STOPPED: shift the centred card back into the
+  // home set by whole sets. Identical content makes the shift invisible, and
+  // there is no momentum left to fight, so there is no jitter.
+  function recenter() {
+    if (setW <= 0) return;
+    const bi = nearestIndex();
+    const home = homeIndex + (bi % n);
+    if (home === bi) return;
+    grid.scrollLeft += cards[home].offsetLeft - cards[bi].offsetLeft;
+  }
+
+  function onScroll() {
+    updateActive();
+    if (!hasScrollEnd) { clearTimeout(idle); idle = setTimeout(recenter, 160); }
+  }
+
+  function start() {
+    measure();
+    centerIndex(homeIndex + n - 1);   // start on the last card (Genie)
+    updateActive();
+  }
+
+  grid.addEventListener('scroll', onScroll, { passive: true });
+  if (hasScrollEnd) grid.addEventListener('scrollend', recenter);
+  window.addEventListener('resize', start, { passive: true });
+  window.addEventListener('load', start);
+  start();
 })();
 </script>
 

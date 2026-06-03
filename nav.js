@@ -37,6 +37,7 @@
               '<a class="dropdown-link" href="direct-marketing-consent.html">Improving opt-in rates</a>' +
               '<span class="dropdown-link is-soon">Reimagining Content Ingestion</span>' +
               '<span class="dropdown-link is-soon">Redesigning the web signup flow</span>' +
+              '<span class="dropdown-link is-soon">Genie — personal story companion</span>' +
             '</div></div>' +
           '</div>' +
           '<a href="' + home + '#about" class="nav-link">About</a>' +
@@ -54,6 +55,7 @@
               '<a class="mobile-nav-link m-sub" href="direct-marketing-consent.html">Improving opt-in rates</a>' +
               '<span class="m-sub is-soon">Reimagining Content Ingestion</span>' +
               '<span class="m-sub is-soon">Redesigning the web signup flow</span>' +
+              '<span class="m-sub is-soon">Genie — personal story companion</span>' +
             '</div>' +
           '</div>' +
           '<a href="' + home + '#about" class="mobile-nav-link">About</a>' +
