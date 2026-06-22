@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genie — the personal story companion · Gustav Thunberg</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="nav.css">
+    <style>
+        /* Video hero + mute control */
+        .article-hero .video-container { position: relative; }
+        .article-hero .hero-video { width: 100%; display: block; }
+
+        .video-mute-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.45);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            z-index: 5;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .video-mute-btn:hover { background: rgba(0, 0, 0, 0.65); transform: scale(1.05); }
+
+        /* Small draft tag */
+        .draft-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            padding: 3px 10px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Authentication check
+        (function() {
+            const AUTH_KEY = 'portfolio_auth';
+            const SEVEN_HOURS = 7 * 60 * 60 * 1000;
+
+            const auth = localStorage.getItem(AUTH_KEY);
+            if (!auth) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const authData = JSON.parse(auth);
+            const now = new Date().getTime();
+
+            if (now - authData.timestamp >= SEVEN_HOURS) {
+                localStorage.removeItem(AUTH_KEY);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <!-- Global navbar is injected here by nav.js (shared across all pages) -->
+
+    <main class="article-main">
+        <!-- Back Navigation -->
+        <div class="article-back-nav">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Back</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hero Section with Video (autoplay, muted by default) -->
+        <section class="article-hero">
+            <div class="video-container">
+                <video
+                    id="hero-video"
+                    class="hero-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                >
+                    <source src="material/genie-demo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button id="muteBtn" class="video-mute-btn" aria-label="Unmute video">
+                    <i class="fa-solid fa-volume-xmark"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Article Content -->
+        <article class="article-content">
+            <div class="container">
+                <section class="article-intro">
+                    <span class="draft-tag">Draft</span>
+                    <h1 class="article-title">Genie — the personal story companion</h1>
+                    <p class="article-subtitle">A conversational companion that helps readers find their next story</p>
+                    <div class="article-meta">
+                        <span class="meta-item">AI</span>
+                        <span class="meta-item">Conversational UI</span>
+                        <span class="meta-item">Personalization</span>
+                        <span class="meta-item">Concept</span>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">Overview</h2>
+                    <p class="content-text">
+                        Genie is a personal story companion — a dedicated, AI-powered librarian built into the
+                        listening experience. Instead of scrolling endless shelves, readers can simply describe
+                        what they're in the mood for and Genie recommends the right book, explains why it fits,
+                        and answers questions about any title along the way.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">The problem</h2>
+                    <p class="content-text">
+                        Discovery is the hardest part of the reading experience. With hundreds of thousands of
+                        titles, finding the next great story is overwhelming — and generic charts rarely match
+                        what a specific reader actually wants in the moment. Many readers churn simply because
+                        they can't decide what to start next.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">The idea</h2>
+                    <p class="content-text">
+                        What if every reader had a knowledgeable friend who knew the entire catalogue? Genie
+                        turns discovery into a conversation. Ask for "a Scandinavian noir thriller for a first-time
+                        reader" and Genie returns a short, curated set with clear reasoning, inline previews, and
+                        the ability to dig deeper or save for later — all without leaving the chat.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <h2 class="section-heading">Where it's going</h2>
+                    <p class="content-text">
+                        This is an early draft. Next up: the design process, key flows, the conversational
+                        patterns behind the recommendations, and how Genie threads into the rest of the product.
+                    </p>
+                </section>
+
+                <section class="content-section">
+                    <div class="back-to-work">
+                        <a href="index.html#work" class="btn-secondary">← Back to Work</a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="nav.js"></script>
+    <script>
+        // Hero video — autoplay muted, toggle sound with the mute button
+        document.addEventListener('DOMContentLoaded', function () {
+            const video = document.getElementById('hero-video');
+            const muteBtn = document.getElementById('muteBtn');
+            if (!video) return;
+
+            video.muted = true;                 // muted by default
+            const p = video.play();             // ensure autoplay kicks in
+            if (p !== undefined) p.catch(function () {});
+
+            if (muteBtn) {
+                const icon = muteBtn.querySelector('i');
+                muteBtn.addEventListener('click', function () {
+                    video.muted = !video.muted;
+                    if (!video.muted) {
+                        video.play().catch(function () {});
+                        icon.className = 'fa-solid fa-volume-high';
+                        muteBtn.setAttribute('aria-label', 'Mute video');
+                    } else {
+                        icon.className = 'fa-solid fa-volume-xmark';
+                        muteBtn.setAttribute('aria-label', 'Unmute video');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
