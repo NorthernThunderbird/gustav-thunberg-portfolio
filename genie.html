@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genie — the personal story companion · Gustav Thunberg</title>
+    <title>Storytel Genie — Book discovery made hyper-personal · Gustav Thunberg</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="nav.css">
     <style>
-        /* Video hero + mute control */
-        .article-hero .video-container { position: relative; }
-        .article-hero .hero-video { width: 100%; display: block; }
+        /* ---- Hero: full-screen cover video with bottom-left title overlay ---- */
+        .article-hero.genie-hero {
+            min-height: 100vh;
+            height: 100vh;
+            height: 100svh;
+            max-height: none;
+        }
+        .genie-hero .hero-video { object-fit: cover; }
 
+        /* ---- Mute / unmute control (hero + inline videos) ---- */
         .video-mute-btn {
             position: absolute;
             top: 16px;
@@ -30,48 +36,214 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
-            z-index: 5;
+            z-index: 6;
             transition: background 0.15s ease, transform 0.15s ease;
         }
-        .video-mute-btn:hover { background: rgba(0, 0, 0, 0.65); transform: scale(1.05); }
+        .video-mute-btn:hover { background: rgba(0, 0, 0, 0.7); transform: scale(1.05); }
 
-        /* Small draft tag */
-        .draft-tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            letter-spacing: 0.06em;
+        /* ---- Inline portrait intro video ---- */
+        .intro-video {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto var(--space-3xl);
+        }
+        .intro-video video {
+            width: 100%;
+            display: block;
+            border-radius: 22px;
+            border: 1px solid var(--color-border);
+            background: #000;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            padding: 22vh 0 var(--space-2xl);
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.78));
+            pointer-events: none;
+        }
+        .hero-overlay .container { pointer-events: auto; }
+        .hero-eyebrow {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: var(--color-accent);
-            border: 1px solid var(--color-accent);
-            border-radius: 4px;
-            padding: 3px 10px;
-            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.72);
+            margin-bottom: var(--space-md);
+        }
+        .hero-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 300;
+            line-height: 1.05;
+            color: #fff;
+            max-width: 20ch;
+            margin: 0;
+        }
+
+        /* ---- Case facts grid ---- */
+        .case-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--space-xl);
+            max-width: 564px;
+            margin: var(--space-2xl) auto 0;
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--color-border);
+        }
+        .case-fact .fact-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-xs);
+        }
+        .case-fact .fact-value {
+            font-size: 0.98rem;
+            line-height: 1.45;
+            color: var(--color-text-primary);
+        }
+
+        /* ---- Wide media (images / videos) ---- */
+        .content-media {
+            max-width: 920px;
+            margin: var(--space-2xl) auto;
+        }
+        .content-media img,
+        .content-media video {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+        .content-media figcaption {
+            margin-top: var(--space-sm);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+
+        /* ---- Paired vertical phone clips ---- */
+        .phone-duo {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-lg);
+            max-width: 620px;
+            margin: var(--space-2xl) auto;
+        }
+        .phone-duo video {
+            width: 100%;
+            display: block;
+            border-radius: 22px;
+            border: 1px solid var(--color-border);
+            background: #000;
+        }
+
+        /* ---- Pull quote ---- */
+        .pull-quote {
+            max-width: 720px;
+            margin: var(--space-3xl) auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+        .pull-quote p {
+            font-size: clamp(1.35rem, 3vw, 1.9rem);
+            font-weight: 300;
+            line-height: 1.35;
+            color: var(--color-text-primary);
+        }
+        .pull-quote .accent { color: #ff5c1a; }
+
+        /* ---- Two-track cards ---- */
+        .track-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-lg);
+            max-width: 720px;
+            margin: var(--space-xl) auto 0;
+        }
+        .track-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+        }
+        .track-card .track-num {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #ff5c1a;
+        }
+        .track-card h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin: var(--space-sm) 0 var(--space-sm);
+            color: var(--color-text-primary);
+        }
+        .track-card p {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* ---- Process timeline ---- */
+        .process-steps {
+            list-style: none;
+            padding: 0;
+            max-width: 640px;
+            margin: var(--space-xl) auto 0;
+        }
+        .process-step {
+            display: grid;
+            grid-template-columns: 2.25rem 1fr;
+            gap: var(--space-lg);
+            padding: var(--space-lg) 0;
+            border-top: 1px solid var(--color-border);
+        }
+        .process-step:last-child { border-bottom: 1px solid var(--color-border); }
+        .process-step .step-num {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff5c1a;
+            line-height: 1.4;
+        }
+        .process-step .step-date {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-xs);
+        }
+        .process-step h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0 0 var(--space-xs);
+            color: var(--color-text-primary);
+        }
+        .process-step p {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        @media (max-width: 640px) {
+            .hero-overlay { padding: 12vh 0 var(--space-xl); }
+            .phone-duo { gap: var(--space-md); }
         }
     </style>
 </head>
 <body>
-    <script>
-        // Authentication check
-        (function() {
-            const AUTH_KEY = 'portfolio_auth';
-            const SEVEN_HOURS = 7 * 60 * 60 * 1000;
-
-            const auth = localStorage.getItem(AUTH_KEY);
-            if (!auth) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const authData = JSON.parse(auth);
-            const now = new Date().getTime();
-
-            if (now - authData.timestamp >= SEVEN_HOURS) {
-                localStorage.removeItem(AUTH_KEY);
-                window.location.href = 'login.html';
-            }
-        })();
-    </script>
-
     <!-- Global navbar is injected here by nav.js (shared across all pages) -->
 
     <main class="article-main">
@@ -85,8 +257,8 @@
             </div>
         </div>
 
-        <!-- Hero Section with Video (autoplay, muted by default) -->
-        <section class="article-hero">
+        <!-- Hero Section: brand film with left-aligned title overlay -->
+        <section class="article-hero genie-hero">
             <div class="video-container">
                 <video
                     id="hero-video"
@@ -99,9 +271,15 @@
                     <source src="material/genie-demo.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <button id="muteBtn" class="video-mute-btn" aria-label="Unmute video">
+                <button class="video-mute-btn" data-mute-toggle aria-label="Unmute video">
                     <i class="fa-solid fa-volume-xmark"></i>
                 </button>
+            </div>
+            <div class="hero-overlay">
+                <div class="container">
+                    <span class="hero-eyebrow">Storytel · 2025–2026 · Product Design</span>
+                    <h1 class="hero-title">Book discovery made hyper-personal</h1>
+                </div>
             </div>
         </section>
 
@@ -109,53 +287,212 @@
         <article class="article-content">
             <div class="container">
                 <section class="article-intro">
-                    <span class="draft-tag">Draft</span>
-                    <h1 class="article-title">Genie — the personal story companion</h1>
-                    <p class="article-subtitle">A conversational companion that helps readers find their next story</p>
+                    <p class="article-subtitle">Establishing Genie — Storytel's AI brand and its first conversational companion.</p>
                     <div class="article-meta">
-                        <span class="meta-item">AI</span>
+                        <span class="meta-item">AI Brand System</span>
                         <span class="meta-item">Conversational UI</span>
-                        <span class="meta-item">Personalization</span>
-                        <span class="meta-item">Concept</span>
+                        <span class="meta-item">Design Systems</span>
+                        <span class="meta-item">Product Design</span>
+                    </div>
+
+                    <div class="case-facts">
+                        <div class="case-fact">
+                            <span class="fact-label">Role</span>
+                            <span class="fact-value">Lead Product Designer</span>
+                        </div>
+                        <div class="case-fact">
+                            <span class="fact-label">Scope</span>
+                            <span class="fact-value">AI Brand System · Genie Chat · Recaps · Top Picks</span>
+                        </div>
+                        <div class="case-fact">
+                            <span class="fact-label">Timeline</span>
+                            <span class="fact-value">Q4 2025 – Q2 2026</span>
+                        </div>
+                        <div class="case-fact">
+                            <span class="fact-label">Platform</span>
+                            <span class="fact-value">iOS · Android</span>
+                        </div>
+                        <div class="case-fact">
+                            <span class="fact-label">Brand collaboration</span>
+                            <span class="fact-value">Nina Doljak (Brand Lead)</span>
+                        </div>
                     </div>
                 </section>
 
+                <!-- OVERVIEW -->
                 <section class="content-section">
-                    <h2 class="section-heading">Overview</h2>
+                    <div class="intro-video">
+                        <video
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                        >
+                            <source src="material/genie-intro.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <button class="video-mute-btn" data-mute-toggle aria-label="Unmute video">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                    </div>
+                    <h2 class="section-heading">A moment to get ahead of it</h2>
                     <p class="content-text">
-                        Genie is a personal story companion — a dedicated, AI-powered librarian built into the
-                        listening experience. Instead of scrolling endless shelves, readers can simply describe
-                        what they're in the mood for and Genie recommends the right book, explains why it fits,
-                        and answers questions about any title along the way.
+                        Storytel had begun introducing its first AI-powered features, with a conversational chat
+                        on the roadmap. Rather than let AI grow feature-by-feature without a coherent identity,
+                        we saw an opportunity to establish one upfront — a brand that could carry everything that
+                        came next.
                     </p>
+                    <p class="content-text">
+                        That brand became Genie. I led product design across two tracks: building the Genie brand
+                        system into our design system and app, and designing the chat feature itself.
+                    </p>
+                    <figure class="content-media">
+                        <img src="material/genie-meet.png" alt="Meet Genie — the brand introduced across app surfaces">
+                        <figcaption>Meet Genie — one identity spanning every AI surface in the app.</figcaption>
+                    </figure>
                 </section>
 
+                <!-- MY ROLE -->
                 <section class="content-section">
-                    <h2 class="section-heading">The problem</h2>
-                    <p class="content-text">
-                        Discovery is the hardest part of the reading experience. With hundreds of thousands of
-                        titles, finding the next great story is overwhelming — and generic charts rarely match
-                        what a specific reader actually wants in the moment. Many readers churn simply because
-                        they can't decide what to start next.
-                    </p>
+                    <h2 class="section-heading">Two tracks, one goal</h2>
+                    <div class="track-grid">
+                        <div class="track-card">
+                            <span class="track-num">Track 01</span>
+                            <h3>Genie Brand System</h3>
+                            <p>
+                                Working alongside Nina Doljak (Brand Lead), I owned the product design
+                                perspective — ensuring every brand decision was translatable to the design
+                                system, achievable by engineers, and met accessibility standards.
+                            </p>
+                        </div>
+                        <div class="track-card">
+                            <span class="track-num">Track 02</span>
+                            <h3>Genie Chat</h3>
+                            <p>
+                                Lead designer for Storytel's new conversational AI feature — a context-aware
+                                companion embedded in the app, designed to feel ambient and native rather
+                                than bolted on.
+                            </p>
+                        </div>
+                    </div>
+                    <figure class="content-media">
+                        <img src="material/genie-lockup.png" alt="Storytel Genie brand lockup alongside the app">
+                    </figure>
                 </section>
 
+                <!-- BRAND SYSTEM -->
                 <section class="content-section">
-                    <h2 class="section-heading">The idea</h2>
+                    <h2 class="section-heading">An identity that lived inside a product</h2>
                     <p class="content-text">
-                        What if every reader had a knowledgeable friend who knew the entire catalogue? Genie
-                        turns discovery into a conversation. Ask for "a Scandinavian noir thriller for a first-time
-                        reader" and Genie returns a short, curated set with clear reasoning, inline previews, and
-                        the ability to dig deeper or save for later — all without leaving the chat.
+                        Genie's visual language is a living, luminous presence — not a mascot or icon, but a
+                        soft flame-like blur that signals intelligence without demanding attention. My role was
+                        making that vision work across both platforms, in the design system, and at every scale.
                     </p>
+                    <figure class="content-media">
+                        <img src="material/genie-brand-asset.png" alt="The Genie flame — a luminous presence with conversational bubbles">
+                        <figcaption>The Genie flame — a soft, luminous signifier for intelligence.</figcaption>
+                    </figure>
+
+                    <div class="pull-quote">
+                        <p>
+                            Instead of <em>"What is this AI doing?"</em> — users should feel:
+                            <span class="accent">"Oh, Genie is helping me."</span>
+                        </p>
+                    </div>
+
+                    <figure class="content-media">
+                        <img src="material/genie-brand-surfaces.png" alt="Genie brand applied across Top Picks, chat, and AI Recaps surfaces">
+                        <figcaption>The system in use — a shared Genie border, signifier and AI label across Top Picks, chat and Recaps.</figcaption>
+                    </figure>
+                    <figure class="content-media">
+                        <img src="material/genie-recaps.png" alt="AI Recaps rendered as a Genie-branded surface">
+                        <figcaption>AI Recaps — the same identity carried into a distinct feature surface.</figcaption>
+                    </figure>
                 </section>
 
+                <!-- GENIE CHAT -->
                 <section class="content-section">
-                    <h2 class="section-heading">Where it's going</h2>
+                    <h2 class="section-heading">A companion, not a chatbot</h2>
                     <p class="content-text">
-                        This is an early draft. Next up: the design process, key flows, the conversational
-                        patterns behind the recommendations, and how Genie threads into the rest of the product.
+                        Genie Chat was designed as an ambient layer with multiple levels of presence — always
+                        available, never intrusive. It knows where you are in the app, what you're looking at,
+                        and what you might need next.
                     </p>
+                    <figure class="content-media">
+                        <img src="material/genie-chat-flow.png" alt="Overview of the Genie Chat flow across screens">
+                        <figcaption>Genie Chat — from proactive prompt to recommendation to recap.</figcaption>
+                    </figure>
+
+                    <p class="content-text">
+                        Presence scales from a dormant signifier to a proactive companion that emerges in
+                        context. Below: entering the chat from a recommendation prompt, and Genie surfacing
+                        proactively from the home experience.
+                    </p>
+                    <div class="phone-duo">
+                        <video autoplay muted loop playsinline>
+                            <source src="material/genie-chat-se.mp4" type="video/mp4">
+                        </video>
+                        <video autoplay muted loop playsinline>
+                            <source src="material/genie-home-proactive.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <figure class="content-media">
+                        <img src="material/genie-chat-detail.png" alt="A Genie conversation with an inline book recommendation card">
+                        <figcaption>Conversation response cards — recommendations rendered inline, ready to open or continue.</figcaption>
+                    </figure>
+                </section>
+
+                <!-- PROCESS -->
+                <section class="content-section">
+                    <h2 class="section-heading">From vision to shipped</h2>
+                    <ol class="process-steps">
+                        <li class="process-step">
+                            <span class="step-num">1</span>
+                            <div>
+                                <span class="step-date">Nov – Dec 2025</span>
+                                <h3>Alignment &amp; framework</h3>
+                                <p>Established brand criteria, defined which features could carry the Genie label, and scoped the two workstreams with Brand and Marketing.</p>
+                            </div>
+                        </li>
+                        <li class="process-step">
+                            <span class="step-num">2</span>
+                            <div>
+                                <span class="step-date">Jan – Feb 2026</span>
+                                <h3>Brand system &amp; Chat concept</h3>
+                                <p>Deep collaboration with Nina on the visual system. Developed the Genie Chat presence model and began design system integration.</p>
+                            </div>
+                        </li>
+                        <li class="process-step">
+                            <span class="step-num">3</span>
+                            <div>
+                                <span class="step-date">Mar 2026</span>
+                                <h3>Motion collaboration with Illo</h3>
+                                <p>Three-week engagement with external motion studio Illo to develop the Genie flame animation. Bridged their After Effects work with iOS/Android engineering constraints.</p>
+                            </div>
+                        </li>
+                        <li class="process-step">
+                            <span class="step-num">4</span>
+                            <div>
+                                <span class="step-date">Mar – Apr 2026</span>
+                                <h3>Dogfooding &amp; user research</h3>
+                                <p>Internal test release followed by qualitative user interviews across Sweden, Finland, and Norway. Findings fed directly back into design.</p>
+                            </div>
+                        </li>
+                        <li class="process-step">
+                            <span class="step-num">5</span>
+                            <div>
+                                <span class="step-date">Apr – Jun 2026</span>
+                                <h3>Q2 PR launch</h3>
+                                <p>Refined the system for external communications and ensured visual consistency between in-app Genie and campaign materials.</p>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <figure class="content-media">
+                        <img src="material/genie-press.png" alt="Genie launch and press imagery">
+                        <figcaption>Q2 launch — in-app Genie and campaign materials sharing one visual system.</figcaption>
+                    </figure>
                 </section>
 
                 <section class="content-section">
@@ -169,37 +506,37 @@
 
     <footer class="footer">
         <div class="container">
-            <p class="footer-text">© 2024 Gustav Thunberg. All rights reserved.</p>
+            <p class="footer-text">© 2026 Gustav Thunberg. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="script.js"></script>
     <script src="nav.js"></script>
     <script>
-        // Hero video — autoplay muted, toggle sound with the mute button
+        // Videos autoplay muted; each mute button toggles sound on its own video.
         document.addEventListener('DOMContentLoaded', function () {
-            const video = document.getElementById('hero-video');
-            const muteBtn = document.getElementById('muteBtn');
-            if (!video) return;
+            document.querySelectorAll('video[autoplay]').forEach(function (video) {
+                video.muted = true;
+                const p = video.play();
+                if (p !== undefined) p.catch(function () {});
+            });
 
-            video.muted = true;                 // muted by default
-            const p = video.play();             // ensure autoplay kicks in
-            if (p !== undefined) p.catch(function () {});
-
-            if (muteBtn) {
-                const icon = muteBtn.querySelector('i');
-                muteBtn.addEventListener('click', function () {
+            document.querySelectorAll('[data-mute-toggle]').forEach(function (btn) {
+                const video = btn.closest('.video-container, .intro-video').querySelector('video');
+                const icon = btn.querySelector('i');
+                if (!video) return;
+                btn.addEventListener('click', function () {
                     video.muted = !video.muted;
                     if (!video.muted) {
                         video.play().catch(function () {});
                         icon.className = 'fa-solid fa-volume-high';
-                        muteBtn.setAttribute('aria-label', 'Mute video');
+                        btn.setAttribute('aria-label', 'Mute video');
                     } else {
                         icon.className = 'fa-solid fa-volume-xmark';
-                        muteBtn.setAttribute('aria-label', 'Unmute video');
+                        btn.setAttribute('aria-label', 'Unmute video');
                     }
                 });
-            }
+            });
         });
     </script>
 </body>
