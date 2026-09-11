@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Storytel Genie — Designing the Trust Wrapper · Gustav Thunberg</title>
-    <meta name="description" content="How we gave Storytel's AI a face, a voice and a set of rules — the write-up of a talk on designing Genie, the brand wrapper around Storytel's AI features.">
+    <meta name="description" content="A product design case study on Genie — the brand wrapper around Storytel's AI features: the identity, the voice, the failure states, and the launch numbers.">
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -89,39 +89,51 @@
            ============================================================ */
         .gx-hero {
             position: relative;
-            min-height: calc(100svh - 80px);
-            display: flex;
-            align-items: flex-end;
-            overflow: hidden;
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
             background: #050505;
         }
+        /* The film is 16:9 and shows in full — no crop, no scale, no drift. */
         .gx-hero-media {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
         }
         .gx-hero-media video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transform: scale(1.06);
-            will-change: transform;
+            object-fit: contain;
+            display: block;
         }
-        .gx-hero-veil {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background:
-                radial-gradient(120% 80% at 15% 90%, rgba(255, 80, 28, 0.28), transparent 60%),
-                linear-gradient(transparent 30%, rgba(5, 5, 5, 0.55) 62%, rgba(5, 5, 5, 0.94));
-            pointer-events: none;
-        }
+        .gx-hero-veil { display: none; }
         .gx-hero-inner {
             position: relative;
             z-index: 2;
             width: 100%;
-            padding-bottom: clamp(3rem, 9vh, 7rem);
-            padding-top: 30vh;
+            padding-top: var(--space-2xl);
+            padding-bottom: var(--space-2xl);
+        }
+        /* Wide enough for the title to sit on the film without crowding it. */
+        @media (min-width: 900px) {
+            .gx-hero-veil {
+                display: block;
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                background:
+                    radial-gradient(120% 80% at 15% 90%, rgba(255, 80, 28, 0.22), transparent 60%),
+                    linear-gradient(transparent 38%, rgba(5, 5, 5, 0.5) 66%, rgba(5, 5, 5, 0.92));
+                pointer-events: none;
+            }
+            .gx-hero-inner {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding-top: 18vh;
+                padding-bottom: clamp(2rem, 5vh, 4rem);
+            }
         }
         .gx-kicker {
             display: inline-flex;
@@ -148,7 +160,7 @@
         }
         .gx-hero h1 {
             color: #fff;
-            font-size: clamp(2.6rem, 8.5vw, 6.5rem);
+            font-size: clamp(2.2rem, 6vw, 4.6rem);
             font-weight: 300;
             line-height: 0.98;
             letter-spacing: -0.035em;
@@ -182,31 +194,6 @@
         }
         @keyframes gx-hero-in {
             to { opacity: 1; transform: none; filter: blur(0); }
-        }
-        .gx-scrollcue {
-            position: absolute;
-            left: 50%;
-            bottom: 1.4rem;
-            transform: translateX(-50%);
-            z-index: 3;
-            color: rgba(255, 255, 255, 0.55);
-            font-size: 0.68rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .gx-scrollcue span.gx-rail {
-            width: 1px;
-            height: 46px;
-            background: linear-gradient(rgba(255, 255, 255, 0.5), transparent);
-            animation: gx-rail 2.4s ease-in-out infinite;
-        }
-        @keyframes gx-rail {
-            0%, 100% { opacity: 0.25; transform: scaleY(0.6); }
-            50% { opacity: 1; transform: scaleY(1); }
         }
 
         /* ---- Mute control ---- */
@@ -425,15 +412,28 @@
             border-radius: 28px;
             background: #000;
         }
-        .gx-phone-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: clamp(1rem, 3vw, 2.2rem);
-            max-width: 760px;
-            margin-inline: auto;
-            align-items: start;
+        /* Inline clips: no bezel, no controls. They run once and hold on the
+           last frame, so the page never loops motion in the reader's eye. */
+        .gx-clip {
+            position: relative;
+            width: 100%;
+            background: #000;
+            display: block;
         }
-        .gx-phone-row .gx-phone-item:nth-child(even) { margin-top: 2.2rem; }
+        .gx-clip video {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        /* A portrait clip at full desktop width would be a skyscraper, so on
+           wide screens it is bounded by height instead and centred. */
+        @media (min-width: 760px) {
+            .gx-clip.is-portrait { display: flex; justify-content: center; }
+            .gx-clip.is-portrait video { width: auto; height: min(84vh, 860px); }
+        }
+        .gx-clip + .gx-clip { margin-top: clamp(1.5rem, 4vw, 3rem); }
+        /* A clip inside a padded stage still reaches the screen edges. */
+        .gx-stage .gx-clip { width: 100vw; margin-inline: calc(50% - 50vw); }
 
         /* ---- Sticky split: media parks while the copy scrolls ---- */
         .gx-split {
@@ -503,43 +503,6 @@
             color: var(--color-text-muted);
         }
 
-        /* before / after */
-        .gx-shift {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: var(--space-lg);
-            max-width: 760px;
-            margin: var(--space-2xl) auto 0;
-        }
-        .gx-shift-card {
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            background: var(--color-surface);
-            position: relative;
-            overflow: hidden;
-        }
-        .gx-shift-card .gx-shift-label {
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-        }
-        .gx-shift-card p {
-            margin: var(--space-md) 0 0;
-            font-size: clamp(1.15rem, 2.6vw, 1.5rem);
-            font-weight: 300;
-            line-height: 1.3;
-            color: var(--color-text-primary);
-        }
-        .gx-shift-card.is-after {
-            border-color: rgba(255, 80, 28, 0.45);
-            background:
-                radial-gradient(120% 140% at 0% 100%, rgba(255, 80, 28, 0.16), transparent 60%),
-                var(--color-surface);
-        }
-        .gx-shift-card.is-after p { color: var(--gx-accent); }
 
         /* two tracks / generic cards */
         .gx-cards {
@@ -919,7 +882,6 @@
         @media (max-width: 860px) {
             .gx-split { grid-template-columns: 1fr; }
             .gx-sticky { position: static; }
-            .gx-phone-row .gx-phone-item:nth-child(even) { margin-top: 0; }
         }
         @media (max-width: 640px) {
             .gx-hero-inner { padding-top: 22vh; }
@@ -939,7 +901,6 @@
             }
             .gx-cutout.is-in .gx-float,
             .gx-kicker .gx-dot,
-            .gx-scrollcue span.gx-rail { animation: none !important; }
             .gx-hero-media video { transform: none !important; }
             .gx-stage::before, .gx-cutout.gx-glow::before { transition: none; opacity: 1; }
         }
@@ -965,14 +926,14 @@
              ============================================================ -->
         <section class="gx-hero">
             <div class="gx-hero-media">
-                <video id="gx-hero-video" autoplay muted loop playsinline preload="auto">
+                <video id="gx-hero-video" autoplay muted loop playsinline preload="auto" width="1280" height="720">
                     <source src="material/genie-demo.mp4" type="video/mp4">
                 </video>
+                <button class="gx-mute" data-mute aria-label="Unmute video">
+                    <i class="fa-solid fa-volume-xmark"></i>
+                </button>
             </div>
             <div class="gx-hero-veil"></div>
-            <button class="gx-mute" data-mute aria-label="Unmute video">
-                <i class="fa-solid fa-volume-xmark"></i>
-            </button>
 
             <div class="gx-hero-inner">
                 <div class="container">
@@ -984,16 +945,13 @@
                         <span class="gx-in-up gx-em" style="--gx-delay: 360ms; display: block;">Trust Wrapper</span>
                     </h1>
                     <p class="gx-hero-sub gx-in-up" style="--gx-delay: 500ms">
-                        How we gave Storytel's AI a face, a voice and a set of rules — and what
-                        nine months of live numbers say about whether it worked.
+                        Giving Storytel's AI a face, a voice and a set of rules — and what the first
+                        nine months of live numbers say about it.
                     </p>
                 </div>
             </div>
 
-            <div class="gx-scrollcue gx-in-up" style="--gx-delay: 900ms">
-                <span class="gx-rail"></span>
-                <span>Scroll</span>
-            </div>
+
         </section>
 
         <!-- ============================================================
@@ -1006,10 +964,10 @@
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-lede gx-reveal">
-                            This is the write-up of a talk about Storytel Genie: what we designed, the decisions
-                            we would defend, the ones we would take back, and the numbers that tell us which is
-                            which. It is written for other design teams about to put an AI feature in front of
-                            millions of people, wondering where to start.
+                            Genie is Storytel's AI brand — the wrapper around every AI surface in the app. This
+                            is the work behind it: what we designed, which decisions held up once it was in
+                            production, which ones I would take back, and what the launch numbers say about the
+                            difference between the two.
                         </p>
                         <div class="gx-meta gx-reveal" style="--gx-delay: 80ms">
                             <span class="gx-tag">AI Brand System</span>
@@ -1084,7 +1042,12 @@
                                 <span class="gx-stat-label">say fully AI-generated content should be clearly labelled — the condition</span>
                             </div>
                         </div>
-                        <p class="gx-p gx-reveal" style="margin-inline: auto; text-align: center; max-width: 58ch;">
+                        <p class="gx-caption gx-reveal" style="margin-top: var(--space-lg);">
+                            The first two figures come from Storytel's own market research across our territories;
+                            the labelling figure from published music-industry research into attitudes to
+                            AI-generated content.
+                        </p>
+                        <p class="gx-p gx-reveal" style="margin-inline: auto; text-align: center; max-width: 58ch; margin-top: var(--space-2xl);">
                             So the brief was not “build an AI feature.” It was: <strong>build a way in, and make it
                             obvious who is holding the door.</strong>
                         </p>
@@ -1112,18 +1075,7 @@
                         </p>
                     </div>
 
-                    <div class="gx-shift">
-                        <div class="gx-shift-card gx-reveal">
-                            <span class="gx-shift-label">Before</span>
-                            <p>“What is this AI doing?”</p>
-                        </div>
-                        <div class="gx-shift-card is-after gx-reveal" style="--gx-delay: 160ms">
-                            <span class="gx-shift-label">After</span>
-                            <p>“Oh — Genie is helping me.”</p>
-                        </div>
-                    </div>
-
-                    <div class="gx-prose" style="margin-top: var(--space-2xl);">
+                    <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             The model we settled on, and the one we would recommend to anyone in the same position,
                             is a division of labour.
@@ -1181,7 +1133,7 @@
                             </div>
                             <div class="gx-pillar is-lead gx-reveal" style="--gx-delay: 160ms">
                                 <h3>Transparent</h3>
-                                <p>Users always know when content is AI-generated. Specific, testable, and the reason the rest of this talk exists.</p>
+                                <p>Users always know when content is AI-generated. Specific, testable, and the reason most of what follows exists.</p>
                             </div>
                             <div class="gx-pillar gx-reveal" style="--gx-delay: 240ms">
                                 <h3>Magical</h3>
@@ -1227,16 +1179,35 @@
                             meaningful at feature number twenty.
                         </p>
                     </div>
+
+                    <div class="gx-callout gx-reveal">
+                        <span class="gx-callout-label">Shipped in product, not in a help centre</span>
+                        <p>
+                            “Genie is powered by AI and can sometimes make mistakes. To protect your privacy,
+                            don't share personal details and keep the chats book-related.”
+                        </p>
+                    </div>
+
+                    <div class="gx-prose" style="margin-top: var(--space-2xl);">
+                        <p class="gx-p gx-reveal">
+                            Admitting fallibility up front is not a legal hedge. It is the fastest way to set an
+                            expectation the product can actually meet, and it is the difference between a
+                            transparency pillar written on a slide and one a user can read at the moment it
+                            matters.
+                        </p>
+                    </div>
                 </section>
 
                 <!-- 4 — NINE SURFACES -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <span class="gx-num gx-reveal">Chapter 04</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">One brand, nine surfaces</h2>
+                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What we shipped</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            Genie is not a feature. It is the umbrella. Nine surfaces are shipped or specified
-                            under one identity, which is what makes it a system rather than a badge.
+                            Genie is not a feature. It is the umbrella. Six surfaces ship under one identity,
+                            which is what makes it a system rather than a badge — and what makes the governance
+                            framework worth the effort, because the sixth surface has to be as legible as the
+                            first.
                         </p>
                     </div>
 
@@ -1268,29 +1239,15 @@
                                 <p>Scan a cover to get context and related titles.</p>
                             </div>
                             <div class="gx-surface gx-reveal" style="--gx-delay: 300ms">
-                                <i class="gx-surface-i fa-solid fa-book-open"></i>
-                                <h3>Talk to a Book</h3>
-                                <p>Ask questions of the content you are listening to.</p>
-                            </div>
-                            <div class="gx-surface gx-reveal" style="--gx-delay: 360ms">
-                                <i class="gx-surface-i fa-solid fa-compass"></i>
-                                <h3>Find Your Next Listen</h3>
-                                <p>Discovery at the moment you finish a story.</p>
-                            </div>
-                            <div class="gx-surface gx-reveal" style="--gx-delay: 420ms">
                                 <i class="gx-surface-i fa-solid fa-circle-plus"></i>
                                 <h3>FAB</h3>
-                                <p>The persistent, animated entry point into Genie.</p>
-                            </div>
-                            <div class="gx-surface gx-reveal" style="--gx-delay: 480ms">
-                                <i class="gx-surface-i fa-solid fa-graduation-cap"></i>
-                                <h3>In-App Marketing</h3>
-                                <p>The onboarding that teaches the new interaction model.</p>
+                                <p>The persistent, animated entry point into Genie, carried in the bottom navigation.</p>
                             </div>
                         </div>
                         <p class="gx-caption gx-reveal" style="margin-top: var(--space-xl);">
-                            What follows are three of those surfaces in detail — chosen because each one taught
-                            us something different about designing with a model in the loop.
+                            Three of them are worth walking through in detail, because each one turned on a
+                            different problem: a voice with no layout to hide behind, a component that has to
+                            survive generated content, and a feature that is mostly its own failure states.
                         </p>
                     </div>
                 </section>
@@ -1369,6 +1326,25 @@
                             </figcaption>
                         </figure>
                     </div>
+
+                    <div class="gx-bleed gx-reveal" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-clip is-portrait gx-rise">
+                            <video data-clip-once muted playsinline preload="metadata" width="720" height="1280">
+                                <source src="material/genie-chat-se.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="gx-caption" style="margin-top: var(--space-lg);">
+                            Entering the chat from a recommendation prompt.
+                        </p>
+                        <div class="gx-clip is-portrait gx-rise" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                            <video data-clip-once muted playsinline preload="metadata" width="720" height="1280">
+                                <source src="material/genie-home-proactive.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="gx-caption" style="margin-top: var(--space-lg);">
+                            Genie surfacing proactively from the home experience.
+                        </p>
+                    </div>
                 </section>
 
                 <!-- 6 — TOP PICKS -->
@@ -1398,8 +1374,8 @@
                                 </ol>
                                 <p class="gx-p gx-reveal" style="margin-top: var(--space-xl); font-size: 0.98rem;">
                                     All of it specified across iPhone 13 mini, 16 and 17 — 375, 393 and 402 points
-                                    — in light and dark mode, horizontal and vertical. This is the least glamorous
-                                    slide in the talk, and the one other designers ask about afterwards.
+                                    — in light and dark mode, horizontal and vertical. It is the least glamorous
+                                    part of the work, and the part that decided whether the component held.
                                 </p>
                             </div>
                             <div class="gx-sticky">
@@ -1433,9 +1409,9 @@
                         <span class="gx-num gx-reveal">Chapter 07</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Recaps: nine states for one feature</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            If we could keep only one section of this talk, it would be this one. Recaps let you
-                            pick up a story where you lost the thread — or where you fell asleep. In the Figma
-                            file it exists as nine designed states, and the count is the point.
+                            This is the section I would keep if I could keep only one. Recaps let you pick up a
+                            story where you lost the thread — or where you fell asleep. In the Figma file it
+                            exists as nine designed states, and the count is the point.
                         </p>
                     </div>
 
@@ -1532,21 +1508,13 @@
                     </div>
 
                     <div class="gx-bleed gx-stage gx-stage-grain gx-reveal">
-                        <div class="gx-wide gx-split" style="align-items: center;">
-                            <div class="gx-phone gx-rise" style="max-width: 320px; margin-inline: auto; position: relative;" data-parallax="0.05">
-                                <video data-inview-play muted loop playsinline preload="metadata" width="720" height="1280">
-                                    <source src="material/genie-intro.mp4" type="video/mp4">
-                                </video>
-                                <button class="gx-mute" data-mute aria-label="Unmute video">
-                                    <i class="fa-solid fa-volume-xmark"></i>
-                                </button>
-                            </div>
+                        <div class="gx-wide">
                             <div>
                                 <p class="gx-p gx-reveal">
                                     It exists at <strong style="color: var(--gx-stage-text);">two quality levels</strong>.
                                     The full shader stack runs where the device can carry it; a gradient-fill
-                                    fallback runs where it cannot. The reason is mundane and worth saying out loud
-                                    at a design conference: the full stack heats phones. A beautiful animation that
+                                    fallback runs where it cannot. The reason is mundane and worth stating plainly:
+                                    the full stack heats phones. A beautiful animation that
                                     cooks the device is a bad design. Building the fallback in from the start was a
                                     craft decision, not a compromise — and it applies to light and dark mode alike.
                                 </p>
@@ -1554,7 +1522,7 @@
                                     The authored states are separate assets, not one loop. Motion is treated as a
                                     component set with the same discipline as a button.
                                 </p>
-                                <div class="gx-meta gx-reveal" style="margin-bottom: 0;">
+                                <div class="gx-meta gx-reveal" style="margin-bottom: var(--space-2xl);">
                                     <span class="gx-tag" style="background: var(--gx-stage-2); border-color: var(--gx-line); color: var(--gx-stage-muted);">Splash</span>
                                     <span class="gx-tag" style="background: var(--gx-stage-2); border-color: var(--gx-line); color: var(--gx-stage-muted);">Thinking idle · long</span>
                                     <span class="gx-tag" style="background: var(--gx-stage-2); border-color: var(--gx-line); color: var(--gx-stage-muted);">Thinking idle · short</span>
@@ -1562,6 +1530,11 @@
                                     <span class="gx-tag" style="background: var(--gx-stage-2); border-color: var(--gx-line); color: var(--gx-stage-muted);">Outro</span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="gx-clip is-portrait gx-rise">
+                            <video data-clip-once muted playsinline preload="metadata" width="720" height="1280">
+                                <source src="material/genie-intro.mp4" type="video/mp4">
+                            </video>
                         </div>
                     </div>
                 </section>
@@ -1673,83 +1646,6 @@
                     </figure>
                 </section>
 
-                <!-- 10 — TEACHING -->
-                <section class="gx-chapter">
-                    <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 10</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">You have to teach a new model</h2>
-                        <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            Conversational discovery is a genuinely new interaction for most of our users. New
-                            interactions need teaching, so four in-app marketing cards do the teaching — each
-                            with one job.
-                        </p>
-                    </div>
-
-                    <div class="gx-wide">
-                        <div class="gx-cards">
-                            <div class="gx-card gx-reveal">
-                                <span class="gx-card-eyebrow">Card 01</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Meet your personal librarian</h3>
-                                <p>Positions Genie as a person, not a robot.</p>
-                            </div>
-                            <div class="gx-card gx-reveal" style="--gx-delay: 90ms">
-                                <span class="gx-card-eyebrow">Card 02</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Chat like you talk</h3>
-                                <p>Explicit permission to write naturally, with a real example: “I want something romantic set in the archipelago.”</p>
-                            </div>
-                            <div class="gx-card gx-reveal" style="--gx-delay: 180ms">
-                                <span class="gx-card-eyebrow">Card 03</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Find your perfect match</h3>
-                                <p>Shows the kind of question Genie can answer, including “Is it slow-paced?”</p>
-                            </div>
-                            <div class="gx-card gx-reveal" style="--gx-delay: 270ms">
-                                <span class="gx-card-eyebrow">Card 04</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Discover Genie all across the app</h3>
-                                <p>Reveals the umbrella behind the chat, so the brand starts doing its job on other surfaces.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="gx-callout gx-reveal">
-                        <span class="gx-callout-label">Shipped in product</span>
-                        <p>
-                            “Genie is powered by AI and can sometimes make mistakes. To protect your privacy,
-                            don't share personal details and keep the chats book-related.”
-                        </p>
-                    </div>
-
-                    <div class="gx-prose" style="margin-top: var(--space-2xl);">
-                        <p class="gx-p gx-reveal">
-                            We argued for that text and we would argue for it again. Admitting fallibility up
-                            front is not a legal hedge, it is the fastest way to set an expectation the product
-                            can actually meet.
-                        </p>
-                    </div>
-
-                    <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
-                        <div class="gx-phone-row">
-                            <div class="gx-phone-item gx-rise">
-                                <div class="gx-phone" style="position: relative;">
-                                    <video data-inview-play muted loop playsinline preload="metadata" width="720" height="1280">
-                                        <source src="material/genie-chat-se.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                            </div>
-                            <div class="gx-phone-item gx-rise" style="--gx-delay: 160ms">
-                                <div class="gx-phone" style="position: relative;">
-                                    <video data-inview-play muted loop playsinline preload="metadata" width="720" height="1280">
-                                        <source src="material/genie-home-proactive.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="gx-caption" style="margin-top: var(--space-xl);">
-                            Entering the chat from a recommendation prompt, and Genie surfacing proactively from
-                            the home experience.
-                        </p>
-                    </div>
-                </section>
-
                 <!-- 11 — THE HONEST NUMBERS -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
@@ -1785,6 +1681,11 @@
                                     <span class="gx-metric-label">Distinct users conversing weekly</span>
                                 </div>
                             </div>
+
+                            <p class="gx-caption" style="margin: calc(-1 * var(--space-lg)) auto var(--space-2xl);">
+                                Sweden, launch to mid-August 2026. Product analytics, read from the launch review
+                                of 13 August 2026.
+                            </p>
 
                             <div class="gx-funnel gx-wide" style="max-width: 640px;" data-funnel>
                                 <h3 class="gx-h3" style="font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gx-stage-muted); margin-bottom: var(--space-lg);">July — the adoption funnel</h3>
@@ -1835,10 +1736,9 @@
 
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
-                            There is a version of this talk where we show the 190,000 and stop. We think that
-                            version is less useful. The funnel above is the actual state of an AI feature nine
-                            months in, at a company that did the branding work carefully, and other teams deserve
-                            to see the shape of it.
+                            There is a version of this case that shows the 190,000 and stops. It would be less
+                            useful. The funnel above is the actual state of an AI feature nine months in, at a
+                            company that did the branding work carefully.
                         </p>
                         <p class="gx-p gx-reveal">
                             One more signal worth reporting: publishers. Reception at our Next Chapter event was
@@ -1854,7 +1754,7 @@
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <span class="gx-num gx-reveal">Chapter 12</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Four things we would tell another design team</h2>
+                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What I would carry into the next one</h2>
                     </div>
 
                     <div class="gx-wide" style="max-width: 760px;">
@@ -1863,7 +1763,7 @@
                                 <span class="gx-tk-num">01</span>
                                 <div>
                                     <h3>Brand the AI before you scale it</h3>
-                                    <p>A face makes a feature legible. Nine surfaces under one identity read as a system; nine unbranded ones read as nine experiments — and users judge experiments harshly.</p>
+                                    <p>A face makes a feature legible. Six surfaces under one identity read as a system; six unbranded ones read as six experiments — and users judge experiments harshly.</p>
                                 </div>
                             </li>
                             <li class="gx-takeaway gx-reveal">
@@ -1911,7 +1811,7 @@
                                 <span class="gx-tl-when">This month</span>
                                 <div>
                                     <h3 class="gx-h3">A two-metre phone</h3>
-                                    <p>At the Swedish book fair there will be a giant physical phone, built so that people can put their hands on Genie and try it. Given that our central finding is a discovery problem rather than an interaction problem, a two-metre phone in a hall full of readers may be the most rational design decision in this entire document.</p>
+                                    <p>At the Swedish book fair there will be a giant physical phone, built so that people can put their hands on Genie and try it. Given that our central finding is a discovery problem rather than an interaction problem, a two-metre phone in a hall full of readers may be the most rational design decision in the whole project.</p>
                                 </div>
                             </li>
                             <li class="gx-tl gx-reveal">
@@ -1940,15 +1840,37 @@
                     </div>
                 </section>
 
+                <!-- NOTE — IN-APP MARKETING -->
+                <section class="gx-chapter">
+                    <div class="gx-prose">
+                        <span class="gx-num gx-reveal">Note</span>
+                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms; font-size: clamp(1.5rem, 3vw, 2rem);">Teaching the interaction</h2>
+                        <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
+                            Conversational discovery is a new interaction for most of our users, so four in-app
+                            marketing cards carry the teaching: <em>Meet your personal librarian</em> positions
+                            Genie as a person rather than a robot; <em>Chat like you talk</em> gives explicit
+                            permission to write naturally, with a real example; <em>Find your perfect match</em>
+                            shows the kind of question Genie can answer; and <em>Discover Genie all across the
+                            app</em> reveals the umbrella behind the chat.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            It sits here rather than in the body of the case because it is the campaign around the
+                            work, not the work. The product decision underneath it is the one that matters:
+                            marketing and product share one visual system deliberately, so that nobody meets a
+                            shimmering advertisement, opens the app, and wonders why nothing resembles it.
+                        </p>
+                    </div>
+                </section>
+
                 <!-- APPENDIX -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <details class="gx-appendix">
-                            <summary><i class="fa-solid fa-chevron-right"></i> Appendix — sources behind this write-up</summary>
+                            <summary><i class="fa-solid fa-chevron-right"></i> Appendix — sources</summary>
                             <div class="gx-appendix-body">
                                 <p class="gx-p" style="font-size: 0.95rem;">
-                                    Compiled 10 September 2026. Everything above is drawn from internal material;
-                                    no figures are estimated.
+                                    Compiled 10 September 2026. Every figure above is drawn from the following
+                                    material; none are estimated.
                                 </p>
                                 <h3>Figma</h3>
                                 <ul>
@@ -2049,21 +1971,24 @@
                 });
             }
 
-            /* ---- 2. Videos: play only while on screen ---- */
-            var clips = document.querySelectorAll('video[data-inview-play]');
+            /* ---- 2. Clips: run once on first sight, then hold the last frame ---- */
+            var clips = document.querySelectorAll('video[data-clip-once]');
             if (clips.length) {
                 var playObserver = new IntersectionObserver(function (entries) {
                     entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
                         var v = entry.target;
-                        if (entry.isIntersecting) {
-                            var p = v.play();
-                            if (p !== undefined) p.catch(function () {});
-                        } else if (!v.paused) {
-                            v.pause();
-                        }
+                        playObserver.unobserve(v);
+                        var p = v.play();
+                        if (p !== undefined) p.catch(function () {});
                     });
-                }, { threshold: 0.25 });
-                clips.forEach(function (v) { v.muted = true; playObserver.observe(v); });
+                }, { threshold: 0.4 });
+                clips.forEach(function (v) {
+                    v.muted = true;
+                    /* Belt and braces: some browsers rewind on 'ended' without loop. */
+                    v.addEventListener('ended', function () { v.pause(); });
+                    playObserver.observe(v);
+                });
             }
 
             var hero = document.getElementById('gx-hero-video');
@@ -2116,7 +2041,6 @@
             /* ---- 5. Parallax + hero drift + progress rail ---- */
             var progress = document.getElementById('gx-progress');
             var parallaxItems = reduce ? [] : Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
-            var heroMedia = reduce ? null : document.querySelector('.gx-hero-media video');
             var ticking = false;
 
             function frame() {
@@ -2129,10 +2053,6 @@
 
                 if (progress) {
                     progress.style.transform = 'scaleX(' + (docHeight > 0 ? Math.min(scrolled / docHeight, 1) : 0) + ')';
-                }
-                if (heroMedia) {
-                    var drift = Math.min(scrolled, vh) * 0.14;
-                    heroMedia.style.transform = 'scale(1.06) translate3d(0,' + drift + 'px,0)';
                 }
                 parallaxItems.forEach(function (el) {
                     var rect = el.getBoundingClientRect();
