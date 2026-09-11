@@ -16,7 +16,7 @@
 
   // ---- Page-aware links (anchors resolve to index from article pages) ----
   var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  var onArticle = (page === 'bookstore-ppb.html' || page === 'direct-marketing-consent.html');
+  var onArticle = (page === 'bookstore-ppb.html' || page === 'direct-marketing-consent.html' || page === 'genie-trust-wrapper.html');
   var home = onArticle ? 'index.html' : '';
 
   var caret  = '<svg class="caret" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
