@@ -172,7 +172,19 @@
         }
         .gx-hero-btn:hover { background: rgba(0, 0, 0, 0.72); transform: scale(1.05); }
         .gx-hero-btn.is-back { padding: 0 16px 0 13px; font-size: 0.9rem; }
-        .gx-hero-veil { display: none; }
+        /* The heading is kept for document structure and screen readers even
+           though the hero shows the film alone. */
+        .gx-sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
         .gx-hero-inner {
             position: relative;
             z-index: 2;
@@ -201,48 +213,6 @@
                 padding-bottom: clamp(2rem, 5vh, 4rem);
             }
         }
-        .gx-hero h1 {
-            color: #fff;
-            /* "Storytel Genie" measures ~7.5em, so 9.5vw keeps it on one line
-               with ~18% headroom — enough to absorb Satoshi's metrics differing
-               from the fallback. No nowrap: if it ever did run out of room it
-               should wrap, not get clipped off the screen. */
-            font-size: clamp(2.1rem, 9.5vw, 6.5rem);
-            font-weight: 600;
-            line-height: 1.02;
-            letter-spacing: -0.045em;
-            margin: 0 0 var(--space-lg);
-            max-width: none;
-        }
-        .gx-hero h1 span { display: inline; }
-        .gx-hero h1 .gx-em {
-            font-weight: 600;
-            background: linear-gradient(96deg, var(--gx-accent), var(--gx-accent-2));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gx-hero-sub {
-            color: rgba(255, 255, 255, 0.78);
-            font-size: clamp(1rem, 2.2vw, 1.3rem);
-            font-weight: 300;
-            max-width: 46ch;
-            line-height: 1.5;
-        }
-        /* entrance choreography */
-        .gx-in-up {
-            opacity: 0;
-            transform: translate3d(0, 26px, 0);
-            filter: blur(10px);
-        }
-        .gx.is-ready .gx-in-up {
-            animation: gx-hero-in 1150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: var(--gx-delay, 0ms);
-        }
-        @keyframes gx-hero-in {
-            to { opacity: 1; transform: none; filter: blur(0); }
-        }
-
         /* ---- Mute control ---- */
         .gx-mute {
             width: 42px;
@@ -1048,7 +1018,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .gx-reveal, .gx-rise, .gx-in-up {
+            .gx-reveal, .gx-rise {
                 opacity: 1 !important;
                 transform: none !important;
                 filter: none !important;
@@ -1089,21 +1059,7 @@
                     </div>
                 </div>
             </div>
-            <div class="gx-hero-veil"></div>
-
-            <div class="gx-hero-inner">
-                <div class="container">
-                    <h1>
-                        <span class="gx-in-up" style="--gx-delay: 160ms;">Storytel</span>
-                        <span class="gx-in-up gx-em" style="--gx-delay: 280ms;">Genie</span>
-                    </h1>
-                    <p class="gx-hero-sub gx-in-up" style="--gx-delay: 400ms">
-                        A year of work exploring the new frontier of story discovery with AI.
-                    </p>
-                </div>
-            </div>
-
-
+            <h1 class="gx-sr-only">Storytel Genie</h1>
         </section>
 
         <!-- ============================================================
@@ -1116,42 +1072,26 @@
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-lede gx-reveal">
-                            The world of streaming is seemingly several different worlds, depending on the
-                            content of choice. At Storytel, your next pick might mean a 20-hour deep dive into a
-                            new topic, a new immersive world, or a nail-biting page-turner. Compared to music or
-                            TV entertainment, this creates a whole subset of different needs and challenges from
-                            users that is not normally seen in content with a higher pace.
+                            Readers on Storytel for the most part don't interact with the app that often. They
+                            press play, lock their screen and hopefully step into a world of stories. But once in
+                            a while users actually step out of the story, and hopefully to find the next one.
                         </p>
                         <p class="gx-p gx-reveal">
-                            The clear difference is the commitment: we know that users require a much more
-                            diverse set of information when selecting their next story to read.
+                            Audiobooks and e-books require quite a lot of commitment, and therefore finding that
+                            next story creates different types of challenges to solve in the story discovery
+                            process. One of the projects at Storytel trying to explore new ways of improving the
+                            process of finding your next read is Storytel Genie.
                         </p>
-                        <p class="gx-p gx-reveal">
-                            The narrator might make or break a story, which is why we today use AI to generate
-                            more alternatives for users listening to audiobooks. The collective knowledge of the
-                            story — who praises it and who criticises it? The length of the story, and the list
-                            goes on.
-                        </p>
-                        <p class="gx-p gx-reveal">
-                            We know there are a lot of factors for a user to take in when choosing which story
-                            will be their next to read.
-                        </p>
-                        <p class="gx-p gx-reveal">
-                            We also know how important it is to maintain relevant recommendations for new users,
-                            especially after they finish their first story.
-                        </p>
-                        <p class="gx-p gx-reveal">
-                            So, from both a business need and a user need, we started building Genie, with the
-                            goal of helping users discover more relevant stories through more AI-driven
-                            recommendations.
-                        </p>
-                        <div class="gx-meta gx-reveal" style="--gx-delay: 80ms">
-                            <span class="gx-tag">AI Brand System</span>
-                            <span class="gx-tag">Conversational UI</span>
-                            <span class="gx-tag">Design Systems</span>
-                            <span class="gx-tag">Product Design</span>
+                    </div>
+
+                    <figure class="gx-figure gx-reveal" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset is-portrait gx-cutout gx-rise">
+                            <img class="gx-float" src="material/genie-chat-hero.png" alt="A Genie conversation on iPhone: a spicy summer romance request answered with an inline recommendation" width="1600" height="1892" loading="lazy">
                         </div>
-                        <div class="gx-facts gx-reveal" style="--gx-delay: 140ms">
+                    </figure>
+
+                    <div class="gx-prose" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-facts gx-reveal">
                             <div class="gx-fact">
                                 <span class="gx-fact-label">Role</span>
                                 <span class="gx-fact-value">Lead Product Designer</span>
