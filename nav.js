@@ -16,7 +16,7 @@
 
   // ---- Page-aware links (anchors resolve to index from article pages) ----
   var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  var onArticle = (page === 'bookstore-ppb.html' || page === 'direct-marketing-consent.html' || page === 'genie-trust-wrapper.html');
+  var onArticle = (page === 'bookstore-ppb.html' || page === 'direct-marketing-consent.html' || page === 'genie-trust-wrapper.html' || page === 'devlog.html');
   var home = onArticle ? 'index.html' : '';
 
   var caret  = '<svg class="caret" width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -40,6 +40,7 @@
               '<span class="dropdown-link is-soon">Genie — personal story companion</span>' +
             '</div></div>' +
           '</div>' +
+          '<a href="devlog.html" class="nav-link">Devlog</a>' +
           '<a href="' + home + '#about" class="nav-link">About</a>' +
           '<a href="' + home + '#contact" class="nav-link">Contact</a>' +
         '</div>' +
@@ -58,6 +59,7 @@
               '<span class="m-sub is-soon">Genie — personal story companion</span>' +
             '</div>' +
           '</div>' +
+          '<a href="devlog.html" class="mobile-nav-link">Devlog</a>' +
           '<a href="' + home + '#about" class="mobile-nav-link">About</a>' +
           '<a href="' + home + '#contact" class="mobile-nav-link">Contact</a>' +
         '</div></div>' +
