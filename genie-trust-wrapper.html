@@ -24,6 +24,7 @@
         :root[data-theme="dark"] .gx { --gx-stage: #000; --gx-stage-2: #0b0b0b; }
 
         .gx {
+            padding-top: var(--gx-nav-h, 80px);
             --gx-accent: #ff501c;
             --gx-accent-2: #ff8a4c;
             --gx-stage: #101010;
@@ -113,12 +114,70 @@
             object-fit: contain;
             display: block;
         }
+        /* Scrims top and bottom so the film dissolves into the page instead of
+           ending on a hard edge. */
+        .gx-hero-media::before,
+        .gx-hero-media::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .gx-hero-media::before {
+            top: 0;
+            height: 26%;
+            background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 100%);
+        }
+        .gx-hero-media::after {
+            bottom: 0;
+            height: 30%;
+            background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+        }
+
+        /* Back, mute and expand ride on the film, on one axis. */
+        .gx-hero-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            padding: clamp(10px, 2vw, 18px) clamp(12px, 2.5vw, 22px);
+        }
+        .gx-hero-actions { display: flex; gap: var(--space-sm); }
+        .gx-hero-btn {
+            height: 42px;
+            min-width: 42px;
+            padding: 0;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(0, 0, 0, 0.45);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: background var(--timing-fast) ease, transform var(--timing-fast) ease;
+        }
+        .gx-hero-btn:hover { background: rgba(0, 0, 0, 0.72); transform: scale(1.05); }
+        .gx-hero-btn.is-back { padding: 0 16px 0 13px; font-size: 0.9rem; }
         .gx-hero-veil { display: none; }
         .gx-hero-inner {
             position: relative;
             z-index: 2;
             width: 100%;
-            padding-top: var(--space-2xl);
+            padding-top: var(--space-lg);
             padding-bottom: var(--space-2xl);
         }
         /* Wide enough for the title to sit on the film without crowding it. */
@@ -142,41 +201,17 @@
                 padding-bottom: clamp(2rem, 5vh, 4rem);
             }
         }
-        .gx-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .gx-kicker .gx-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--gx-accent);
-            box-shadow: 0 0 0 0 rgba(255, 80, 28, 0.6);
-            animation: gx-pulse 2.8s ease-out infinite;
-        }
-        @keyframes gx-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 80, 28, 0.55); }
-            70% { box-shadow: 0 0 0 14px rgba(255, 80, 28, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 80, 28, 0); }
-        }
         .gx-hero h1 {
             color: #fff;
-            font-size: clamp(2.2rem, 6vw, 4.6rem);
-            font-weight: 300;
-            line-height: 0.98;
-            letter-spacing: -0.035em;
-            margin: var(--space-lg) 0 var(--space-lg);
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            font-weight: 600;
+            line-height: 0.95;
+            letter-spacing: -0.045em;
+            margin: 0 0 var(--space-lg);
             max-width: 16ch;
         }
         .gx-hero h1 .gx-em {
-            font-style: italic;
-            font-weight: 400;
+            font-weight: 600;
             background: linear-gradient(96deg, var(--gx-accent), var(--gx-accent-2));
             -webkit-background-clip: text;
             background-clip: text;
@@ -205,9 +240,6 @@
 
         /* ---- Mute control ---- */
         .gx-mute {
-            position: absolute;
-            top: 16px;
-            right: 16px;
             width: 42px;
             height: 42px;
             border-radius: 50%;
@@ -1004,7 +1036,6 @@
             .gx-sticky { position: static; }
         }
         @media (max-width: 640px) {
-            .gx-hero-inner { padding-top: 22vh; }
             .gx-tl { grid-template-columns: 1fr; gap: var(--space-sm); }
             .gx-takeaway { grid-template-columns: 2.2rem 1fr; gap: var(--space-md); }
             .gx-stage { padding-left: var(--space-md); padding-right: var(--space-md); }
@@ -1020,7 +1051,6 @@
                 animation: none !important;
             }
             .gx-cutout.is-in .gx-float,
-            .gx-kicker .gx-dot,
             .gx-hero-media video { transform: none !important; }
             .gx-stage::before, .gx-cutout.gx-glow::before { transition: none; opacity: 1; }
         }
@@ -1031,40 +1061,38 @@
     <div class="gx-progress" id="gx-progress" aria-hidden="true"></div>
 
     <main class="article-main gx" id="gx-root">
-        <!-- Back Navigation -->
-        <div class="article-back-nav">
-            <div class="container">
-                <a href="index.html" class="back-link">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <span>Back</span>
-                </a>
-            </div>
-        </div>
-
         <!-- ============================================================
-             HERO
+             HERO — the film meets the navbar; back, mute and expand ride on it
              ============================================================ -->
         <section class="gx-hero">
-            <div class="gx-hero-media">
+            <div class="gx-hero-media" id="gx-hero-media">
                 <video id="gx-hero-video" autoplay muted loop playsinline preload="auto" width="1280" height="720">
                     <source src="material/genie-demo.mp4" type="video/mp4">
                 </video>
-                <button class="gx-mute" data-mute aria-label="Unmute video">
-                    <i class="fa-solid fa-volume-xmark"></i>
-                </button>
+                <div class="gx-hero-controls">
+                    <a href="index.html" class="gx-hero-btn is-back">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        <span>Back</span>
+                    </a>
+                    <div class="gx-hero-actions">
+                        <button class="gx-hero-btn gx-mute" data-mute aria-label="Unmute video">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button class="gx-hero-btn" data-fullscreen aria-label="Expand video to fullscreen">
+                            <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="gx-hero-veil"></div>
 
             <div class="gx-hero-inner">
                 <div class="container">
-                    <span class="gx-kicker gx-in-up" style="--gx-delay: 120ms">
-                        <span class="gx-dot"></span>Storytel Product Design · September 2026
-                    </span>
                     <h1>
-                        <span class="gx-in-up" style="--gx-delay: 240ms; display: block;">Designing the</span>
-                        <span class="gx-in-up gx-em" style="--gx-delay: 360ms; display: block;">Trust Wrapper</span>
+                        <span class="gx-in-up" style="--gx-delay: 160ms; display: block;">Storytel</span>
+                        <span class="gx-in-up gx-em" style="--gx-delay: 280ms; display: block;">Genie</span>
                     </h1>
-                    <p class="gx-hero-sub gx-in-up" style="--gx-delay: 500ms">
+                    <p class="gx-hero-sub gx-in-up" style="--gx-delay: 400ms">
                         Giving Storytel's AI a face, a voice and a set of rules — and what the first
                         nine months of live numbers say about it.
                     </p>
@@ -2091,6 +2119,17 @@
         document.addEventListener('DOMContentLoaded', function () {
             root.classList.add('is-ready');
 
+            /* ---- 0. Sit the film flush against the injected navbar ---- */
+            function syncNavHeight() {
+                var header = document.querySelector('.header');
+                if (!header) return;
+                var h = header.getBoundingClientRect().height;
+                if (h) document.documentElement.style.setProperty('--gx-nav-h', h + 'px');
+            }
+            syncNavHeight();
+            requestAnimationFrame(syncNavHeight);
+            window.addEventListener('resize', syncNavHeight, { passive: true });
+
             /* ---- 1. Reveal on scroll ---- */
             var revealables = document.querySelectorAll('.gx-reveal, .gx-rise, .gx-stage, .gx-cutout, .gx-spectrum, [data-counters], [data-funnel]');
 
@@ -2173,6 +2212,39 @@
                         icon.className = 'fa-solid fa-volume-xmark';
                         btn.setAttribute('aria-label', 'Unmute video');
                     }
+                });
+            });
+
+            /* ---- 3a. Fullscreen for the hero film ---- */
+            document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
+                var media = btn.closest('.gx-hero-media');
+                var video = media && media.querySelector('video');
+                var icon = btn.querySelector('i');
+                if (!media || !video) return;
+
+                function inFullscreen() {
+                    return document.fullscreenElement || document.webkitFullscreenElement;
+                }
+
+                btn.addEventListener('click', function () {
+                    if (inFullscreen()) {
+                        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+                        return;
+                    }
+                    if (media.requestFullscreen) media.requestFullscreen().catch(function () {});
+                    else if (media.webkitRequestFullscreen) media.webkitRequestFullscreen();
+                    /* iOS Safari only ever fullscreens the video element itself. */
+                    else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+                });
+
+                ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (evt) {
+                    document.addEventListener(evt, function () {
+                        var on = !!inFullscreen();
+                        icon.className = on
+                            ? 'fa-solid fa-down-left-and-up-right-to-center'
+                            : 'fa-solid fa-up-right-and-down-left-from-center';
+                        btn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Expand video to fullscreen');
+                    });
                 });
             });
 
