@@ -203,13 +203,18 @@
         }
         .gx-hero h1 {
             color: #fff;
-            font-size: clamp(3rem, 10vw, 6.5rem);
+            /* "Storytel Genie" measures ~7.5em, so 9.5vw keeps it on one line
+               with ~18% headroom — enough to absorb Satoshi's metrics differing
+               from the fallback. No nowrap: if it ever did run out of room it
+               should wrap, not get clipped off the screen. */
+            font-size: clamp(2.1rem, 9.5vw, 6.5rem);
             font-weight: 600;
-            line-height: 0.95;
+            line-height: 1.02;
             letter-spacing: -0.045em;
             margin: 0 0 var(--space-lg);
-            max-width: 16ch;
+            max-width: none;
         }
+        .gx-hero h1 span { display: inline; }
         .gx-hero h1 .gx-em {
             font-weight: 600;
             background: linear-gradient(96deg, var(--gx-accent), var(--gx-accent-2));
@@ -1089,12 +1094,11 @@
             <div class="gx-hero-inner">
                 <div class="container">
                     <h1>
-                        <span class="gx-in-up" style="--gx-delay: 160ms; display: block;">Storytel</span>
-                        <span class="gx-in-up gx-em" style="--gx-delay: 280ms; display: block;">Genie</span>
+                        <span class="gx-in-up" style="--gx-delay: 160ms;">Storytel</span>
+                        <span class="gx-in-up gx-em" style="--gx-delay: 280ms;">Genie</span>
                     </h1>
                     <p class="gx-hero-sub gx-in-up" style="--gx-delay: 400ms">
-                        Giving Storytel's AI a face, a voice and a set of rules — and what the first
-                        nine months of live numbers say about it.
+                        A year of work exploring the new frontier of story discovery with AI.
                     </p>
                 </div>
             </div>
@@ -1112,10 +1116,34 @@
                 <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-lede gx-reveal">
-                            Genie is Storytel's AI brand — the wrapper around every AI surface in the app. This
-                            is the work behind it: what we designed, which decisions held up once it was in
-                            production, which ones I would take back, and what the launch numbers say about the
-                            difference between the two.
+                            The world of streaming is seemingly several different worlds, depending on the
+                            content of choice. At Storytel, your next pick might mean a 20-hour deep dive into a
+                            new topic, a new immersive world, or a nail-biting page-turner. Compared to music or
+                            TV entertainment, this creates a whole subset of different needs and challenges from
+                            users that is not normally seen in content with a higher pace.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            The clear difference is the commitment: we know that users require a much more
+                            diverse set of information when selecting their next story to read.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            The narrator might make or break a story, which is why we today use AI to generate
+                            more alternatives for users listening to audiobooks. The collective knowledge of the
+                            story — who praises it and who criticises it? The length of the story, and the list
+                            goes on.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            We know there are a lot of factors for a user to take in when choosing which story
+                            will be their next to read.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            We also know how important it is to maintain relevant recommendations for new users,
+                            especially after they finish their first story.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            So, from both a business need and a user need, we started building Genie, with the
+                            goal of helping users discover more relevant stories through more AI-driven
+                            recommendations.
                         </p>
                         <div class="gx-meta gx-reveal" style="--gx-delay: 80ms">
                             <span class="gx-tag">AI Brand System</span>
