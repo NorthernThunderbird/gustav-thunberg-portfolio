@@ -16,6 +16,13 @@
            so nothing here leaks into the shared stylesheet.
            ============================================================ */
 
+        /* In dark mode the page is pure black: every asset here is black-backed,
+           so full-bleed media meets the page with no seam at all. */
+        :root[data-theme="dark"] body,
+        :root[data-theme="dark"] .gx,
+        :root[data-theme="dark"] .gx-body { background: #000; }
+        :root[data-theme="dark"] .gx { --gx-stage: #000; --gx-stage-2: #0b0b0b; }
+
         .gx {
             --gx-accent: #ff501c;
             --gx-accent-2: #ff8a4c;
@@ -342,6 +349,10 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
         }
 
+        /* On the black page the grain reads as a faint rectangle, which is the
+           opposite of merging. The orange bloom stays; the texture goes. */
+        :root[data-theme="dark"] .gx-stage-grain::after { display: none; }
+
         .gx-caption {
             margin-top: var(--space-md);
             font-size: 0.84rem;
@@ -386,32 +397,28 @@
         }
         .gx-cutout.is-in.gx-glow::before { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
-        /* ---- Framed media ---- */
+        /* ---- Media ---- */
         .gx-figure { margin: 0 auto; }
-        .gx-frame {
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            border: 1px solid var(--gx-line);
-            background: #000;
-            box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.75);
+        /* No frames, no bezels: assets run edge to edge and merge with the page. */
+        .gx-asset {
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
         }
-        .gx-frame img, .gx-frame video { width: 100%; height: auto; display: block; }
-
-        /* phone shell for portrait screens & clips */
-        .gx-phone {
-            position: relative;
-            border-radius: 34px;
-            padding: 6px;
-            background: linear-gradient(160deg, #2c2c2c, #0c0c0c 45%, #202020);
-            box-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06);
-        }
-        .gx-phone > img, .gx-phone > video {
+        .gx-asset img, .gx-asset video {
+            display: block;
             width: 100%;
             height: auto;
-            display: block;
-            border-radius: 28px;
-            background: #000;
         }
+        /* A portrait asset at full desktop width would be a skyscraper. */
+        @media (min-width: 760px) {
+            .gx-asset.is-portrait { display: flex; justify-content: center; }
+            .gx-asset.is-portrait img { width: auto; height: min(88vh, 920px); }
+        }
+        /* Inside a padded stage, still reach the screen edges. */
+        .gx-stage .gx-asset { width: 100vw; margin-inline: calc(50% - 50vw); }
+        /* Unboxed inline image (kept inside a two-column editorial block). */
+        .gx-plain img { display: block; width: 100%; height: auto; }
+
         /* Inline clips: no bezel, no controls. They run once and hold on the
            last frame, so the page never loops motion in the reader's eye. */
         .gx-clip {
@@ -610,11 +617,7 @@
 
         /* platform switch — iOS by default, drag to Android */
         .gx-platform { max-width: 560px; margin-inline: auto; }
-        .gx-platform-stage {
-            display: grid;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-        }
+        .gx-platform-stage { display: grid; }
         .gx-plat {
             grid-area: 1 / 1;
             width: 100%;
@@ -708,6 +711,13 @@
             color: var(--color-text-muted);
         }
         .gx-stage .gx-slider-ends { color: var(--gx-stage-muted); }
+        .gx-slider-ends span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: color var(--timing-normal) ease;
+        }
+        .gx-slider-ends i { font-size: 0.95rem; }
         .gx-slider-ends .is-on { color: var(--gx-accent); }
         .gx-platform-help {
             margin: var(--space-md) auto 0;
@@ -1207,8 +1217,8 @@
                     </div>
 
                     <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
-                        <figure class="gx-figure gx-wide" style="max-width: 860px;">
-                            <div class="gx-cutout gx-rise" data-parallax="0.05">
+                        <figure class="gx-figure">
+                            <div class="gx-asset gx-cutout gx-rise">
                                 <img class="gx-float" src="material/genie-devices.png" alt="Two phone renders: Genie-powered Top Picks on Home, and a Genie chat conversation" width="1600" height="1600" loading="lazy">
                             </div>
                             <figcaption class="gx-caption">
@@ -1379,11 +1389,11 @@
                                     <div class="gx-slider-track"><div class="gx-slider-fill"></div></div>
                                     <input type="range" min="0" max="100" step="1" value="0"
                                            aria-label="Platform shown: 0 is iOS, 100 is Android">
-                                    <div class="gx-slider-thumb" aria-hidden="true"><i class="fa-brands fa-android"></i></div>
+                                    <div class="gx-slider-thumb" aria-hidden="true"><i class="fa-solid fa-left-right"></i></div>
                                 </div>
                                 <div class="gx-slider-ends">
-                                    <span class="gx-end-ios is-on">iOS</span>
-                                    <span class="gx-end-android">Android</span>
+                                    <span class="gx-end-ios is-on"><i class="fa-brands fa-apple"></i> iOS</span>
+                                    <span class="gx-end-android">Android <i class="fa-brands fa-android"></i></span>
                                 </div>
                                 <p class="gx-platform-help">Drag the slider right to show Android</p>
                             </div>
@@ -1463,8 +1473,8 @@
                     </div>
 
                     <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
-                        <figure class="gx-figure gx-wide" style="max-width: 720px;">
-                            <div class="gx-frame gx-rise" data-parallax="0.04">
+                        <figure class="gx-figure">
+                            <div class="gx-asset gx-rise">
                                 <img src="material/genie-thinking-state.png" alt="Genie's thinking state — the orange entity beside the words Thinking…" width="1200" height="1200" loading="lazy">
                             </div>
                             <figcaption class="gx-caption">
@@ -1527,7 +1537,7 @@
                             </div>
                             <div class="gx-sticky">
                                 <figure class="gx-figure">
-                                    <div class="gx-phone gx-rise" style="max-width: 320px; margin-inline: auto;" data-parallax="0.05">
+                                    <div class="gx-plain gx-rise" style="max-width: 320px; margin-inline: auto;" data-parallax="0.05">
                                         <img src="material/genie-top-picks.png" alt="Home screen showing the Stories you might like carousel, recommended by Genie" width="900" height="1947" loading="lazy">
                                     </div>
                                     <figcaption class="gx-caption">
@@ -1539,8 +1549,8 @@
                         </div>
                     </div>
 
-                    <figure class="gx-figure gx-wide" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
-                        <div class="gx-frame gx-rise" data-parallax="0.03">
+                    <figure class="gx-figure" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset gx-rise">
                             <img src="material/genie-brand-surfaces.png" alt="Genie brand applied across Top Picks, chat and Recaps surfaces" width="1600" height="900" loading="lazy">
                         </div>
                         <figcaption class="gx-caption">
@@ -1609,7 +1619,7 @@
 
                         <figure class="gx-figure gx-wide" style="max-width: 760px;">
                             <div class="gx-split" style="align-items: center;">
-                                <div class="gx-phone gx-rise" style="max-width: 300px; margin-inline: auto;" data-parallax="0.06">
+                                <div class="gx-plain gx-rise" style="max-width: 300px; margin-inline: auto;" data-parallax="0.06">
                                     <img src="material/genie-sleep-recap.png" alt="Sleep timer ended screen offering Genie recaps of the last 15, 10 or 5 minutes" width="900" height="1947" loading="lazy">
                                 </div>
                                 <div>
@@ -1631,8 +1641,8 @@
                         </figure>
                     </div>
 
-                    <figure class="gx-figure gx-wide" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
-                        <div class="gx-cutout gx-glow gx-rise" style="max-width: 900px;" data-parallax="0.045">
+                    <figure class="gx-figure" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset gx-cutout gx-glow gx-rise">
                             <img class="gx-float" src="material/genie-recaps.png" alt="Three phones showing Top Picks, a Genie conversation and a Recap screen" width="1600" height="900" loading="lazy">
                         </div>
                         <figcaption class="gx-caption">
@@ -1786,8 +1796,8 @@
                         </p>
                     </div>
 
-                    <figure class="gx-figure gx-wide" style="margin-top: var(--space-2xl);">
-                        <div class="gx-frame gx-rise" data-parallax="0.03">
+                    <figure class="gx-figure" style="margin-top: var(--space-2xl);">
+                        <div class="gx-asset gx-rise">
                             <img src="material/genie-lockup.png" alt="The Storytel Genie brand lockup alongside the app" width="1600" height="900" loading="lazy">
                         </div>
                     </figure>
@@ -1971,8 +1981,8 @@
                         </ul>
                     </div>
 
-                    <figure class="gx-figure gx-wide" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
-                        <div class="gx-frame gx-rise" data-parallax="0.03">
+                    <figure class="gx-figure" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset gx-rise">
                             <img src="material/genie-press.png" alt="Genie launch and press imagery" width="1600" height="900" loading="lazy">
                         </div>
                         <figcaption class="gx-caption">
@@ -2147,7 +2157,7 @@
 
             /* ---- 3. Mute toggles ---- */
             document.querySelectorAll('[data-mute]').forEach(function (btn) {
-                var scope = btn.closest('.gx-hero, .gx-phone, .gx-frame, figure') || document;
+                var scope = btn.closest('.gx-hero') || document;
                 var video = scope.querySelector('video');
                 if (!video) return;
                 var icon = btn.querySelector('i');
@@ -2168,7 +2178,6 @@
             /* ---- 3b. Platform switch: iOS by default, drag right for Android ---- */
             document.querySelectorAll('[data-platform-switch]').forEach(function (box) {
                 var input = box.querySelector('input[type="range"]');
-                var icon = box.querySelector('.gx-slider-thumb i');
                 var endIos = box.querySelector('.gx-end-ios');
                 var endAndroid = box.querySelector('.gx-end-android');
                 var help = box.querySelector('.gx-platform-help');
@@ -2177,9 +2186,7 @@
                 function render() {
                     var t = input.value / 100;
                     box.style.setProperty('--gx-t', t);
-                    /* The thumb shows the platform you get by dragging on. */
                     var showingAndroid = t >= 0.5;
-                    icon.className = showingAndroid ? 'fa-brands fa-apple' : 'fa-brands fa-android';
                     endIos.classList.toggle('is-on', !showingAndroid);
                     endAndroid.classList.toggle('is-on', showingAndroid);
                     input.setAttribute('aria-valuetext', showingAndroid ? 'Android' : 'iOS');
