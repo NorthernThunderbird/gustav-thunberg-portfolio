@@ -92,7 +92,8 @@
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       var SEGMENTS = 13, SEG_LEN = 7, GRAVITY = 1400, DAMP = 0.94, ITER = 4;
-      var PULL_TO_SWITCH = 30;            // px past rest before the switch throws
+      var PULL_TO_SWITCH = 10;            // px past rest before the switch throws
+      var TAP_MS = 350, TAP_SLOP = 12;    // a gentle tap counts as a pull
       var ROPE_LEN = SEGMENTS * SEG_LEN;
 
       var NS = 'http://www.w3.org/2000/svg';
@@ -143,11 +144,23 @@
       var gx = 0, gy = 1, tiltMovedAt = 0;
       function onTilt(e) {
         if (e.gamma == null) return;
-        var g = Math.max(-90, Math.min(90, e.gamma)) * Math.PI / 180;  // left/right tilt
-        var b = Math.max(-90, Math.min(90, e.beta  || 0)) * Math.PI / 180;
+        // Screen-space gravity is world-down projected onto the screen plane.
+        // gamma is the left/right tilt, beta the front/back one; alpha does not
+        // matter, since spinning about the vertical axis never changes which
+        // way is down on screen.
+        var g = e.gamma * Math.PI / 180;
+        var b = e.beta  * Math.PI / 180;
         var nx = Math.sin(g);
-        var ny = Math.max(0.15, Math.cos(g) * Math.cos(b));            // never hang upward
-        var m = Math.hypot(nx, ny) || 1;
+        var ny = Math.sin(b) * Math.cos(g);
+        var m = Math.hypot(nx, ny);
+        if (m < 0.25) {
+          // Lying flat there is no in-plane gravity at all, so ease back to
+          // hanging down the screen rather than drifting nowhere.
+          var t = m / 0.25;
+          nx = nx * t;
+          ny = ny * t + (1 - t);
+          m = Math.hypot(nx, ny) || 1;
+        }
         nx /= m; ny /= m;
         // Only count as movement if the device actually turned. A phone lying
         // still still fires this event constantly; reacting to every one would
@@ -182,8 +195,14 @@
       }, { passive: true });
 
       var dragging = false, pointerId = null, pull = 0;
+      var downAt = 0, downX = 0, downY = 0, travelled = 0, grabY = 0;
       hit.addEventListener('pointerdown', function (e) {
         dragging = true; pointerId = e.pointerId; pull = 0;
+        downAt = Date.now(); downX = e.clientX; downY = e.clientY; travelled = 0;
+        // Measure the pull from where the handle actually was, not from a
+        // constant: a rope under gravity rests slightly stretched, and that
+        // rest length shifts with damping or segment count.
+        grabY = pts[SEGMENTS - 1].y;
         svg.classList.add('is-dragging');
         hit.setPointerCapture(e.pointerId);
         askForTilt();
@@ -196,20 +215,25 @@
         last.x = e.clientX - origin.x;
         last.y = e.clientY - origin.y;
         last.px = last.x; last.py = last.y;      // no inertia while held
-        pull = Math.max(pull, last.y - ROPE_LEN);
+        pull = Math.max(pull, last.y - grabY);
+        travelled = Math.max(travelled, Math.hypot(e.clientX - downX, e.clientY - downY));
         wake();
       });
       function endDrag() {
         if (!dragging) return;
         dragging = false;
         svg.classList.remove('is-dragging');
-        if (pull > PULL_TO_SWITCH) {
+        var tapped = (Date.now() - downAt) < TAP_MS && travelled < TAP_SLOP;
+        if (tapped || pull > PULL_TO_SWITCH) {
           setTheme(getTheme() === 'light' ? 'dark' : 'light');
           toggle.classList.add('is-pulled');
           setTimeout(function () { toggle.classList.remove('is-pulled'); }, 220);
-          // snap back up, so the chain recoils like a real switch
+          // Recoil like a real switch. Keep it small, and off-axis: a purely
+          // vertical impulse can fold the rope into a stable zig-zag that
+          // gravity has no lateral force to pull straight again.
           var last = pts[SEGMENTS - 1];
-          last.py = last.y + 26;
+          last.py = last.y + 7;
+          last.px = last.x + (Math.random() < 0.5 ? -1.5 : 1.5);
         }
         pull = 0;
         wake();
@@ -223,6 +247,11 @@
           var p = pts[i];
           if (dragging && i === SEGMENTS - 1) continue;
           var vx = (p.x - p.px) * DAMP, vy = (p.y - p.py) * DAMP;
+          // Cap per-step velocity. An explosive frame — a flung drag, a jolt
+          // from the accelerometer — can otherwise leave the rope knotted in a
+          // folded state it never recovers from.
+          var sp = Math.hypot(vx, vy);
+          if (sp > 24) { vx = vx / sp * 24; vy = vy / sp * 24; }
           p.px = p.x; p.py = p.y;
           p.x += vx + gx * GRAVITY * dt2;
           p.y += vy + gy * GRAVITY * dt2;
