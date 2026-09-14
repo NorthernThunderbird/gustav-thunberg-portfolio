@@ -1,3 +1,10 @@
+:root {
+  /* Bulb colours live here, not on .header, so the pull cord — which hangs
+     outside the header — can reach them too. */
+  --swe-yellow: #FECC00;
+  --swe-blue:   #0066ff;
+}
+
 /* ============================================================
    GLOBAL NAVBAR — shared component used across all pages
    Self-contained colours (scoped to .header) so it looks the
@@ -55,6 +62,48 @@
 }
 [data-theme="light"] .theme-toggle .theme-icon { background: var(--swe-blue); } /* light mode: solid blue */
 .theme-toggle:hover .theme-icon { transform: scale(1.12); }
+
+/* ── Light-switch pull cord ────────────────────────────────────────────
+   The yellow dot is the bulb; this is its chain. Sits just under the
+   header so the top of the cord is hidden behind the bar and the chain
+   reads as coming out of the bulb itself. */
+.pull-cord {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 99;                 /* under the header (100), under overlays (1000) */
+  pointer-events: none;        /* only the handle takes input */
+  overflow: visible;
+}
+.pull-cord .cord-line {
+  fill: none;
+  stroke: var(--swe-yellow);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+.pull-cord .cord-handle {
+  fill: none;
+  stroke: var(--swe-yellow);
+  stroke-width: 3.5;
+  pointer-events: none;        /* a ring with no fill is a 3px hit target */
+}
+/* Invisible grab area — big enough for a thumb. */
+.pull-cord .cord-hit {
+  fill: transparent;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;          /* dragging the cord must not scroll the page */
+}
+.pull-cord.is-dragging .cord-hit { cursor: grabbing; }
+[data-theme="light"] .pull-cord .cord-line,
+[data-theme="light"] .pull-cord .cord-handle { stroke: var(--swe-blue); }
+
+/* Bulb reacts when the chain is pulled */
+.theme-toggle.is-pulled .theme-icon { transform: scale(1.35); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pull-cord { display: none; }
+}
 
 /* Right cluster */
 .nav-menu { display: flex; align-items: center; gap: 32px; }
