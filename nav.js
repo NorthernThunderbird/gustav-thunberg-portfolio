@@ -87,6 +87,11 @@
     // device says down is, so tilting the phone swings the chain. Pull it
     // past a threshold and it throws the switch.
     (function () {
+      // Article pages keep just the dot — the cord hangs straight over the
+      // back button and the hero controls there.
+      var isLanding = (page === 'index.html');   // page falls back to index.html at the root
+      if (!isLanding) return;
+
       var toggle = document.querySelector('.theme-toggle');
       if (!toggle) return;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -94,6 +99,7 @@
       var SEGMENTS = 13, SEG_LEN = 7, GRAVITY = 1400, DAMP = 0.94, ITER = 4;
       var PULL_TO_SWITCH = 10;            // px past rest before the switch throws
       var TAP_MS = 350, TAP_SLOP = 12;    // a gentle tap counts as a pull
+      var MAX_STRETCH = 18;               // a chain gives a little, then stops
       var ROPE_LEN = SEGMENTS * SEG_LEN;
 
       var NS = 'http://www.w3.org/2000/svg';
@@ -212,8 +218,15 @@
       hit.addEventListener('pointermove', function (e) {
         if (!dragging || e.pointerId !== pointerId) return;
         var last = pts[SEGMENTS - 1];
-        last.x = e.clientX - origin.x;
-        last.y = e.clientY - origin.y;
+        // Keep the handle on a circle around the bulb, so the chain swings
+        // rather than stretching down the page like elastic.
+        var dx = (e.clientX - origin.x) - PAD;
+        var dy = (e.clientY - origin.y);
+        var dist = Math.hypot(dx, dy) || 0.0001;
+        var maxR = ROPE_LEN + MAX_STRETCH;
+        if (dist > maxR) { dx = dx / dist * maxR; dy = dy / dist * maxR; }
+        last.x = PAD + dx;
+        last.y = dy;
         last.px = last.x; last.py = last.y;      // no inertia while held
         pull = Math.max(pull, last.y - grabY);
         travelled = Math.max(travelled, Math.hypot(e.clientX - downX, e.clientY - downY));
