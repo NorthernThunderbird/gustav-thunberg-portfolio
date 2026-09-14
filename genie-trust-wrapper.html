@@ -347,6 +347,9 @@
             font-weight: 300;
             color: var(--color-text-primary);
         }
+        /* The intro reads as one block, so both of its paragraphs carry the
+           lede's full-strength ink rather than the body grey. */
+        .gx-intro .gx-p { color: var(--color-text-primary); }
         .gx-accent { color: var(--gx-accent); }
 
         /* ---- Intro meta ---- */
@@ -1142,7 +1145,7 @@
             <div class="container">
 
                 <!-- INTRO -->
-                <section data-blob="0.80,0.55,0.00" class="gx-chapter">
+                <section data-blob="0.80,0.55,0.00" class="gx-chapter gx-intro">
                     <div class="gx-prose">
                         <p class="gx-p gx-lede gx-reveal">
                             Readers on Storytel for the most part don't interact with the app that often. They
