@@ -718,7 +718,7 @@
         }
         .gx-dot[aria-selected="true"]::before {
             width: 22px;
-            background: var(--gx-accent);
+            background: var(--color-text-primary);   /* white on the dark page, and still visible in light */
             opacity: 1;
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1443,6 +1443,12 @@
                 <section data-blob="0.82,0.58,0.55" class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
+                            Like every service out there, AI has been a hot topic at the company ever since the
+                            first GPT model, and we acted quickly: launching our first AI feature, the voice
+                            feature VoiceSwitcher, and securing a strategic partnership with ElevenLabs — even
+                            earning ourselves a spotlight on the Swedish news.
+                        </p>
+                        <p class="gx-p gx-reveal">
                             Since then we have launched other features such as Recaps and Story Scan, with more
                             visionary work building up in the product roadmap.
                         </p>
@@ -1499,6 +1505,17 @@
                             Campfire concept, which has been the foundation of our brand since its beginning —
                             under the name “Bokilur” — all the way to the orange bubble we know today.
                         </p>
+                    </div>
+
+                    <figure class="gx-figure gx-reveal" style="margin-block: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset gx-rise">
+                            <img src="material/genie-campfire.webp"
+                                 alt="A crowd gathered in the dark around a tall bonfire throwing sparks into the night"
+                                 width="1694" height="1132" loading="lazy" decoding="async">
+                        </div>
+                    </figure>
+
+                    <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             But in order to do so, we had to define what Genie's objectives were.
                         </p>
