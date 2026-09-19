@@ -659,11 +659,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            background: var(--color-surface);
             overflow: hidden;
-            aspect-ratio: 4 / 5;
+            aspect-ratio: 1 / 1;      /* every exploration asset is square */
         }
         .gx-slide-frame img,
         .gx-slide-frame video {
@@ -1649,16 +1646,29 @@
 
                     <div class="gx-wide gx-carousel gx-reveal" data-carousel aria-roledescription="carousel" aria-label="Early explorations">
                         <div class="gx-carousel-track" tabindex="0" aria-label="Early explorations, scrollable">
-                            <figure class="gx-slide" data-seq="material/explorations/top-picks">
-                                <div class="gx-slide-frame"><img alt="Early exploration of Top Picks" loading="lazy" decoding="async"></div>
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame">
+                                    <video muted loop playsinline preload="metadata" width="1080" height="1080"
+                                           aria-label="Early exploration of Top Picks">
+                                        <source src="material/explorations/old-top-picks.mov" type="video/mp4">
+                                    </video>
+                                </div>
                                 <figcaption>Early exploration of top picks</figcaption>
                             </figure>
-                            <figure class="gx-slide" data-seq="material/explorations/chat">
-                                <div class="gx-slide-frame"><img alt="Early exploration of Genie Chat" loading="lazy" decoding="async"></div>
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame">
+                                    <video muted loop playsinline preload="metadata" width="1080" height="1080"
+                                           aria-label="Early exploration of Genie Chat">
+                                        <source src="material/explorations/old-chat.mov" type="video/mp4">
+                                    </video>
+                                </div>
                                 <figcaption>Early exploration of chat</figcaption>
                             </figure>
                             <figure class="gx-slide">
-                                <div class="gx-slide-frame"><img src="material/explorations/recaps-old.png" alt="Early exploration of Recaps" loading="lazy" decoding="async"></div>
+                                <div class="gx-slide-frame">
+                                    <img src="material/explorations/recaps-old.webp" alt="Two phones: a Recap screen listing rewind summaries, beside the player it was generated from"
+                                         width="1400" height="1400" loading="lazy" decoding="async">
+                                </div>
                                 <figcaption>Early exploration of recaps</figcaption>
                             </figure>
                         </div>
@@ -2772,9 +2782,9 @@
 
             /* ---- 3. Exploration carousel ----
                Swiping is the browser's own scroll-snap; this only keeps the dots in
-               sync and runs the looping frame sequences. A slide whose asset is not
-               on disk drops out rather than shipping a broken frame, and if none
-               survive the carousel removes itself. */
+               sync and plays each clip while its slide is on screen. A slide whose
+               asset fails to load drops out rather than showing a broken frame, and
+               if none survive the carousel removes itself. */
             document.querySelectorAll('[data-carousel]').forEach(function (car) {
                 var track = car.querySelector('.gx-carousel-track');
                 var dotBar = car.querySelector('.gx-carousel-dots');
@@ -2814,48 +2824,27 @@
                     });
                 }
 
-                /* Load one sequence: material/explorations/<name>/frames.json lists the
-                   frame filenames in order. No manifest means no sequence, so the slide goes. */
-                function runSequence(slide) {
-                    var base = slide.getAttribute('data-seq');
-                    var img = slide.querySelector('img');
-                    fetch(base + '/frames.json')
-                        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-                        .then(function (names) {
-                            if (!Array.isArray(names) || !names.length) throw 0;
-                            var frames = names.map(function (n) { return base + '/' + n; });
-                            img.src = frames[0];
-                            if (still || frames.length === 1) return;
-                            frames.forEach(function (src) { var p = new Image(); p.src = src; });
-                            var at = 0, last = 0, playing = false;
-                            function tick(now) {
-                                if (!playing) return;
-                                if (now - last > 83) {            /* ~12fps */
-                                    at = (at + 1) % frames.length;
-                                    img.src = frames[at];
-                                    last = now;
-                                }
-                                requestAnimationFrame(tick);
-                            }
-                            new IntersectionObserver(function (entries) {
-                                entries.forEach(function (e) {
-                                    if (e.isIntersecting && !playing) { playing = true; last = 0; requestAnimationFrame(tick); }
-                                    else if (!e.isIntersecting) playing = false;
-                                });
-                            }, { threshold: 0.2 }).observe(slide);
-                        })
-                        .catch(function () { drop(slide); });
-                }
-
                 /* Media can fail before this script runs, and a missed error event
                    would leave a broken slide on the page — so check the state we
                    arrived to as well as listening for the next one. */
                 function watchMedia(el, slide) {
-                    var alreadyFailed = el.tagName === 'VIDEO'
-                        ? !!el.error
-                        : (el.complete && el.naturalWidth === 0);
-                    if (alreadyFailed) { drop(slide); return false; }
+                    if (el.tagName !== 'VIDEO') {
+                        if (el.complete && el.naturalWidth === 0) { drop(slide); return false; }
+                        el.addEventListener('error', function () { drop(slide); });
+                        return true;
+                    }
+                    /* A <video> with <source> children never fires error on itself --
+                       the sources do, and it ends at networkState NO_SOURCE. Watch
+                       all three, or an undecodable clip sits there as an empty box. */
+                    if (el.error || el.networkState === 3) { drop(slide); return false; }
                     el.addEventListener('error', function () { drop(slide); });
+                    var sources = el.querySelectorAll('source');
+                    var failed = 0;
+                    Array.prototype.forEach.call(sources, function (src) {
+                        src.addEventListener('error', function () {
+                            if (++failed >= sources.length) drop(slide);
+                        });
+                    });
                     return true;
                 }
 
@@ -2873,8 +2862,7 @@
                 }
 
                 slides.slice().forEach(function (slide) {
-                    if (slide.hasAttribute('data-seq')) runSequence(slide);
-                    else if (slide.querySelector('video')) runClip(slide);
+                    if (slide.querySelector('video')) runClip(slide);
                     else watchMedia(slide.querySelector('img'), slide);
                 });
 
