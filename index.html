@@ -56,8 +56,8 @@
   --card-badge-bg:    rgba(0,0,0,0.55);
   --card-badge-text:  #ffffff;
 
-  /* Ripple canvas dot color, as r,g,b triplet */
-  --ripple-rgb:       255,255,255;
+  /* Ripple canvas dot color, as r,g,b triplet — Swedish yellow in dark mode */
+  --ripple-rgb:       254,204,0;
 
   --sh-sm: 0 1px 3px rgba(0,0,0,0.5);
   --sh-md: 0 4px 12px rgba(0,0,0,0.6);
@@ -115,7 +115,8 @@
   --card-badge-bg:    rgba(255,255,255,0.85);
   --card-badge-text:  #111111;
 
-  --ripple-rgb:       20,20,20;
+  /* Ripple canvas dot color, as r,g,b triplet — Swedish blue in light mode */
+  --ripple-rgb:       0,102,255;
 
   --sh-sm: 0 1px 3px rgba(0,0,0,0.06);
   --sh-md: 0 4px 12px rgba(0,0,0,0.10);
@@ -851,9 +852,22 @@ updateRippleVisibility();
   let last  = start;
   let phase = 0;           // continuous wave phase — never reset, so no hard restart
 
+  // Quick wave kicked off whenever the theme is switched (see gt:themechange below)
+  const KICK_DUR  = 0.9;   // seconds the pulse takes to rise and settle
+  const KICK_AMP  = 46;    // extra depth amplitude at the pulse's peak
+  const KICK_RATE = 2.2;   // extra wave speed at the pulse's peak
+  let kickAt = -Infinity;
+  window.addEventListener('gt:themechange', () => { kickAt = performance.now(); });
+
+  // Render at native pixel density so dots stay crisp on high-DPI screens
+  // instead of the blurry/pixelated look of a canvas backed 1:1 to CSS px.
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function draw() {
@@ -868,8 +882,17 @@ updateRippleVisibility();
     blend = 1 - (1 - blend) * (1 - blend) * (1 - blend);  // ease-out cubic
 
     // Speed + amplitude ease continuously; phase keeps accumulating across the transition
-    const rate = INTRO_RATE + (IDLE_RATE - INTRO_RATE) * blend;
-    const amp  = Z_INTRO    + (Z_IDLE    - Z_INTRO)   * blend;
+    let rate = INTRO_RATE + (IDLE_RATE - INTRO_RATE) * blend;
+    let amp  = Z_INTRO    + (Z_IDLE    - Z_INTRO)   * blend;
+
+    // A brief extra wave when the theme is switched — rises fast, fades out
+    const kickElapsed = (now - kickAt) / 1000;
+    if (kickElapsed >= 0 && kickElapsed < KICK_DUR) {
+      const kt = kickElapsed / KICK_DUR;
+      const kickShape = Math.sin(kt * Math.PI) * (1 - kt);
+      rate += KICK_RATE * kickShape;
+      amp  += KICK_AMP  * kickShape;
+    }
     phase += rate * dt;
 
     ctx.clearRect(0, 0, W, H);
