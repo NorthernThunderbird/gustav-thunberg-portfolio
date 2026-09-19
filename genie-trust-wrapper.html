@@ -574,6 +574,285 @@
         }
 
 
+        /* Branding rule — the decision tree, every route collapsed until opened.
+           It sits inline in the prose with no card around it, so it takes the page
+           palette rather than the dark-stage one. Built on <details>, so it expands
+           with no scripting and the ruleset stays in the markup for search. */
+        .gx-tree {
+            margin: var(--space-2xl) 0;
+        }
+        /* Section heading — white, with a rule that draws itself in on reveal. */
+        .gx-tree-kicker {
+            display: block;
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            text-transform: none;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xl);
+            padding-bottom: 0.32rem;
+        }
+        .gx-tree-kicker::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: var(--gx-accent);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 260ms;
+        }
+        .gx-tree-kicker.is-in::after { transform: scaleX(1); }
+
+        /* The three product domains. */
+        .gx-domains {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: var(--space-md);
+            margin-block: var(--space-2xl);
+        }
+        .gx-domain {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            padding: var(--space-xl);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+        }
+        .gx-domain-tag {
+            align-self: flex-start;
+            padding: 0.42rem 1.1rem;
+            border-radius: 999px;
+            background: var(--gx-stage);
+            color: var(--color-text-primary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+        :root[data-theme="light"] .gx-domain-tag { background: #101010; color: #f2f2f2; }
+        .gx-domain h3 {
+            margin: 0;
+            font-size: 1.02rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--color-text-primary);
+        }
+        .gx-domain p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+
+        /* Exploration carousel — native scroll-snap, so the swipe is the browser's. */
+        .gx-carousel { margin-block: var(--space-2xl); }
+        .gx-carousel-track {
+            display: flex;
+            gap: var(--space-md);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gx-carousel-track::-webkit-scrollbar { display: none; }
+        .gx-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            margin: 0;
+            min-width: 0;
+        }
+        .gx-slide-frame {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;      /* every exploration asset is square */
+        }
+        .gx-slide-frame img,
+        .gx-slide-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .gx-slide figcaption {
+            margin-top: var(--space-md);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--color-text-muted);
+        }
+        .gx-carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+        .gx-dot {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+        .gx-dot::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--color-text-muted);
+            opacity: 0.45;
+            transition: opacity var(--timing-fast) ease,
+                        background var(--timing-fast) ease,
+                        width var(--timing-fast) ease;
+        }
+        .gx-dot[aria-selected="true"]::before {
+            width: 22px;
+            background: var(--gx-accent);
+            opacity: 1;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gx-carousel-track { scroll-behavior: auto; }
+            .gx-tree-kicker::after { transition: none; transform: scaleX(1); }
+        }
+
+        /* Reading size, because inline in the prose the questions are reading text. */
+        .gx-tree-q {
+            font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--color-text-primary);
+            margin: 0;
+            max-width: none;
+        }
+
+        /* Each level hangs off a rail drawn down the left of its branch list. */
+        .gx-tree-branches {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 clamp(0.6rem, 2vw, 1.1rem);
+        }
+        .gx-tree-branch {
+            position: relative;
+            padding-left: clamp(0.6rem, 2vw, 1.1rem);
+        }
+        /* vertical rail: full height on the first branch, stopping at the elbow on the last */
+        .gx-tree-branch::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--color-border);
+        }
+        .gx-tree-branch:last-child::before { bottom: auto; height: 25px; }
+        /* elbow into the answer pill */
+        .gx-tree-branch::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25px;
+            width: clamp(0.6rem, 2vw, 1.1rem);
+            height: 1px;
+            background: var(--color-border);
+        }
+
+        .gx-tree-sum {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.65rem 0;
+            padding: 0.4rem 0.95rem;
+            border: 1px solid var(--color-border);
+            border-radius: 999px;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            list-style: none;                       /* kill the native disclosure marker */
+            transition: border-color var(--timing-fast) ease,
+                        color var(--timing-fast) ease,
+                        background var(--timing-fast) ease;
+        }
+        .gx-tree-sum::-webkit-details-marker { display: none; }
+        .gx-tree-sum:hover,
+        .gx-tree-sum:focus-visible {
+            border-color: var(--gx-accent);
+            color: var(--color-text-primary);
+            background: rgba(255, 80, 28, 0.1);
+        }
+        /* our own marker: a chevron that turns down when the route is open */
+        .gx-tree-sum::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            transform: rotate(-45deg);
+            transition: transform var(--timing-fast) ease;
+        }
+        details[open] > .gx-tree-sum::before { transform: rotate(45deg); }
+        /* An opened route brightens but does not go orange: the accent is reserved
+           for Genie outcomes, so it keeps meaning something when a leaf uses it. */
+        details[open] > .gx-tree-sum {
+            color: var(--color-text-primary);
+            border-color: var(--color-text-muted);
+        }
+
+        .gx-tree-body { padding-bottom: var(--space-sm); }
+
+        /* Leaf: where a route ends. Genie outcomes take the accent; the rest stay
+           neutral, so the chip reads as "which branding" and not as pass and fail. */
+        .gx-tree-end {
+            display: inline-block;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-muted);
+        }
+        .gx-tree-end.is-genie {
+            border-color: var(--gx-accent);
+            background: rgba(255, 80, 28, 0.14);
+            color: var(--gx-accent);
+        }
+        .gx-tree-note {
+            margin: var(--space-sm) 0 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+            max-width: none;   /* the branch indent already sets the measure */
+        }
+
+        /* Animate the expansion where the browser can interpolate to auto. */
+        @supports (interpolate-size: allow-keywords) {
+            .gx-tree { interpolate-size: allow-keywords; }
+            .gx-tree details::details-content {
+                block-size: 0;
+                overflow: clip;
+                transition: block-size var(--timing-normal) ease,
+                            content-visibility var(--timing-normal) allow-discrete;
+            }
+            .gx-tree details[open]::details-content { block-size: auto; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gx-tree details::details-content { transition: none; }
+            .gx-tree-sum::before { transition: none; }
+        }
+
         /* pillars */
         .gx-pillars {
             display: grid;
@@ -1178,12 +1457,6 @@
                         </p>
                     </div>
 
-                    <div class="gx-wide">
-                        <p class="gx-p gx-reveal" style="margin-inline: auto; text-align: center; max-width: 58ch;">
-                            So the brief was not “build an AI feature.” It was: <strong>build a way in, and make it
-                            obvious who is holding the door.</strong>
-                        </p>
-                    </div>
                 </section>
 
                 <!-- 2 — GETTING THE COMPANY COMMITTED -->
@@ -1216,12 +1489,18 @@
                 <!-- 3 — PILLARS -->
                 <section data-blob="0.76,0.52,0.42" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 03</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Five pillars, and the one that did the most work</h2>
-                        <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            Five words on a slide are cheap. What made them useful is that we treated them as
-                            constraints rather than aspirations — and one of them turned out to carry most of
-                            the design load.
+                        <p class="gx-p gx-reveal">
+                            Our concept was based on seeing Genie as an extension of the Storytel brand — there
+                            to elevate the user experience and provide something purposeful, helpful and
+                            distinctly Storytel.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            To ensure Genie stayed close to our core, we based its branding direction on the
+                            Campfire concept, which has been the foundation of our brand since its beginning —
+                            under the name “Bokilur” — all the way to the orange bubble we know today.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            But in order to do so, we had to define what Genie's objectives were.
                         </p>
                     </div>
 
@@ -1248,6 +1527,173 @@
                                 <p>Measured by books on shelves, not by sessions opened.</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            To make sure we only provide users real value, and keep transparency all the way
+                            through, one of the first things we did was set a defining rule for when and where
+                            Genie lives in the user experience.
+                        </p>
+                    </div>
+
+                    <div class="gx-prose gx-reveal">
+                        <div class="gx-tree">
+                            <span class="gx-tree-kicker gx-reveal">The visibility logic</span>
+
+                            <p class="gx-tree-q">Is the feature powered by AI?</p>
+                            <ul class="gx-tree-branches">
+                                <li class="gx-tree-branch">
+                                    <details>
+                                        <summary class="gx-tree-sum">No</summary>
+                                        <div class="gx-tree-body">
+                                            <span class="gx-tree-end">Not Genie</span>
+                                            <p class="gx-tree-note">No AI, nothing to attribute. It is simply the product.</p>
+                                        </div>
+                                    </details>
+                                </li>
+                                <li class="gx-tree-branch">
+                                    <details>
+                                        <summary class="gx-tree-sum">Yes</summary>
+                                        <div class="gx-tree-body">
+                                            <p class="gx-tree-q">Is the AI visible to the user?</p>
+                                            <ul class="gx-tree-branches">
+                                                <li class="gx-tree-branch">
+                                                    <details>
+                                                        <summary class="gx-tree-sum">No</summary>
+                                                        <div class="gx-tree-body">
+                                                            <span class="gx-tree-end">Not Genie</span>
+                                                            <p class="gx-tree-note">The AI never surfaces, so there is nothing for a mark to label.</p>
+                                                        </div>
+                                                    </details>
+                                                </li>
+                                                <li class="gx-tree-branch">
+                                                    <details>
+                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                        <div class="gx-tree-body">
+                                                            <p class="gx-tree-q">Does it generate bespoke content — different for each user?</p>
+                                                            <ul class="gx-tree-branches">
+                                                                <li class="gx-tree-branch">
+                                                                    <details>
+                                                                        <summary class="gx-tree-sum">No</summary>
+                                                                        <div class="gx-tree-body">
+                                                                            <span class="gx-tree-end">Not Genie, but transparency around AI</span>
+                                                                            <p class="gx-tree-note">Everyone gets the same output, so it is not Genie speaking — but the user still has to know AI was involved.</p>
+                                                                        </div>
+                                                                    </details>
+                                                                </li>
+                                                                <li class="gx-tree-branch">
+                                                                    <details>
+                                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                                        <div class="gx-tree-body">
+                                                                            <p class="gx-tree-q">Do users opt in to the feature?</p>
+                                                                            <ul class="gx-tree-branches">
+                                                                                <li class="gx-tree-branch">
+                                                                                    <details>
+                                                                                        <summary class="gx-tree-sum">No</summary>
+                                                                                        <div class="gx-tree-body">
+                                                                                            <span class="gx-tree-end is-genie">Genie branding — discreet</span>
+                                                                                            <p class="gx-tree-note">The user did not ask for it, so the mark stays quiet.</p>
+                                                                                        </div>
+                                                                                    </details>
+                                                                                </li>
+                                                                                <li class="gx-tree-branch">
+                                                                                    <details>
+                                                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                                                        <div class="gx-tree-body">
+                                                                                            <span class="gx-tree-end is-genie">Genie branding — obvious</span>
+                                                                                            <p class="gx-tree-note">The user asked for it, so Genie can be present and named.</p>
+                                                                                        </div>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </details>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </details>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </details>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            The product domain's AI-powered strategy for 2026 identified three areas where
+                            Genie would impact the product offering.
+                        </p>
+                    </div>
+
+                    <div class="gx-wide gx-domains">
+                        <div class="gx-domain gx-reveal">
+                            <span class="gx-domain-tag">Discovery</span>
+                            <h3>Hyper-personalised discovery &amp; proactive curation</h3>
+                            <p>
+                                These features aim to evolve the discovery engine from a reactive
+                                recommendation system into a proactive, context-aware partner, driving core
+                                engagement and retention.
+                            </p>
+                        </div>
+                        <div class="gx-domain gx-reveal" style="--gx-delay: 120ms">
+                            <span class="gx-domain-tag">Immersion</span>
+                            <h3>Immersive &amp; format-agnostic storytelling</h3>
+                            <p>
+                                These features use AI as a creative tool to produce richer audio experiences
+                                and remove format barriers, primarily to differentiate the product experience.
+                            </p>
+                        </div>
+                        <div class="gx-domain gx-reveal" style="--gx-delay: 240ms">
+                            <span class="gx-domain-tag">Comprehension</span>
+                            <h3>Non-fiction &amp; knowledge extraction</h3>
+                            <p>
+                                This pillar expands the utility from entertainment to active learning and the
+                                non-fiction market.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            Three features were chosen to be explored and prepared for Genie's public release
+                            at midsummer in Sweden, 2026: Genie Chat (Discovery), Top Picks (Discovery) and
+                            Recaps (Comprehension).
+                        </p>
+                    </div>
+
+                    <div class="gx-wide gx-carousel gx-reveal" data-carousel aria-roledescription="carousel" aria-label="Early explorations">
+                        <div class="gx-carousel-track" tabindex="0" aria-label="Early explorations, scrollable">
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame">
+                                    <video muted loop playsinline preload="metadata" width="1080" height="1080"
+                                           aria-label="Early exploration of Top Picks">
+                                        <source src="material/explorations/old-top-picks.mov" type="video/mp4">
+                                    </video>
+                                </div>
+                                <figcaption>Early exploration of top picks</figcaption>
+                            </figure>
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame">
+                                    <video muted loop playsinline preload="metadata" width="1080" height="1080"
+                                           aria-label="Early exploration of Genie Chat">
+                                        <source src="material/explorations/old-chat.mov" type="video/mp4">
+                                    </video>
+                                </div>
+                                <figcaption>Early exploration of chat</figcaption>
+                            </figure>
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame">
+                                    <img src="material/explorations/recaps-old.webp" alt="Two phones: a Recap screen listing rewind summaries, beside the player it was generated from"
+                                         width="1400" height="1400" loading="lazy" decoding="async">
+                                </div>
+                                <figcaption>Early exploration of recaps</figcaption>
+                            </figure>
+                        </div>
+                        <div class="gx-carousel-dots" role="tablist" aria-label="Choose an exploration"></div>
                     </div>
 
                     <div class="gx-prose">
@@ -1305,7 +1751,6 @@
                 <!-- 4 — NINE SURFACES -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 04</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What we shipped</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             Genie is not a feature. It is the umbrella. Six surfaces ship under one identity,
@@ -1397,7 +1842,6 @@
                 <!-- 5 — CHAT -->
                 <section data-blob="0.20,0.60,0.52" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 05</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Chat: voice is the interface</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             In a chat surface there is no layout to hide behind. The voice <em>is</em> the
@@ -1492,7 +1936,6 @@
                 <!-- 6 — TOP PICKS -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 06</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Top Picks: the design was in the rules</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             Top Picks looks like a carousel of recommendations. Almost all the design work is in
@@ -1548,7 +1991,6 @@
                 <!-- 7 — RECAPS -->
                 <section data-blob="0.70,0.38,0.40" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 07</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Recaps: nine states for one feature</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             This is the section I would keep if I could keep only one. Recaps let you pick up a
@@ -1639,7 +2081,6 @@
                 <!-- 8 — CRAFT -->
                 <section data-blob="0.50,0.52,0.85" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 08</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Craft: a living entity, built to degrade gracefully</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             The Genie entity — the blob of orange light that appears when Genie is thinking,
@@ -1684,7 +2125,6 @@
                 <!-- 9 — TOKENS -->
                 <section data-blob="0.30,0.55,0.45" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 09</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Recognisable, enforced by tokens</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             Recognisable is a pillar, which means it has to be enforceable rather than
@@ -1791,7 +2231,6 @@
                 <!-- 11 — THE HONEST NUMBERS -->
                 <section data-blob="0.84,0.44,0.32" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 11</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">The honest numbers</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
                             Genie launched in Sweden. As of mid-August 2026, the picture is genuinely mixed — and
@@ -1895,7 +2334,6 @@
                 <!-- 12 — TAKEAWAYS -->
                 <section class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 12</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What I would carry into the next one</h2>
                     </div>
 
@@ -1936,7 +2374,6 @@
                 <!-- 13 — WHAT'S NEXT -->
                 <section data-blob="0.45,0.50,0.55" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 13</span>
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What's next</h2>
                     </div>
 
@@ -2364,6 +2801,100 @@
                 stations.forEach(function (el) { stationObserver.observe(el); });
             })();
 
+            /* ---- 3. Exploration carousel ----
+               Swiping is the browser's own scroll-snap; this only keeps the dots in
+               sync and plays each clip while its slide is on screen. A slide whose
+               asset fails to load drops out rather than showing a broken frame, and
+               if none survive the carousel removes itself. */
+            document.querySelectorAll('[data-carousel]').forEach(function (car) {
+                var track = car.querySelector('.gx-carousel-track');
+                var dotBar = car.querySelector('.gx-carousel-dots');
+                var slides = Array.prototype.slice.call(car.querySelectorAll('.gx-slide'));
+                var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                function drop(slide) {
+                    var i = slides.indexOf(slide);
+                    if (i < 0) return;
+                    slides.splice(i, 1);
+                    slide.remove();
+                    if (!slides.length) car.remove();
+                    else buildDots();
+                }
+
+                function buildDots() {
+                    dotBar.innerHTML = '';
+                    if (slides.length < 2) return;
+                    slides.forEach(function (slide, i) {
+                        var dot = document.createElement('button');
+                        dot.type = 'button';
+                        dot.className = 'gx-dot';
+                        dot.setAttribute('role', 'tab');
+                        dot.setAttribute('aria-label', 'Exploration ' + (i + 1) + ' of ' + slides.length);
+                        dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                        dot.addEventListener('click', function () {
+                            track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: still ? 'auto' : 'smooth' });
+                        });
+                        dotBar.appendChild(dot);
+                    });
+                }
+
+                function markActive(slide) {
+                    var i = slides.indexOf(slide);
+                    Array.prototype.forEach.call(dotBar.children, function (d, k) {
+                        d.setAttribute('aria-selected', k === i ? 'true' : 'false');
+                    });
+                }
+
+                /* Media can fail before this script runs, and a missed error event
+                   would leave a broken slide on the page — so check the state we
+                   arrived to as well as listening for the next one. */
+                function watchMedia(el, slide) {
+                    if (el.tagName !== 'VIDEO') {
+                        if (el.complete && el.naturalWidth === 0) { drop(slide); return false; }
+                        el.addEventListener('error', function () { drop(slide); });
+                        return true;
+                    }
+                    /* A <video> with <source> children never fires error on itself --
+                       the sources do, and it ends at networkState NO_SOURCE. Watch
+                       all three, or an undecodable clip sits there as an empty box. */
+                    if (el.error || el.networkState === 3) { drop(slide); return false; }
+                    el.addEventListener('error', function () { drop(slide); });
+                    var sources = el.querySelectorAll('source');
+                    var failed = 0;
+                    Array.prototype.forEach.call(sources, function (src) {
+                        src.addEventListener('error', function () {
+                            if (++failed >= sources.length) drop(slide);
+                        });
+                    });
+                    return true;
+                }
+
+                /* A looping clip plays only while its slide is on screen. */
+                function runClip(slide) {
+                    var video = slide.querySelector('video');
+                    if (!watchMedia(video, slide)) return;
+                    if (still) { video.removeAttribute('autoplay'); return; }
+                    new IntersectionObserver(function (entries) {
+                        entries.forEach(function (e) {
+                            if (e.isIntersecting) { var t = video.play(); if (t && t.catch) t.catch(function () {}); }
+                            else video.pause();
+                        });
+                    }, { threshold: 0.2 }).observe(slide);
+                }
+
+                slides.slice().forEach(function (slide) {
+                    if (slide.querySelector('video')) runClip(slide);
+                    else watchMedia(slide.querySelector('img'), slide);
+                });
+
+                buildDots();
+
+                /* Which slide is centred drives the dots — no scroll maths. */
+                var activeWatch = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) { if (e.intersectionRatio > 0.6) markActive(e.target); });
+                }, { root: track, threshold: [0.6] });
+                slides.forEach(function (s) { activeWatch.observe(s); });
+            });
             /* ---- 3a. Fullscreen for the hero film ---- */
             document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
                 var media = btn.closest('.gx-hero-media');
