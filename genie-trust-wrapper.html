@@ -665,7 +665,8 @@
             overflow: hidden;
             aspect-ratio: 4 / 5;
         }
-        .gx-slide-frame img {
+        .gx-slide-frame img,
+        .gx-slide-frame video {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -2846,10 +2847,23 @@
                         .catch(function () { drop(slide); });
                 }
 
+                /* A looping clip plays only while its slide is on screen. */
+                function runClip(slide) {
+                    var video = slide.querySelector('video');
+                    video.addEventListener('error', function () { drop(slide); });
+                    if (still) { video.removeAttribute('autoplay'); return; }
+                    new IntersectionObserver(function (entries) {
+                        entries.forEach(function (e) {
+                            if (e.isIntersecting) { var t = video.play(); if (t && t.catch) t.catch(function () {}); }
+                            else video.pause();
+                        });
+                    }, { threshold: 0.2 }).observe(slide);
+                }
+
                 slides.slice().forEach(function (slide) {
-                    var img = slide.querySelector('img');
                     if (slide.hasAttribute('data-seq')) runSequence(slide);
-                    else img.addEventListener('error', function () { drop(slide); });
+                    else if (slide.querySelector('video')) runClip(slide);
+                    else slide.querySelector('img').addEventListener('error', function () { drop(slide); });
                 });
 
                 buildDots();

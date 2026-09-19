@@ -4,16 +4,27 @@ The carousel in `genie-trust-wrapper.html` ("Early exploration of …") reads it
 slides from here. Until the files exist, each slide removes itself and the
 carousel removes itself with them, so nothing broken ever renders.
 
-## Looping frame sequences
+A slide takes any one of three forms.
+
+## Looping clip (preferred)
+
+    <div class="gx-slide-frame">
+      <video src="material/explorations/top-picks.mp4" muted loop playsinline …>
+    </div>
+
+Plays only while the slide is on screen, and stays paused under
+`prefers-reduced-motion`. This is the right format for a long PNG sequence: a
+few hundred frames is hundreds of megabytes as PNGs and a couple of megabytes
+as H.264, and the browser decodes it in hardware.
+
+## Looping frame sequence
 
     top-picks/frames.json   ["001.png", "002.png", …]  frame filenames, in order
     top-picks/001.png …
-    chat/frames.json
-    chat/001.png …
 
-Any filenames work — `frames.json` is the order of play. The sequence loops at
-~12fps, starts only when the slide scrolls into view, and holds on the first
-frame under `prefers-reduced-motion`.
+Any filenames work — `frames.json` is the order of play. Loops at ~12fps, starts
+when the slide scrolls into view, holds on frame one under reduced motion. Only
+worth it for short sequences; every frame is a separate request.
 
 To regenerate a manifest after dropping frames in:
 
