@@ -724,9 +724,10 @@
             border-radius: 999px;
             background: var(--color-text-muted);
             opacity: 0.45;
+            /* Colour only. Animating width made a half-grown lozenge visible
+               whenever selection changed mid-swipe. */
             transition: opacity var(--timing-fast) ease,
-                        background var(--timing-fast) ease,
-                        width var(--timing-fast) ease;
+                        background var(--timing-fast) ease;
         }
         .gx-dot[aria-selected="true"]::before {
             width: 22px;
@@ -1496,6 +1497,7 @@
                         <div class="gx-asset gx-rise">
                             <video controls preload="metadata" playsinline
                                    poster="material/genie-brand-film-poster.webp"
+                                   aria-label="A frame from the Genie brand film: an illustrated landscape of golden hills and cypresses under a deep teal, star-filled sky"
                                    width="1920" height="1080">
                                 <source src="material/genie-brand-film.mp4" type="video/mp4">
                             </video>
@@ -2921,27 +2923,59 @@
 
                 buildDots();
 
-                /* Which slide is centred drives the dots — no scroll maths. */
-                var activeWatch = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (e) { if (e.intersectionRatio > 0.6) markActive(e.target); });
-                }, { root: track, threshold: [0.6] });
-                slides.forEach(function (s) { activeWatch.observe(s); });
+                /* Which slide the track has come to rest on drives the dots. An
+                   IntersectionObserver fires repeatedly through a momentum scroll on
+                   a phone, so the dots flickered the whole way across; settling once
+                   the scrolling stops gives one update per swipe. */
+                function syncDots() {
+                    if (!slides.length) return;
+                    var centre = track.scrollLeft + track.clientWidth / 2;
+                    var best = 0, bestGap = Infinity;
+                    slides.forEach(function (slide, i) {
+                        var mid = slide.offsetLeft - track.offsetLeft + slide.offsetWidth / 2;
+                        var gap = Math.abs(mid - centre);
+                        if (gap < bestGap) { bestGap = gap; best = i; }
+                    });
+                    markActive(slides[best]);
+                }
+                var settling;
+                track.addEventListener('scroll', function () {
+                    clearTimeout(settling);
+                    settling = setTimeout(syncDots, 90);
+                }, { passive: true });
+                syncDots();
             });
             /* ---- 3b. Brand film ----
                A <video> with <source> children never fires error on itself, so watch
-               the sources: until the film is in the repo the whole figure stays out
-               rather than showing a poster with a play button that does nothing. */
+               the sources. Until the film is in the repo the poster stands in for it
+               as a plain still -- better than an empty section, and better than a
+               play button that does nothing. */
             document.querySelectorAll('[data-film]').forEach(function (fig) {
                 var video = fig.querySelector('video');
                 if (!video) return;
-                function hide() { fig.remove(); }
-                if (video.error || video.networkState === 3) { hide(); return; }
-                video.addEventListener('error', hide);
+
+                var swapped = false;
+                function showStill() {
+                    if (swapped) return;
+                    swapped = true;
+                    var poster = video.getAttribute('poster');
+                    if (!poster) { fig.remove(); return; }
+                    var img = new Image();
+                    img.src = poster;
+                    img.alt = video.getAttribute('aria-label') || '';
+                    img.width = 1920;
+                    img.height = 1080;
+                    img.decoding = 'async';
+                    video.replaceWith(img);
+                }
+
+                if (video.error || video.networkState === 3) { showStill(); return; }
+                video.addEventListener('error', showStill);
                 var sources = video.querySelectorAll('source');
                 var failed = 0;
                 Array.prototype.forEach.call(sources, function (src) {
                     src.addEventListener('error', function () {
-                        if (++failed >= sources.length) hide();
+                        if (++failed >= sources.length) showStill();
                     });
                 });
             });
