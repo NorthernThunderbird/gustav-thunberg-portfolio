@@ -668,13 +668,24 @@
             scroll-snap-align: center;
             margin: 0;
             min-width: 0;
+            /* The frame is narrower than the column once the viewport bounds it,
+               so centre it -- otherwise it sits left of its own caption and dots. */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .gx-slide-frame {
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            aspect-ratio: 1 / 1;      /* every exploration asset is square */
+            /* Every exploration asset is square. Its side is whichever is smallest:
+               the column, the window, or a ceiling -- so it never outgrows the
+               viewport on a laptop and still fills the width of a phone. Set as a
+               width rather than a max, or a centred flex item would collapse to the
+               asset's intrinsic size instead. */
+            aspect-ratio: 1 / 1;
+            width: min(100%, 68vh, 720px);
         }
         .gx-slide-frame img,
         .gx-slide-frame video {
@@ -688,6 +699,7 @@
             font-size: 0.92rem;
             line-height: 1.5;
             color: var(--color-text-muted);
+            text-align: center;
         }
         .gx-carousel-dots {
             display: flex;
@@ -712,13 +724,14 @@
             border-radius: 999px;
             background: var(--color-text-muted);
             opacity: 0.45;
+            /* Colour only. Animating width made a half-grown lozenge visible
+               whenever selection changed mid-swipe. */
             transition: opacity var(--timing-fast) ease,
-                        background var(--timing-fast) ease,
-                        width var(--timing-fast) ease;
+                        background var(--timing-fast) ease;
         }
         .gx-dot[aria-selected="true"]::before {
             width: 22px;
-            background: var(--gx-accent);
+            background: var(--color-text-primary);   /* white on the dark page, and still visible in light */
             opacity: 1;
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1443,6 +1456,12 @@
                 <section data-blob="0.82,0.58,0.55" class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
+                            Like every service out there, AI has been a hot topic at the company ever since the
+                            first GPT model, and we acted quickly: launching our first AI feature, the voice
+                            feature VoiceSwitcher, and securing a strategic partnership with ElevenLabs — even
+                            earning ourselves a spotlight on the Swedish news.
+                        </p>
+                        <p class="gx-p gx-reveal">
                             Since then we have launched other features such as Recaps and Story Scan, with more
                             visionary work building up in the product roadmap.
                         </p>
@@ -1474,16 +1493,20 @@
                         </p>
                     </div>
 
-                    <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
-                        <figure class="gx-figure">
-                            <div class="gx-asset is-portrait gx-cutout gx-rise">
-                                <img class="gx-float" src="material/genie-components.png" alt="Two Genie-branded components: a Stories you might like rail recommended by Genie, and a Rewind 15 mins back recap card" width="1656" height="1676" loading="lazy">
-                            </div>
-                            <figcaption class="gx-caption">
-                                The attribution travels with the component: a recommendation rail that names Genie, and a recap card carrying the same mark.
-                            </figcaption>
-                        </figure>
-                    </div>
+                    <figure class="gx-figure gx-reveal" data-film style="margin-block: clamp(3rem, 8vw, 6rem);">
+                        <div class="gx-asset gx-rise">
+                            <video controls preload="metadata" playsinline
+                                   poster="material/genie-brand-film-poster.webp"
+                                   aria-label="A frame from the Genie brand film: an illustrated landscape of golden hills and cypresses under a deep teal, star-filled sky"
+                                   width="1920" height="1080">
+                                <source src="material/genie-brand-film.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <figcaption class="gx-caption">
+                            The film that set the stage for AI at Storytel, shown at the campfire party on the
+                            company's twentieth anniversary — the first time everyone at Storytel met Genie.
+                        </figcaption>
+                    </figure>
                 </section>
 
                 <!-- 3 — PILLARS -->
@@ -1499,6 +1522,17 @@
                             Campfire concept, which has been the foundation of our brand since its beginning —
                             under the name “Bokilur” — all the way to the orange bubble we know today.
                         </p>
+                    </div>
+
+                    <figure class="gx-figure gx-reveal" style="margin-block: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset gx-rise">
+                            <img src="material/genie-campfire.webp"
+                                 alt="A crowd gathered in the dark around a tall bonfire throwing sparks into the night"
+                                 width="1694" height="1132" loading="lazy" decoding="async">
+                        </div>
+                    </figure>
+
+                    <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             But in order to do so, we had to define what Genie's objectives were.
                         </p>
@@ -2889,12 +2923,63 @@
 
                 buildDots();
 
-                /* Which slide is centred drives the dots — no scroll maths. */
-                var activeWatch = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (e) { if (e.intersectionRatio > 0.6) markActive(e.target); });
-                }, { root: track, threshold: [0.6] });
-                slides.forEach(function (s) { activeWatch.observe(s); });
+                /* Which slide the track has come to rest on drives the dots. An
+                   IntersectionObserver fires repeatedly through a momentum scroll on
+                   a phone, so the dots flickered the whole way across; settling once
+                   the scrolling stops gives one update per swipe. */
+                function syncDots() {
+                    if (!slides.length) return;
+                    var centre = track.scrollLeft + track.clientWidth / 2;
+                    var best = 0, bestGap = Infinity;
+                    slides.forEach(function (slide, i) {
+                        var mid = slide.offsetLeft - track.offsetLeft + slide.offsetWidth / 2;
+                        var gap = Math.abs(mid - centre);
+                        if (gap < bestGap) { bestGap = gap; best = i; }
+                    });
+                    markActive(slides[best]);
+                }
+                var settling;
+                track.addEventListener('scroll', function () {
+                    clearTimeout(settling);
+                    settling = setTimeout(syncDots, 90);
+                }, { passive: true });
+                syncDots();
             });
+            /* ---- 3b. Brand film ----
+               A <video> with <source> children never fires error on itself, so watch
+               the sources. Until the film is in the repo the poster stands in for it
+               as a plain still -- better than an empty section, and better than a
+               play button that does nothing. */
+            document.querySelectorAll('[data-film]').forEach(function (fig) {
+                var video = fig.querySelector('video');
+                if (!video) return;
+
+                var swapped = false;
+                function showStill() {
+                    if (swapped) return;
+                    swapped = true;
+                    var poster = video.getAttribute('poster');
+                    if (!poster) { fig.remove(); return; }
+                    var img = new Image();
+                    img.src = poster;
+                    img.alt = video.getAttribute('aria-label') || '';
+                    img.width = 1920;
+                    img.height = 1080;
+                    img.decoding = 'async';
+                    video.replaceWith(img);
+                }
+
+                if (video.error || video.networkState === 3) { showStill(); return; }
+                video.addEventListener('error', showStill);
+                var sources = video.querySelectorAll('source');
+                var failed = 0;
+                Array.prototype.forEach.call(sources, function (src) {
+                    src.addEventListener('error', function () {
+                        if (++failed >= sources.length) showStill();
+                    });
+                });
+            });
+
             /* ---- 3a. Fullscreen for the hero film ---- */
             document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
                 var media = btn.closest('.gx-hero-media');
