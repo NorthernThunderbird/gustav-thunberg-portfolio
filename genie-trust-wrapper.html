@@ -560,14 +560,16 @@
         }
 
 
-        /* Branding rule — a decision the reader can walk themselves. */
-        .gx-rules {
+        /* Branding rule — the decision tree, every route collapsed until opened.
+           Built on <details>, so it expands with no scripting at all and the whole
+           ruleset stays in the markup for search and screen readers. */
+        .gx-tree {
             border: 1px solid var(--gx-line);
             border-radius: var(--radius-lg);
             background: var(--gx-stage-2);
             padding: clamp(1.25rem, 3vw, 2rem);
         }
-        .gx-rules-kicker {
+        .gx-tree-kicker {
             display: block;
             font-size: 0.68rem;
             font-weight: 600;
@@ -576,69 +578,94 @@
             color: var(--gx-accent);
             margin-bottom: var(--space-lg);
         }
-        /* The full ruleset, shown when scripting is unavailable. */
-        .gx-rules-static {
-            margin: 0;
-            padding-left: 1.2rem;
-            color: var(--gx-stage-muted);
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        .gx-rules-static li { margin-bottom: var(--space-md); }
-        .gx-rules-static li:last-child { margin-bottom: 0; }
-        .gx-rules-static b { color: var(--gx-stage-text); font-weight: 500; }
-
-        .gx-rules-trail { list-style: none; margin: 0 0 var(--space-lg); padding: 0; }
-        .gx-rules-trail:empty { display: none; }
-        .gx-rules-trail li {
-            display: flex;
-            align-items: baseline;
-            gap: var(--space-md);
-            padding: var(--space-sm) 0;
-            border-bottom: 1px solid var(--gx-line);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--gx-stage-muted);
-        }
-        .gx-rules-trail .gx-trail-a {
-            flex-shrink: 0;
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--gx-accent);
-        }
-        .gx-rules-q {
-            font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+        .gx-tree-q {
+            font-size: clamp(1.02rem, 2vw, 1.18rem);
             font-weight: 400;
             line-height: 1.4;
             color: var(--gx-stage-text);
-            margin: 0 0 var(--space-lg);
+            margin: 0;
             max-width: none;
         }
-        .gx-rules-actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
-        .gx-rules-btn {
-            min-height: 44px;
-            padding: 0 1.4rem;
-            border-radius: 999px;
+
+        /* Each level hangs off a rail drawn down the left of its branch list. */
+        .gx-tree-branches {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 clamp(0.85rem, 2.5vw, 1.35rem);
+        }
+        .gx-tree-branch {
+            position: relative;
+            padding-left: clamp(0.85rem, 2.5vw, 1.35rem);
+        }
+        /* vertical rail: full height on the first branch, stopping at the elbow on the last */
+        .gx-tree-branch::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--gx-line);
+        }
+        .gx-tree-branch:last-child::before { bottom: auto; height: 25px; }
+        /* elbow into the answer pill */
+        .gx-tree-branch::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25px;
+            width: clamp(0.85rem, 2.5vw, 1.35rem);
+            height: 1px;
+            background: var(--gx-line);
+        }
+
+        .gx-tree-sum {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.65rem 0;
+            padding: 0.4rem 0.95rem;
             border: 1px solid var(--gx-line);
-            background: transparent;
-            color: var(--gx-stage-text);
-            font-family: inherit;
-            font-size: 0.95rem;
+            border-radius: 999px;
+            color: var(--gx-stage-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
             cursor: pointer;
-            transition: border-color var(--timing-fast) ease, background var(--timing-fast) ease;
+            list-style: none;                       /* kill the native disclosure marker */
+            transition: border-color var(--timing-fast) ease,
+                        color var(--timing-fast) ease,
+                        background var(--timing-fast) ease;
         }
-        .gx-rules-btn:hover,
-        .gx-rules-btn:focus-visible {
+        .gx-tree-sum::-webkit-details-marker { display: none; }
+        .gx-tree-sum:hover,
+        .gx-tree-sum:focus-visible {
             border-color: var(--gx-accent);
-            background: rgba(255, 80, 28, 0.12);
+            color: var(--gx-stage-text);
+            background: rgba(255, 80, 28, 0.1);
         }
-        .gx-rules-verdict {
-            border-top: 1px solid var(--gx-line);
-            padding-top: var(--space-lg);
+        /* our own marker: a chevron that turns down when the route is open */
+        .gx-tree-sum::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            transform: rotate(-45deg);
+            transition: transform var(--timing-fast) ease;
         }
-        .gx-rules-verdict-label {
+        details[open] > .gx-tree-sum::before { transform: rotate(45deg); }
+        /* An opened route brightens but does not go orange: the accent is reserved
+           for Genie outcomes, so it keeps meaning something when a leaf uses it. */
+        details[open] > .gx-tree-sum {
+            color: var(--gx-stage-text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .gx-tree-body { padding-bottom: var(--space-sm); }
+
+        /* Leaf: where a route ends. Genie outcomes take the accent; the rest stay
+           neutral, so the chip reads as "which branding" and not as pass and fail. */
+        .gx-tree-end {
             display: inline-block;
             padding: 0.4rem 0.9rem;
             border-radius: 999px;
@@ -648,31 +675,33 @@
             border: 1px solid var(--gx-line);
             color: var(--gx-stage-muted);
         }
-        /* Genie outcomes take the accent; everything else stays neutral, so the
-           chip reads as "which branding" rather than as pass and fail. */
-        .gx-rules-verdict.is-genie .gx-rules-verdict-label {
+        .gx-tree-end.is-genie {
             border-color: var(--gx-accent);
             background: rgba(255, 80, 28, 0.14);
             color: var(--gx-accent);
         }
-        .gx-rules-verdict-note {
-            margin: var(--space-md) 0 0;
-            font-size: 0.95rem;
+        .gx-tree-note {
+            margin: var(--space-sm) 0 0;
+            font-size: 0.92rem;
             line-height: 1.6;
             color: var(--gx-stage-muted);
-            max-width: none;
+            max-width: 34rem;
         }
-        .gx-rules-reset {
-            margin-top: var(--space-lg);
-            padding: 0;
-            border: 0;
-            background: none;
-            color: var(--gx-accent);
-            font-family: inherit;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 3px;
+
+        /* Animate the expansion where the browser can interpolate to auto. */
+        @supports (interpolate-size: allow-keywords) {
+            .gx-tree { interpolate-size: allow-keywords; }
+            .gx-tree details::details-content {
+                block-size: 0;
+                overflow: clip;
+                transition: block-size var(--timing-normal) ease,
+                            content-visibility var(--timing-normal) allow-discrete;
+            }
+            .gx-tree details[open]::details-content { block-size: auto; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gx-tree details::details-content { transition: none; }
+            .gx-tree-sum::before { transition: none; }
         }
 
         /* pillars */
@@ -1353,32 +1382,87 @@
                     </div>
 
                     <div class="gx-wide gx-reveal" style="max-width: 680px;">
-                        <div class="gx-rules" data-ruleset>
-                            <span class="gx-rules-kicker">The branding rule — try it yourself</span>
+                        <div class="gx-tree">
+                            <span class="gx-tree-kicker">The branding rule — open a route to follow it</span>
 
-                            <!-- Always in the markup: the whole ruleset, readable without scripting. -->
-                            <ol class="gx-rules-static">
-                                <li><b>Is the feature powered by AI?</b> If no — not Genie.</li>
-                                <li><b>Is it visible to the user?</b> If no — not Genie.</li>
-                                <li><b>Does it generate bespoke content, different for each user?</b> If no — not Genie, but transparency around AI.</li>
-                                <li><b>Yes to all three — Genie branding.</b> Then: do users opt in to the feature? If yes, obvious branding. If no, discreet branding.</li>
-                            </ol>
-
-                            <div class="gx-rules-play" hidden>
-                                <ol class="gx-rules-trail"></ol>
-                                <div class="gx-rules-step">
-                                    <p class="gx-rules-q"></p>
-                                    <div class="gx-rules-actions">
-                                        <button type="button" class="gx-rules-btn" data-answer="yes">Yes</button>
-                                        <button type="button" class="gx-rules-btn" data-answer="no">No</button>
-                                    </div>
-                                </div>
-                                <div class="gx-rules-verdict" hidden>
-                                    <span class="gx-rules-verdict-label"></span>
-                                    <p class="gx-rules-verdict-note"></p>
-                                </div>
-                                <button type="button" class="gx-rules-reset" hidden>Start over</button>
-                            </div>
+                            <p class="gx-tree-q">Is the feature powered by AI?</p>
+                            <ul class="gx-tree-branches">
+                                <li class="gx-tree-branch">
+                                    <details>
+                                        <summary class="gx-tree-sum">No</summary>
+                                        <div class="gx-tree-body">
+                                            <span class="gx-tree-end">Not Genie</span>
+                                            <p class="gx-tree-note">No AI, nothing to attribute. It is simply the product.</p>
+                                        </div>
+                                    </details>
+                                </li>
+                                <li class="gx-tree-branch">
+                                    <details>
+                                        <summary class="gx-tree-sum">Yes</summary>
+                                        <div class="gx-tree-body">
+                                            <p class="gx-tree-q">Is the AI visible to the user?</p>
+                                            <ul class="gx-tree-branches">
+                                                <li class="gx-tree-branch">
+                                                    <details>
+                                                        <summary class="gx-tree-sum">No</summary>
+                                                        <div class="gx-tree-body">
+                                                            <span class="gx-tree-end">Not Genie</span>
+                                                            <p class="gx-tree-note">The AI never surfaces, so there is nothing for a mark to label.</p>
+                                                        </div>
+                                                    </details>
+                                                </li>
+                                                <li class="gx-tree-branch">
+                                                    <details>
+                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                        <div class="gx-tree-body">
+                                                            <p class="gx-tree-q">Does it generate bespoke content — different for each user?</p>
+                                                            <ul class="gx-tree-branches">
+                                                                <li class="gx-tree-branch">
+                                                                    <details>
+                                                                        <summary class="gx-tree-sum">No</summary>
+                                                                        <div class="gx-tree-body">
+                                                                            <span class="gx-tree-end">Not Genie, but transparency around AI</span>
+                                                                            <p class="gx-tree-note">Everyone gets the same output, so it is not Genie speaking — but the user still has to know AI was involved.</p>
+                                                                        </div>
+                                                                    </details>
+                                                                </li>
+                                                                <li class="gx-tree-branch">
+                                                                    <details>
+                                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                                        <div class="gx-tree-body">
+                                                                            <p class="gx-tree-q">Do users opt in to the feature?</p>
+                                                                            <ul class="gx-tree-branches">
+                                                                                <li class="gx-tree-branch">
+                                                                                    <details>
+                                                                                        <summary class="gx-tree-sum">No</summary>
+                                                                                        <div class="gx-tree-body">
+                                                                                            <span class="gx-tree-end is-genie">Genie branding — discreet</span>
+                                                                                            <p class="gx-tree-note">The user did not ask for it, so the mark stays quiet.</p>
+                                                                                        </div>
+                                                                                    </details>
+                                                                                </li>
+                                                                                <li class="gx-tree-branch">
+                                                                                    <details>
+                                                                                        <summary class="gx-tree-sum">Yes</summary>
+                                                                                        <div class="gx-tree-body">
+                                                                                            <span class="gx-tree-end is-genie">Genie branding — obvious</span>
+                                                                                            <p class="gx-tree-note">The user asked for it, so Genie can be present and named.</p>
+                                                                                        </div>
+                                                                                    </details>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </details>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </details>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </details>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
@@ -2495,90 +2579,6 @@
 
                 stations.forEach(function (el) { stationObserver.observe(el); });
             })();
-
-            /* ---- 3. Branding rule: let the reader walk the decision ---- */
-            document.querySelectorAll('[data-ruleset]').forEach(function (box) {
-                var staticList = box.querySelector('.gx-rules-static');
-                var play       = box.querySelector('.gx-rules-play');
-                var trail      = box.querySelector('.gx-rules-trail');
-                var step       = box.querySelector('.gx-rules-step');
-                var question   = box.querySelector('.gx-rules-q');
-                var verdict    = box.querySelector('.gx-rules-verdict');
-                var vLabel     = box.querySelector('.gx-rules-verdict-label');
-                var vNote      = box.querySelector('.gx-rules-verdict-note');
-                var reset      = box.querySelector('.gx-rules-reset');
-                if (!play) return;
-
-                var NODES = {
-                    ai:      { q: 'Is the feature powered by AI?',                              yes: 'visible', no: 'none' },
-                    visible: { q: 'Is it visible to the user?',                                 yes: 'bespoke', no: 'none' },
-                    bespoke: { q: 'Does it generate bespoke content — different for each user?', yes: 'optin',   no: 'transparency' },
-                    optin:   { q: 'Do users opt in to the feature?',                            yes: 'obvious', no: 'discreet' }
-                };
-                var ENDS = {
-                    none:         { label: 'Not Genie', genie: false,
-                                    note: 'Nothing to attribute, so nothing carries the mark.' },
-                    transparency: { label: 'Not Genie, but transparency around AI', genie: false,
-                                    note: 'The user still has to know AI was involved; it just is not Genie speaking.' },
-                    obvious:      { label: 'Genie branding — obvious', genie: true,
-                                    note: 'The user opted in, so Genie can be present and named.' },
-                    discreet:     { label: 'Genie branding — discreet', genie: true,
-                                    note: 'The user did not ask for it, so the mark stays quiet.' }
-                };
-
-                var at = 'ai';
-
-                function render() {
-                    var node = NODES[at];
-                    question.textContent = node.q;
-                    step.hidden = false;
-                    verdict.hidden = true;
-                    verdict.classList.remove('is-genie');   /* do not carry a verdict's styling into the next run */
-                    reset.hidden = trail.children.length === 0;
-                }
-
-                function finish(key) {
-                    var end = ENDS[key];
-                    step.hidden = true;
-                    vLabel.textContent = end.label;
-                    vNote.textContent = end.note;
-                    verdict.classList.toggle('is-genie', end.genie);
-                    verdict.hidden = false;
-                    reset.hidden = false;
-                }
-
-                function answer(value) {
-                    var node = NODES[at];
-                    var li = document.createElement('li');
-                    var a = document.createElement('span');
-                    a.className = 'gx-trail-a';
-                    a.textContent = value;
-                    var q = document.createElement('span');
-                    q.textContent = node.q;
-                    li.appendChild(a);
-                    li.appendChild(q);
-                    trail.appendChild(li);
-
-                    var next = node[value];
-                    if (NODES[next]) { at = next; render(); }
-                    else finish(next);
-                }
-
-                box.querySelectorAll('[data-answer]').forEach(function (btn) {
-                    btn.addEventListener('click', function () { answer(btn.getAttribute('data-answer')); });
-                });
-                reset.addEventListener('click', function () {
-                    trail.innerHTML = '';
-                    at = 'ai';
-                    render();
-                    reset.hidden = true;
-                });
-
-                /* Scripting is here, so swap the written ruleset for the walker. */
-                staticList.hidden = true;
-                play.hidden = false;
-                render();
-            });
 
             /* ---- 3a. Fullscreen for the hero film ---- */
             document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
