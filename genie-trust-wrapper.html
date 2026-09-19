@@ -668,13 +668,24 @@
             scroll-snap-align: center;
             margin: 0;
             min-width: 0;
+            /* The frame is narrower than the column once the viewport bounds it,
+               so centre it -- otherwise it sits left of its own caption and dots. */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .gx-slide-frame {
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            aspect-ratio: 1 / 1;      /* every exploration asset is square */
+            /* Every exploration asset is square. Its side is whichever is smallest:
+               the column, the window, or a ceiling -- so it never outgrows the
+               viewport on a laptop and still fills the width of a phone. Set as a
+               width rather than a max, or a centred flex item would collapse to the
+               asset's intrinsic size instead. */
+            aspect-ratio: 1 / 1;
+            width: min(100%, 68vh, 720px);
         }
         .gx-slide-frame img,
         .gx-slide-frame video {
@@ -688,6 +699,7 @@
             font-size: 0.92rem;
             line-height: 1.5;
             color: var(--color-text-muted);
+            text-align: center;
         }
         .gx-carousel-dots {
             display: flex;
@@ -1480,16 +1492,19 @@
                         </p>
                     </div>
 
-                    <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
-                        <figure class="gx-figure">
-                            <div class="gx-asset is-portrait gx-cutout gx-rise">
-                                <img class="gx-float" src="material/genie-components.png" alt="Two Genie-branded components: a Stories you might like rail recommended by Genie, and a Rewind 15 mins back recap card" width="1656" height="1676" loading="lazy">
-                            </div>
-                            <figcaption class="gx-caption">
-                                The attribution travels with the component: a recommendation rail that names Genie, and a recap card carrying the same mark.
-                            </figcaption>
-                        </figure>
-                    </div>
+                    <figure class="gx-figure gx-reveal" data-film style="margin-block: clamp(3rem, 8vw, 6rem);">
+                        <div class="gx-asset gx-rise">
+                            <video controls preload="metadata" playsinline
+                                   poster="material/genie-brand-film-poster.webp"
+                                   width="1920" height="1080">
+                                <source src="material/genie-brand-film.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <figcaption class="gx-caption">
+                            The film that set the stage for AI at Storytel, shown at the campfire party on the
+                            company's twentieth anniversary — the first time everyone at Storytel met Genie.
+                        </figcaption>
+                    </figure>
                 </section>
 
                 <!-- 3 — PILLARS -->
@@ -2912,6 +2927,25 @@
                 }, { root: track, threshold: [0.6] });
                 slides.forEach(function (s) { activeWatch.observe(s); });
             });
+            /* ---- 3b. Brand film ----
+               A <video> with <source> children never fires error on itself, so watch
+               the sources: until the film is in the repo the whole figure stays out
+               rather than showing a poster with a play button that does nothing. */
+            document.querySelectorAll('[data-film]').forEach(function (fig) {
+                var video = fig.querySelector('video');
+                if (!video) return;
+                function hide() { fig.remove(); }
+                if (video.error || video.networkState === 3) { hide(); return; }
+                video.addEventListener('error', hide);
+                var sources = video.querySelectorAll('source');
+                var failed = 0;
+                Array.prototype.forEach.call(sources, function (src) {
+                    src.addEventListener('error', function () {
+                        if (++failed >= sources.length) hide();
+                    });
+                });
+            });
+
             /* ---- 3a. Fullscreen for the hero film ---- */
             document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
                 var media = btn.closest('.gx-hero-media');
