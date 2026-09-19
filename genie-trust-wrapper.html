@@ -368,6 +368,20 @@
             margin-top: var(--space-2xl);
             border-top: 1px solid var(--color-border);
         }
+
+        /* ---- Lockup: brand mark sitting right under the film, with the
+           project overview underneath it ---- */
+        .gx-lockup { margin-bottom: clamp(4rem, 11vw, 9rem); }
+        .gx-logo-wrap { line-height: 0; }
+        .gx-logo {
+            display: block;
+            height: clamp(26px, 3.6vw, 36px);
+            width: auto;
+        }
+        .gx-logo-dark { display: none; }
+        :root[data-theme="dark"] .gx-logo-light { display: none; }
+        :root[data-theme="dark"] .gx-logo-dark { display: block; }
+        .gx-lockup .gx-facts { margin-top: var(--space-2xl); }
         .gx-fact .gx-fact-label {
             display: block;
             font-size: 0.68rem;
@@ -1091,29 +1105,13 @@
         <article class="gx-body">
             <div class="container">
 
-                <!-- INTRO -->
-                <section data-blob="0.80,0.55,0.00" class="gx-chapter gx-intro">
+                <!-- LOCKUP — brand mark + project overview, right under the film -->
+                <section class="gx-lockup">
                     <div class="gx-prose">
-                        <p class="gx-p gx-reveal">
-                            Readers on Storytel for the most part don't interact with the app that often. They
-                            press play, lock their screen and hopefully step into a world of stories. But once in
-                            a while users actually step out of the story, and hopefully to find the next one.
-                        </p>
-                        <p class="gx-p gx-reveal">
-                            Audiobooks and e-books require quite a lot of commitment, and therefore finding that
-                            next story creates different types of challenges to solve in the story discovery
-                            process. One of the projects at Storytel trying to explore new ways of improving the
-                            process of finding your next read is Storytel Genie.
-                        </p>
-                    </div>
-
-                    <figure class="gx-figure gx-reveal" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
-                        <div class="gx-asset is-portrait gx-cutout gx-rise">
-                            <img class="gx-float" src="material/genie-chat-hero.png" alt="A Genie conversation on iPhone: a spicy summer romance request answered with an inline recommendation" width="1600" height="1892" loading="lazy">
+                        <div class="gx-logo-wrap gx-reveal">
+                            <img class="gx-logo gx-logo-light" src="material/genie-logo-black.png" alt="Storytel Genie" width="1224" height="190" loading="lazy">
+                            <img class="gx-logo gx-logo-dark" src="material/genie-logo-white.png" alt="Storytel Genie" width="1223" height="191" loading="lazy">
                         </div>
-                    </figure>
-
-                    <div class="gx-prose" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
                         <div class="gx-facts gx-reveal">
                             <div class="gx-fact">
                                 <span class="gx-fact-label">Role</span>
@@ -1137,6 +1135,29 @@
                             </div>
                         </div>
                     </div>
+                </section>
+
+                <!-- INTRO -->
+                <section data-blob="0.80,0.55,0.00" class="gx-chapter gx-intro">
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            Readers on Storytel for the most part don't interact with the app that often. They
+                            press play, lock their screen and hopefully step into a world of stories. But once in
+                            a while users actually step out of the story, and hopefully to find the next one.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            Audiobooks and e-books require quite a lot of commitment, and therefore finding that
+                            next story creates different types of challenges to solve in the story discovery
+                            process. One of the projects at Storytel trying to explore new ways of improving the
+                            process of finding your next read is Storytel Genie.
+                        </p>
+                    </div>
+
+                    <figure class="gx-figure gx-reveal" style="margin-top: clamp(2.5rem, 7vw, 5rem);">
+                        <div class="gx-asset is-portrait gx-cutout gx-rise">
+                            <img class="gx-float" src="material/genie-chat-hero.png" alt="A Genie conversation on iPhone: a spicy summer romance request answered with an inline recommendation" width="1600" height="1892" loading="lazy">
+                        </div>
+                    </figure>
                 </section>
 
                 <!-- 1 — WHY THE AI NEEDED PACKAGING -->
