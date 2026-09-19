@@ -2847,10 +2847,22 @@
                         .catch(function () { drop(slide); });
                 }
 
+                /* Media can fail before this script runs, and a missed error event
+                   would leave a broken slide on the page — so check the state we
+                   arrived to as well as listening for the next one. */
+                function watchMedia(el, slide) {
+                    var alreadyFailed = el.tagName === 'VIDEO'
+                        ? !!el.error
+                        : (el.complete && el.naturalWidth === 0);
+                    if (alreadyFailed) { drop(slide); return false; }
+                    el.addEventListener('error', function () { drop(slide); });
+                    return true;
+                }
+
                 /* A looping clip plays only while its slide is on screen. */
                 function runClip(slide) {
                     var video = slide.querySelector('video');
-                    video.addEventListener('error', function () { drop(slide); });
+                    if (!watchMedia(video, slide)) return;
                     if (still) { video.removeAttribute('autoplay'); return; }
                     new IntersectionObserver(function (entries) {
                         entries.forEach(function (e) {
@@ -2863,7 +2875,7 @@
                 slides.slice().forEach(function (slide) {
                     if (slide.hasAttribute('data-seq')) runSequence(slide);
                     else if (slide.querySelector('video')) runClip(slide);
-                    else slide.querySelector('img').addEventListener('error', function () { drop(slide); });
+                    else watchMedia(slide.querySelector('img'), slide);
                 });
 
                 buildDots();
