@@ -32,9 +32,9 @@
       '<nav class="nav">' +
         '<div class="nav-left">' +
           '<button class="theme-toggle" aria-label="Toggle theme">' +
-            '<span class="knob-ticks"></span>' +
             '<span class="knob-body"><span class="knob-indicator"></span></span>' +
-            '<span class="knob-light"></span>' +
+            '<span class="knob-dot is-dark"></span>' +
+            '<span class="knob-dot is-light"></span>' +
           '</button>' +
           '<a href="index.html" class="brand-link"><span class="brand-text">G.Thunberg</span></a>' +
         '</div>' +
