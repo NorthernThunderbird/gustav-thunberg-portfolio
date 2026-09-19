@@ -332,24 +332,17 @@
             color: var(--color-text-primary);
             margin: 0 0 var(--space-sm);
         }
+        /* One size for every reading paragraph — the opening paragraph's. */
         .gx-p {
-            font-size: 1.1rem;
-            line-height: 1.75;
-            color: var(--color-text-secondary);
+            font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+            line-height: 1.55;
+            font-weight: 300;
+            color: var(--color-text-primary);
             margin-bottom: var(--space-lg);
             max-width: var(--gx-prose);
         }
         .gx-p strong { color: var(--color-text-primary); font-weight: 500; }
         .gx-p em { color: var(--color-text-primary); }
-        .gx-lede {
-            font-size: clamp(1.2rem, 2.4vw, 1.5rem);
-            line-height: 1.55;
-            font-weight: 300;
-            color: var(--color-text-primary);
-        }
-        /* The intro reads as one block, so both of its paragraphs carry the
-           lede's full-strength ink rather than the body grey. */
-        .gx-intro .gx-p { color: var(--color-text-primary); }
         .gx-accent { color: var(--gx-accent); }
 
         /* ---- Intro meta ---- */
@@ -417,7 +410,11 @@
         .gx-stage.is-in::before { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         .gx-stage .gx-caption { color: var(--gx-stage-muted); }
         .gx-stage .gx-h2, .gx-stage .gx-h3 { color: var(--gx-stage-text); }
+        /* Light mode still paints stages as dark slabs, so they need light ink.
+           Dark mode makes them transparent, where dimming buys nothing — the
+           reading ink is the same there as everywhere else. */
         .gx-stage .gx-p { color: var(--gx-stage-muted); }
+        :root[data-theme="dark"] .gx-stage .gx-p { color: var(--color-text-primary); }
         .gx-stage-grain::after {
             content: "";
             position: absolute;
@@ -1147,7 +1144,7 @@
                 <!-- INTRO -->
                 <section data-blob="0.80,0.55,0.00" class="gx-chapter gx-intro">
                     <div class="gx-prose">
-                        <p class="gx-p gx-lede gx-reveal">
+                        <p class="gx-p gx-reveal">
                             Readers on Storytel for the most part don't interact with the app that often. They
                             press play, lock their screen and hopefully step into a world of stories. But once in
                             a while users actually step out of the story, and hopefully to find the next one.
@@ -1443,7 +1440,7 @@
                             <h3 class="gx-h3 gx-reveal" style="text-align: center; font-size: 1.05rem;">
                                 The FAB — one entry point, two platforms
                             </h3>
-                            <p class="gx-p gx-reveal" style="text-align: center; margin-inline: auto; font-size: 0.98rem;">
+                            <p class="gx-p gx-reveal" style="text-align: center; margin-inline: auto;">
                                 Genie's entry point lives in the bottom navigation, which is the one place the
                                 two platforms disagree about almost everything. iOS carries it inline in the tab
                                 bar; Android lifts it out as a floating action button above a pill. Same
@@ -1602,7 +1599,7 @@
                                     <li class="gx-spec gx-reveal">The Genie blur stays anchored in the same position regardless of screen size.</li>
                                     <li class="gx-spec gx-reveal">Only released formats are named. Audio released with an ebook still pending shows “Audio.” Nothing released shows the release date instead — “Coming 6 May 2026.”</li>
                                 </ol>
-                                <p class="gx-p gx-reveal" style="margin-top: var(--space-xl); font-size: 0.98rem;">
+                                <p class="gx-p gx-reveal" style="margin-top: var(--space-xl);">
                                     All of it specified across iPhone 13 mini, 16 and 17 — 375, 393 and 402 points
                                     — in light and dark mode, horizontal and vertical. It is the least glamorous
                                     part of the work, and the part that decided whether the component held.
@@ -1701,7 +1698,7 @@
                                         “Find where you fell asleep. Refresh your memory with Genie.” Rewind 15, 10
                                         or 5 minutes.
                                     </p>
-                                    <p class="gx-p gx-reveal" style="font-size: 0.98rem; margin-bottom: 0;">
+                                    <p class="gx-p gx-reveal" style="margin-bottom: 0;">
                                         An AI feature that only works in the happy path is not shipped, it is
                                         demoed. Users meet the edges constantly — they hit a daily limit, they are
                                         on a train with no signal, they are forty minutes into a twelve-hour book.
@@ -1748,7 +1745,7 @@
                                     cooks the device is a bad design. Building the fallback in from the start was a
                                     craft decision, not a compromise — and it applies to light and dark mode alike.
                                 </p>
-                                <p class="gx-p gx-reveal" style="font-size: 0.98rem;">
+                                <p class="gx-p gx-reveal">
                                     The authored states are separate assets, not one loop. Motion is treated as a
                                     component set with the same discipline as a button.
                                 </p>
