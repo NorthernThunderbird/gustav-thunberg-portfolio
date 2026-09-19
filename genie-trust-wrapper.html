@@ -561,13 +561,11 @@
 
 
         /* Branding rule — the decision tree, every route collapsed until opened.
-           Built on <details>, so it expands with no scripting at all and the whole
-           ruleset stays in the markup for search and screen readers. */
+           It sits inline in the prose with no card around it, so it takes the page
+           palette rather than the dark-stage one. Built on <details>, so it expands
+           with no scripting and the ruleset stays in the markup for search. */
         .gx-tree {
-            border: 1px solid var(--gx-line);
-            border-radius: var(--radius-lg);
-            background: var(--gx-stage-2);
-            padding: clamp(1.25rem, 3vw, 2rem);
+            margin: var(--space-2xl) 0;
         }
         .gx-tree-kicker {
             display: block;
@@ -578,11 +576,12 @@
             color: var(--gx-accent);
             margin-bottom: var(--space-lg);
         }
+        /* Reading size, because inline in the prose the questions are reading text. */
         .gx-tree-q {
-            font-size: clamp(1.02rem, 2vw, 1.18rem);
-            font-weight: 400;
+            font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+            font-weight: 300;
             line-height: 1.4;
-            color: var(--gx-stage-text);
+            color: var(--color-text-primary);
             margin: 0;
             max-width: none;
         }
@@ -591,11 +590,11 @@
         .gx-tree-branches {
             list-style: none;
             margin: 0;
-            padding: 0 0 0 clamp(0.85rem, 2.5vw, 1.35rem);
+            padding: 0 0 0 clamp(0.6rem, 2vw, 1.1rem);
         }
         .gx-tree-branch {
             position: relative;
-            padding-left: clamp(0.85rem, 2.5vw, 1.35rem);
+            padding-left: clamp(0.6rem, 2vw, 1.1rem);
         }
         /* vertical rail: full height on the first branch, stopping at the elbow on the last */
         .gx-tree-branch::before {
@@ -605,7 +604,7 @@
             top: 0;
             bottom: 0;
             width: 1px;
-            background: var(--gx-line);
+            background: var(--color-border);
         }
         .gx-tree-branch:last-child::before { bottom: auto; height: 25px; }
         /* elbow into the answer pill */
@@ -614,9 +613,9 @@
             position: absolute;
             left: 0;
             top: 25px;
-            width: clamp(0.85rem, 2.5vw, 1.35rem);
+            width: clamp(0.6rem, 2vw, 1.1rem);
             height: 1px;
-            background: var(--gx-line);
+            background: var(--color-border);
         }
 
         .gx-tree-sum {
@@ -625,9 +624,9 @@
             gap: 0.5rem;
             margin: 0.65rem 0;
             padding: 0.4rem 0.95rem;
-            border: 1px solid var(--gx-line);
+            border: 1px solid var(--color-border);
             border-radius: 999px;
-            color: var(--gx-stage-muted);
+            color: var(--color-text-muted);
             font-size: 0.85rem;
             letter-spacing: 0.04em;
             cursor: pointer;
@@ -640,7 +639,7 @@
         .gx-tree-sum:hover,
         .gx-tree-sum:focus-visible {
             border-color: var(--gx-accent);
-            color: var(--gx-stage-text);
+            color: var(--color-text-primary);
             background: rgba(255, 80, 28, 0.1);
         }
         /* our own marker: a chevron that turns down when the route is open */
@@ -657,8 +656,8 @@
         /* An opened route brightens but does not go orange: the accent is reserved
            for Genie outcomes, so it keeps meaning something when a leaf uses it. */
         details[open] > .gx-tree-sum {
-            color: var(--gx-stage-text);
-            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-text-primary);
+            border-color: var(--color-text-muted);
         }
 
         .gx-tree-body { padding-bottom: var(--space-sm); }
@@ -672,8 +671,8 @@
             font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 0.04em;
-            border: 1px solid var(--gx-line);
-            color: var(--gx-stage-muted);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-muted);
         }
         .gx-tree-end.is-genie {
             border-color: var(--gx-accent);
@@ -682,10 +681,10 @@
         }
         .gx-tree-note {
             margin: var(--space-sm) 0 0;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             line-height: 1.6;
-            color: var(--gx-stage-muted);
-            max-width: 34rem;
+            color: var(--color-text-muted);
+            max-width: none;   /* the branch indent already sets the measure */
         }
 
         /* Animate the expansion where the browser can interpolate to auto. */
@@ -1381,7 +1380,7 @@
                         </p>
                     </div>
 
-                    <div class="gx-wide gx-reveal" style="max-width: 680px;">
+                    <div class="gx-prose gx-reveal">
                         <div class="gx-tree">
                             <span class="gx-tree-kicker">The branding rule — open a route to follow it</span>
 
