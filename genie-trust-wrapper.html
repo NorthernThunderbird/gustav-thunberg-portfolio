@@ -533,33 +533,6 @@
         /* ============================================================
            COMPONENTS
            ============================================================ */
-        /* stat trio */
-        .gx-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: var(--space-xl);
-            margin: var(--space-2xl) 0;
-        }
-        .gx-stat { border-top: 1px solid var(--color-border); padding-top: var(--space-lg); }
-        .gx-stage .gx-stat { border-color: var(--gx-line); }
-        .gx-stat-value {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 300;
-            letter-spacing: -0.04em;
-            color: var(--color-text-primary);
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-        }
-        .gx-stage .gx-stat-value { color: var(--gx-stage-text); }
-        .gx-stat-label {
-            display: block;
-            margin-top: var(--space-sm);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: var(--color-text-muted);
-        }
-        .gx-stage .gx-stat-label { color: var(--gx-stage-muted); }
-
         /* big pull quote */
         .gx-quote {
             margin: clamp(3rem, 8vw, 6rem) auto;
@@ -586,29 +559,6 @@
             color: var(--color-text-muted);
         }
 
-
-        /* two tracks / generic cards */
-        .gx-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: var(--space-lg);
-        }
-        .gx-card {
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            background: var(--color-surface);
-            padding: var(--space-xl);
-            transition: transform var(--timing-normal) ease, border-color var(--timing-normal) ease;
-        }
-        .gx-card:hover { transform: translateY(-4px); border-color: rgba(255, 80, 28, 0.4); }
-        .gx-card p { font-size: 0.96rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
-        .gx-card .gx-card-eyebrow {
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--gx-accent);
-        }
 
         /* pillars */
         .gx-pillars {
@@ -1189,101 +1139,45 @@
                     </div>
                 </section>
 
-                <!-- 1 — ONE SENTENCE -->
+                <!-- 1 — WHY THE AI NEEDED PACKAGING -->
                 <section data-blob="0.82,0.58,0.55" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 01</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">One sentence, and everything that came out of it</h2>
-                        <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            Every decision in this project traces back to a sentence our research kept returning:
-                        </p>
-                    </div>
-
-                    <blockquote class="gx-quote gx-reveal">
-                        <p>“I can't easily <span class="gx-accent">find</span> what I want.”</p>
-                        <cite>The number one barrier for our core users</cite>
-                    </blockquote>
-
-                    <div class="gx-prose">
                         <p class="gx-p gx-reveal">
-                            Not the size of the catalogue — the navigation of it. Storytel has millions of titles,
-                            and the abundance had quietly become the problem. Our users were not short of stories.
-                            They were short of a way in.
+                            Since then we have launched other features such as Recaps and Story Scan, with more
+                            visionary work building up in the product roadmap.
                         </p>
                         <p class="gx-p gx-reveal">
-                            Three numbers framed the opportunity. The first two told us there was appetite. The
-                            third told us the appetite came with conditions.
+                            The features have been received well by users, publishers and authors, but they have
+                            also come with a lot of concerns for the future of the business.
+                        </p>
+                        <p class="gx-p gx-reveal">
+                            This led us to identify the need for proper AI packaging at Storytel — to increase
+                            trust and transparency across the whole product, as well as to drive more engagement
+                            and adoption.
                         </p>
                     </div>
 
                     <div class="gx-wide">
-                        <div class="gx-stats gx-reveal" data-counters>
-                            <div class="gx-stat">
-                                <div class="gx-stat-value"><span data-count-to="38">0</span>–<span data-count-to="59">0</span>%</div>
-                                <span class="gx-stat-label">of listeners across our markets say AI-driven personalisation matters to them</span>
-                            </div>
-                            <div class="gx-stat">
-                                <div class="gx-stat-value"><span data-count-to="43">0</span>%</div>
-                                <span class="gx-stat-label">of Swedes are interested in audiobooks but are not yet listening</span>
-                            </div>
-                            <div class="gx-stat">
-                                <div class="gx-stat-value"><span data-count-to="80">0</span>%</div>
-                                <span class="gx-stat-label">say fully AI-generated content should be clearly labelled — the condition</span>
-                            </div>
-                        </div>
-                        <p class="gx-caption gx-reveal" style="margin-top: var(--space-lg);">
-                            The first two figures come from Storytel's own market research across our territories;
-                            the labelling figure from published music-industry research into attitudes to
-                            AI-generated content.
-                        </p>
-                        <p class="gx-p gx-reveal" style="margin-inline: auto; text-align: center; max-width: 58ch; margin-top: var(--space-2xl);">
+                        <p class="gx-p gx-reveal" style="margin-inline: auto; text-align: center; max-width: 58ch;">
                             So the brief was not “build an AI feature.” It was: <strong>build a way in, and make it
                             obvious who is holding the door.</strong>
                         </p>
                     </div>
                 </section>
 
-                <!-- 2 — THE ARGUMENT -->
+                <!-- 2 — GETTING THE COMPANY COMMITTED -->
                 <section data-blob="0.22,0.46,0.50" class="gx-chapter">
                     <div class="gx-prose">
-                        <span class="gx-num gx-reveal">Chapter 02</span>
-                        <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">The argument we had to win first</h2>
-                        <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
-                            Before Genie, Storytel already had AI in the product. The problem was that you could
-                            not tell. Each feature looked different, behaved differently, and explained itself
-                            differently — or not at all. Users could not see the bigger picture, so every
-                            enhancement read as an experiment rather than a system.
+                        <p class="gx-p gx-reveal">
+                            The first thing we had to do was get everyone at the company committed.
                         </p>
                         <p class="gx-p gx-reveal">
-                            <strong>Unbranded AI surfaces feel risky.</strong> That is the sentence that unlocked
-                            the project internally. When a user meets an unexplained AI output, they have to do the
-                            interpretive work themselves, and in early-adoption conditions that work tends to
-                            resolve towards suspicion. A clear identity does the work for them. It answers three
-                            questions at a glance: who generated this, why it is appearing, and what to expect
-                            from it.
+                            One of the first things we did was explore the vision of the AI offering at Storytel
+                            with representatives from the brand team and the product design team, packaging
+                            everything into a video that would set the stage for AI at Storytel at the yearly
+                            campfire party and this year's 20th anniversary. This was the first time everyone at
+                            Storytel met Genie.
                         </p>
-                    </div>
-
-                    <div class="gx-prose">
-                        <p class="gx-p gx-reveal">
-                            The model we settled on, and the one we would recommend to anyone in the same position,
-                            is a division of labour.
-                        </p>
-                    </div>
-
-                    <div class="gx-wide">
-                        <div class="gx-cards" style="max-width: 760px; margin-inline: auto;">
-                            <div class="gx-card gx-reveal">
-                                <span class="gx-card-eyebrow">The wrapper</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Brand → trust &amp; adoption</h3>
-                                <p>The brand opens the door and builds the confidence to walk through it. A beautiful wrapper on a feature that does not work is a broken promise.</p>
-                            </div>
-                            <div class="gx-card gx-reveal" style="--gx-delay: 140ms">
-                                <span class="gx-card-eyebrow">The engine</span>
-                                <h3 class="gx-h3" style="margin-top: var(--space-sm);">Features → impact &amp; repeatability</h3>
-                                <p>The features have to prove the room was worth entering. A genuinely useful feature nobody trusts enough to try is invisible. Neither half rescues the other.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="gx-bleed gx-stage gx-stage-grain gx-reveal" style="margin-top: clamp(3rem, 8vw, 6rem);">
