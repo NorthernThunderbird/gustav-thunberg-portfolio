@@ -567,15 +567,153 @@
         .gx-tree {
             margin: var(--space-2xl) 0;
         }
+        /* Section heading — white, with a rule that draws itself in on reveal. */
         .gx-tree-kicker {
             display: block;
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--gx-accent);
-            margin-bottom: var(--space-lg);
+            position: relative;
+            width: fit-content;
+            max-width: 100%;
+            font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            text-transform: none;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xl);
+            padding-bottom: 0.32rem;
         }
+        .gx-tree-kicker::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: var(--gx-accent);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 260ms;
+        }
+        .gx-tree-kicker.is-in::after { transform: scaleX(1); }
+
+        /* The three product domains. */
+        .gx-domains {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: var(--space-md);
+            margin-block: var(--space-2xl);
+        }
+        .gx-domain {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            padding: var(--space-xl);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+        }
+        .gx-domain-tag {
+            align-self: flex-start;
+            padding: 0.42rem 1.1rem;
+            border-radius: 999px;
+            background: var(--gx-stage);
+            color: var(--color-text-primary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+        :root[data-theme="light"] .gx-domain-tag { background: #101010; color: #f2f2f2; }
+        .gx-domain h3 {
+            margin: 0;
+            font-size: 1.02rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--color-text-primary);
+        }
+        .gx-domain p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+
+        /* Exploration carousel — native scroll-snap, so the swipe is the browser's. */
+        .gx-carousel { margin-block: var(--space-2xl); }
+        .gx-carousel-track {
+            display: flex;
+            gap: var(--space-md);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gx-carousel-track::-webkit-scrollbar { display: none; }
+        .gx-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            margin: 0;
+            min-width: 0;
+        }
+        .gx-slide-frame {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+        }
+        .gx-slide-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .gx-slide figcaption {
+            margin-top: var(--space-md);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--color-text-muted);
+        }
+        .gx-carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+        .gx-dot {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+        .gx-dot::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--color-text-muted);
+            opacity: 0.45;
+            transition: opacity var(--timing-fast) ease,
+                        background var(--timing-fast) ease,
+                        width var(--timing-fast) ease;
+        }
+        .gx-dot[aria-selected="true"]::before {
+            width: 22px;
+            background: var(--gx-accent);
+            opacity: 1;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gx-carousel-track { scroll-behavior: auto; }
+            .gx-tree-kicker::after { transition: none; transform: scaleX(1); }
+        }
+
         /* Reading size, because inline in the prose the questions are reading text. */
         .gx-tree-q {
             font-size: clamp(1.2rem, 2.4vw, 1.5rem);
@@ -1382,7 +1520,7 @@
 
                     <div class="gx-prose gx-reveal">
                         <div class="gx-tree">
-                            <span class="gx-tree-kicker">The branding rule — open a route to follow it</span>
+                            <span class="gx-tree-kicker gx-reveal">The visibility logic</span>
 
                             <p class="gx-tree-q">Is the feature powered by AI?</p>
                             <ul class="gx-tree-branches">
@@ -1463,6 +1601,67 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            The product domain's AI-powered strategy for 2026 identified three areas where
+                            Genie would impact the product offering.
+                        </p>
+                    </div>
+
+                    <div class="gx-wide gx-domains">
+                        <div class="gx-domain gx-reveal">
+                            <span class="gx-domain-tag">Discovery</span>
+                            <h3>Hyper-personalised discovery &amp; proactive curation</h3>
+                            <p>
+                                These features aim to evolve the discovery engine from a reactive
+                                recommendation system into a proactive, context-aware partner, driving core
+                                engagement and retention.
+                            </p>
+                        </div>
+                        <div class="gx-domain gx-reveal" style="--gx-delay: 120ms">
+                            <span class="gx-domain-tag">Immersion</span>
+                            <h3>Immersive &amp; format-agnostic storytelling</h3>
+                            <p>
+                                These features use AI as a creative tool to produce richer audio experiences
+                                and remove format barriers, primarily to differentiate the product experience.
+                            </p>
+                        </div>
+                        <div class="gx-domain gx-reveal" style="--gx-delay: 240ms">
+                            <span class="gx-domain-tag">Comprehension</span>
+                            <h3>Non-fiction &amp; knowledge extraction</h3>
+                            <p>
+                                This pillar expands the utility from entertainment to active learning and the
+                                non-fiction market.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="gx-prose">
+                        <p class="gx-p gx-reveal">
+                            Three features were chosen to be explored and prepared for Genie's public release
+                            at midsummer in Sweden, 2026: Genie Chat (Discovery), Top Picks (Discovery) and
+                            Recaps (Comprehension).
+                        </p>
+                    </div>
+
+                    <div class="gx-wide gx-carousel gx-reveal" data-carousel aria-roledescription="carousel" aria-label="Early explorations">
+                        <div class="gx-carousel-track" tabindex="0" aria-label="Early explorations, scrollable">
+                            <figure class="gx-slide" data-seq="material/explorations/top-picks">
+                                <div class="gx-slide-frame"><img alt="Early exploration of Top Picks" loading="lazy" decoding="async"></div>
+                                <figcaption>Early exploration of top picks</figcaption>
+                            </figure>
+                            <figure class="gx-slide" data-seq="material/explorations/chat">
+                                <div class="gx-slide-frame"><img alt="Early exploration of Genie Chat" loading="lazy" decoding="async"></div>
+                                <figcaption>Early exploration of chat</figcaption>
+                            </figure>
+                            <figure class="gx-slide">
+                                <div class="gx-slide-frame"><img src="material/explorations/recaps-old.png" alt="Early exploration of Recaps" loading="lazy" decoding="async"></div>
+                                <figcaption>Early exploration of recaps</figcaption>
+                            </figure>
+                        </div>
+                        <div class="gx-carousel-dots" role="tablist" aria-label="Choose an exploration"></div>
                     </div>
 
                     <div class="gx-prose">
@@ -2570,6 +2769,97 @@
                 stations.forEach(function (el) { stationObserver.observe(el); });
             })();
 
+            /* ---- 3. Exploration carousel ----
+               Swiping is the browser's own scroll-snap; this only keeps the dots in
+               sync and runs the looping frame sequences. A slide whose asset is not
+               on disk drops out rather than shipping a broken frame, and if none
+               survive the carousel removes itself. */
+            document.querySelectorAll('[data-carousel]').forEach(function (car) {
+                var track = car.querySelector('.gx-carousel-track');
+                var dotBar = car.querySelector('.gx-carousel-dots');
+                var slides = Array.prototype.slice.call(car.querySelectorAll('.gx-slide'));
+                var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                function drop(slide) {
+                    var i = slides.indexOf(slide);
+                    if (i < 0) return;
+                    slides.splice(i, 1);
+                    slide.remove();
+                    if (!slides.length) car.remove();
+                    else buildDots();
+                }
+
+                function buildDots() {
+                    dotBar.innerHTML = '';
+                    if (slides.length < 2) return;
+                    slides.forEach(function (slide, i) {
+                        var dot = document.createElement('button');
+                        dot.type = 'button';
+                        dot.className = 'gx-dot';
+                        dot.setAttribute('role', 'tab');
+                        dot.setAttribute('aria-label', 'Exploration ' + (i + 1) + ' of ' + slides.length);
+                        dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                        dot.addEventListener('click', function () {
+                            track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: still ? 'auto' : 'smooth' });
+                        });
+                        dotBar.appendChild(dot);
+                    });
+                }
+
+                function markActive(slide) {
+                    var i = slides.indexOf(slide);
+                    Array.prototype.forEach.call(dotBar.children, function (d, k) {
+                        d.setAttribute('aria-selected', k === i ? 'true' : 'false');
+                    });
+                }
+
+                /* Load one sequence: material/explorations/<name>/frames.json lists the
+                   frame filenames in order. No manifest means no sequence, so the slide goes. */
+                function runSequence(slide) {
+                    var base = slide.getAttribute('data-seq');
+                    var img = slide.querySelector('img');
+                    fetch(base + '/frames.json')
+                        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+                        .then(function (names) {
+                            if (!Array.isArray(names) || !names.length) throw 0;
+                            var frames = names.map(function (n) { return base + '/' + n; });
+                            img.src = frames[0];
+                            if (still || frames.length === 1) return;
+                            frames.forEach(function (src) { var p = new Image(); p.src = src; });
+                            var at = 0, last = 0, playing = false;
+                            function tick(now) {
+                                if (!playing) return;
+                                if (now - last > 83) {            /* ~12fps */
+                                    at = (at + 1) % frames.length;
+                                    img.src = frames[at];
+                                    last = now;
+                                }
+                                requestAnimationFrame(tick);
+                            }
+                            new IntersectionObserver(function (entries) {
+                                entries.forEach(function (e) {
+                                    if (e.isIntersecting && !playing) { playing = true; last = 0; requestAnimationFrame(tick); }
+                                    else if (!e.isIntersecting) playing = false;
+                                });
+                            }, { threshold: 0.2 }).observe(slide);
+                        })
+                        .catch(function () { drop(slide); });
+                }
+
+                slides.slice().forEach(function (slide) {
+                    var img = slide.querySelector('img');
+                    if (slide.hasAttribute('data-seq')) runSequence(slide);
+                    else img.addEventListener('error', function () { drop(slide); });
+                });
+
+                buildDots();
+
+                /* Which slide is centred drives the dots — no scroll maths. */
+                var activeWatch = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) { if (e.intersectionRatio > 0.6) markActive(e.target); });
+                }, { root: track, threshold: [0.6] });
+                slides.forEach(function (s) { activeWatch.observe(s); });
+            });
             /* ---- 3a. Fullscreen for the hero film ---- */
             document.querySelectorAll('[data-fullscreen]').forEach(function (btn) {
                 var media = btn.closest('.gx-hero-media');
