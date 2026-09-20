@@ -707,29 +707,47 @@
             gap: var(--space-sm);
             margin-top: var(--space-lg);
         }
+        /* A <button> carries native chrome on iOS -- Safari was painting its own
+           white push-button behind every dot, which is what made them read as a
+           pill with a dark bead in the middle. Reset the appearance, and draw the
+           mark as a real element: Safari has long ignored display:grid on buttons,
+           which would leave a sized pseudo-element laid out as inline. */
         .gx-dot {
+            -webkit-appearance: none;
+            appearance: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 44px;
             height: 44px;
+            margin: 0;
             padding: 0;
             border: 0;
-            background: none;
+            border-radius: 0;
+            background: transparent;
+            color: inherit;
+            font: inherit;
             cursor: pointer;
-            display: grid;
-            place-items: center;
+            line-height: 0;             /* no stray text box inside the button */
+            -webkit-tap-highlight-color: transparent;
         }
-        .gx-dot::before {
-            content: '';
+        .gx-dot-mark {
+            display: block;
+            box-sizing: border-box;
+            flex: none;                 /* never stretched or shrunk by the button */
             width: 7px;
             height: 7px;
             border-radius: 999px;
             background: var(--color-text-muted);
-            opacity: 0.45;
+            /* Full opacity: at 0.45 the inactive dots sat at about #2e2e2e on the
+               black page, dim enough to read as gaps rather than as dots. */
+            opacity: 1;
             /* Colour only. Animating width made a half-grown lozenge visible
                whenever selection changed mid-swipe. */
             transition: opacity var(--timing-fast) ease,
                         background var(--timing-fast) ease;
         }
-        .gx-dot[aria-selected="true"]::before {
+        .gx-dot[aria-selected="true"] .gx-dot-mark {
             width: 22px;
             background: var(--color-text-primary);   /* white on the dark page, and still visible in light */
             opacity: 1;
@@ -2862,6 +2880,7 @@
                         var dot = document.createElement('button');
                         dot.type = 'button';
                         dot.className = 'gx-dot';
+                        dot.appendChild(document.createElement('span')).className = 'gx-dot-mark';
                         dot.setAttribute('role', 'tab');
                         dot.setAttribute('aria-label', 'Exploration ' + (i + 1) + ' of ' + slides.length);
                         dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
