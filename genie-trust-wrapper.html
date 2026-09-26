@@ -866,7 +866,9 @@
 
         .gx-tabpanel {
             position: relative;
+            box-sizing: border-box;
             height: min(72vh, 780px);
+            padding: clamp(1.25rem, 3.5vw, 3.5rem);
             overflow: auto;
             overscroll-behavior: contain;       /* panning to the edge must not grab the page */
             -webkit-overflow-scrolling: touch;
@@ -881,7 +883,12 @@
             max-width: none;
             width: auto;
             height: 100%;                       /* fill the frame, so nothing is cut off top or bottom */
+            /* auto margins centre the export when the frame has room to spare, and
+               collapse to zero when it does not -- unlike justify-content: center,
+               which would put the overflow out of reach on the leading edge. */
+            margin: auto;
         }
+        .gx-tabs.is-live .gx-tabpanel { display: flex; }
         /* Heading inside each panel: the only label when scripting is off. */
         .gx-tab-h {
             margin: 0;
