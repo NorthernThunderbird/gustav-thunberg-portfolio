@@ -38,74 +38,8 @@
             overflow-x: clip;
         }
 
-        /* ============================================================
-           GENIE ENTITY — the blob from the in-app marketing build, ported
-           to sit behind the article and bloom in at set points on the page.
-           Two quality levels, same as the app: the shader where the device
-           can carry it, a gradient fill where it cannot.
-           ============================================================ */
-        .gx-entity {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 1.2s ease;
-        }
-        .gx-entity.is-live { opacity: 1; }
-        .gx-entity canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-        /* Gradient fallback — no filter: blur, so no GPU layer per frame. */
-        .gx-entity-css {
-            position: absolute;
-            width: 190%;
-            aspect-ratio: 1 / 1;
-            top: 50%;
-            left: 50%;
-            margin-top: -95%;
-            margin-left: -95%;
-            opacity: 0;
-            background: radial-gradient(circle,
-                rgba(255, 80, 28, 0.92) 0%,
-                rgba(240, 65, 25, 0.70) 14%,
-                rgba(200, 55, 40, 0.45) 28%,
-                rgba(160, 50, 60, 0.22) 42%,
-                rgba(139, 63, 80, 0.05) 55%,
-                transparent 65%
-            );
-            border-radius: 50% 44% 55% 45% / 42% 55% 45% 58%;
-            animation: gx-blob-morph 9s ease-in-out infinite;
-            transition: opacity 1.1s ease, transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        :root[data-theme="light"] .gx-entity-css,
-        :root:not([data-theme="dark"]) .gx-entity-css {
-            background: radial-gradient(circle,
-                rgba(255, 80, 28, 0.55) 0%,
-                rgba(248, 161, 180, 0.42) 18%,
-                rgba(248, 161, 180, 0.18) 38%,
-                transparent 62%
-            );
-        }
-        /* Organic morph via border-radius — no compositing layer. */
-        @keyframes gx-blob-morph {
-            0%   { border-radius: 50% 44% 55% 45% / 42% 55% 45% 58%; }
-            20%  { border-radius: 42% 58% 47% 53% / 55% 42% 58% 45%; }
-            40%  { border-radius: 55% 45% 42% 58% / 48% 60% 40% 52%; }
-            60%  { border-radius: 47% 53% 58% 42% / 60% 47% 53% 40%; }
-            80%  { border-radius: 58% 42% 50% 50% / 45% 52% 48% 55%; }
-            100% { border-radius: 50% 44% 55% 45% / 42% 55% 45% 58%; }
-        }
-        /* Stages must not paint over the entity now that the page is black. */
+        /* Stages must not paint over the page now that it is black. */
         :root[data-theme="dark"] .gx-stage { background: transparent; }
-
-        @media (prefers-reduced-motion: reduce) {
-            .gx-entity { display: none; }
-        }
 
         /* ---- Reading progress ---- */
         .gx-progress {
@@ -463,7 +397,6 @@
             width: 100%;
             height: auto;
             display: block;
-            filter: drop-shadow(0 48px 70px rgba(0, 0, 0, 0.62));
         }
         .gx-cutout.is-in .gx-float { animation: gx-float 9s ease-in-out infinite; }
         .gx-float { animation: none; }
@@ -1376,10 +1309,6 @@
 </head>
 <body>
     <!-- Global navbar is injected here by nav.js (shared across all pages) -->
-    <div class="gx-entity" id="gx-entity" aria-hidden="true">
-        <canvas id="gx-entity-canvas"></canvas>
-        <div class="gx-entity-css" id="gx-entity-css"></div>
-    </div>
     <div class="gx-progress" id="gx-progress" aria-hidden="true"></div>
 
     <main class="article-main gx" id="gx-root">
@@ -1448,7 +1377,7 @@
                 </section>
 
                 <!-- INTRO -->
-                <section data-blob="0.80,0.55,0.00" class="gx-chapter gx-intro">
+                <section class="gx-chapter gx-intro">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             Readers on Storytel for the most part don't interact with the app that often. They
@@ -1471,7 +1400,7 @@
                 </section>
 
                 <!-- 1 — WHY THE AI NEEDED PACKAGING -->
-                <section data-blob="0.82,0.58,0.55" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             Like every service out there, AI has been a hot topic at the company ever since the
@@ -1497,7 +1426,7 @@
                 </section>
 
                 <!-- 2 — GETTING THE COMPANY COMMITTED -->
-                <section data-blob="0.22,0.46,0.50" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             The first thing we had to do was get everyone at the company committed.
@@ -1528,7 +1457,7 @@
                 </section>
 
                 <!-- 3 — PILLARS -->
-                <section data-blob="0.76,0.52,0.42" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <p class="gx-p gx-reveal">
                             Our concept was based on seeing Genie as an extension of the Storytel brand — there
@@ -1892,7 +1821,7 @@
                 </section>
 
                 <!-- 5 — CHAT -->
-                <section data-blob="0.20,0.60,0.52" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Chat: voice is the interface</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
@@ -2041,7 +1970,7 @@
                 </section>
 
                 <!-- 7 — RECAPS -->
-                <section data-blob="0.70,0.38,0.40" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Recaps: nine states for one feature</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
@@ -2131,7 +2060,7 @@
                 </section>
 
                 <!-- 8 — CRAFT -->
-                <section data-blob="0.50,0.52,0.85" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Craft: a living entity, built to degrade gracefully</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
@@ -2175,7 +2104,7 @@
                 </section>
 
                 <!-- 9 — TOKENS -->
-                <section data-blob="0.30,0.55,0.45" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">Recognisable, enforced by tokens</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
@@ -2281,7 +2210,7 @@
                 </section>
 
                 <!-- 11 — THE HONEST NUMBERS -->
-                <section data-blob="0.84,0.44,0.32" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">The honest numbers</h2>
                         <p class="gx-p gx-reveal" style="--gx-delay: 100ms">
@@ -2424,7 +2353,7 @@
                 </section>
 
                 <!-- 13 — WHAT'S NEXT -->
-                <section data-blob="0.45,0.50,0.55" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <h2 class="gx-h2 gx-reveal" style="--gx-delay: 60ms">What's next</h2>
                     </div>
@@ -2494,7 +2423,7 @@
                 </section>
 
                 <!-- APPENDIX -->
-                <section data-blob="0.50,0.50,0.10" class="gx-chapter">
+                <section class="gx-chapter">
                     <div class="gx-prose">
                         <details class="gx-appendix">
                             <summary><i class="fa-solid fa-chevron-right"></i> Appendix — sources</summary>
@@ -2659,199 +2588,6 @@
                     }
                 });
             });
-
-            /* ============================================================
-               GENIE ENTITY — ported from the in-app marketing build.
-               Shader, FBM domain warp and HLS grain are that code; what is
-               new here is driving cx / cy / opacity from scroll position
-               instead of from carousel slides.
-               ============================================================ */
-            (function () {
-                var layer  = document.getElementById('gx-entity');
-                var canvas = document.getElementById('gx-entity-canvas');
-                var cssFallback = document.getElementById('gx-entity-css');
-                var stations = document.querySelectorAll('[data-blob]');
-                if (!layer || reduce || !stations.length) return;
-
-                /* The app hides the shader where the device cannot carry it —
-                   the same reason the article gives for the fallback existing.
-                   Coarse pointers and small screens get the gradient. */
-                var lowPower = /Android/i.test(navigator.userAgent) ||
-                               window.matchMedia('(pointer: coarse)').matches ||
-                               window.innerWidth < 760;
-
-                var target = { cx: 0.80, cy: 0.55, op: 0 };
-
-                var VS = [
-                    'attribute vec2 a_pos;',
-                    'varying   vec2 v_uv;',
-                    'void main(){',
-                    '  v_uv = a_pos * 0.5 + 0.5;',
-                    '  gl_Position = vec4(a_pos, 0.0, 1.0);',
-                    '}'
-                ].join('\n');
-
-                var FS = [
-                    'precision mediump float;',
-                    'uniform float u_time;',
-                    'uniform float u_freq;',
-                    'uniform float u_warp;',
-                    'uniform vec3  u_col0;',
-                    'uniform vec3  u_col1;',
-                    'uniform float u_cx;',
-                    'uniform float u_cy;',
-                    'uniform float u_rx;',
-                    'uniform float u_ry;',
-                    'uniform float u_grain;',
-                    'varying vec2  v_uv;',
-                    'float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+19.19);return fract(p.x*p.y);}',
-                    'float vn(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}',
-                    'float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<4;i++){v+=a*vn(p);p=p*2.1+vec2(3.1,1.7);a*=0.5;}return v;}',
-                    'float hash3(vec2 p){vec3 p3=fract(vec3(p.xyx)*vec3(0.1031,0.1030,0.0973));p3+=dot(p3,p3.yxz+33.33);return fract((p3.x+p3.y)*p3.z);}',
-                    'vec3 rgb2hls(vec3 c){float mx=max(c.r,max(c.g,c.b)),mn=min(c.r,min(c.g,c.b)),d=mx-mn,l=(mx+mn)*0.5,s=(d>0.0)?d/(1.0-abs(2.0*l-1.0)):0.0,h=0.0;if(d>0.0){if(mx==c.r)h=(c.g-c.b)/d+(c.g<c.b?6.0:0.0);else if(mx==c.g)h=(c.b-c.r)/d+2.0;else h=(c.r-c.g)/d+4.0;h/=6.0;}return vec3(h,l,s);}',
-                    'float hue2rgb(float p,float q,float t){if(t<0.0)t+=1.0;if(t>1.0)t-=1.0;if(t<1.0/6.0)return p+(q-p)*6.0*t;if(t<0.5)return q;if(t<2.0/3.0)return p+(q-p)*(2.0/3.0-t)*6.0;return p;}',
-                    'vec3 hls2rgb(vec3 hls){float h=hls.x,l=hls.y,s=hls.z;if(s<0.001)return vec3(l);float q=(l<0.5)?l*(1.0+s):l+s-l*s,p=2.0*l-q;return vec3(hue2rgb(p,q,h+1.0/3.0),hue2rgb(p,q,h),hue2rgb(p,q,h-1.0/3.0));}',
-                    'void main(){',
-                    '  float t  = u_time;',
-                    '  vec2  p  = v_uv - vec2(u_cx, u_cy);',
-                    '  vec2  q  = vec2(fbm(v_uv*u_freq + vec2(t*0.9, 0.0)),',
-                    '                  fbm(v_uv*u_freq + vec2(0.0, t*0.9+1.3)));',
-                    '  vec2  pw = p + (q - 0.5) * u_warp;',
-                    '  float d  = length(vec2(pw.x / u_rx, pw.y / u_ry));',
-                    '  float a  = smoothstep(1.0, 0.25, d);',
-                    '  vec3  col = mix(u_col0, u_col1, smoothstep(0.0, 0.55, d));',
-                    '  float fr=floor(u_time*24.0);',
-                    '  vec2 fc=gl_FragCoord.xy+fr*vec2(0.6711056,0.5583715);',
-                    '  float nH=hash3(fc)*2.0-1.0;',
-                    '  float nL=hash3(fc+vec2(31.41,17.72))*2.0-1.0;',
-                    '  float nS=hash3(fc+vec2(53.27,42.13))*2.0-1.0;',
-                    '  vec3 hls=rgb2hls(col);',
-                    '  hls.x=fract(hls.x+nH*0.005*u_grain*a);',
-                    '  hls.y=clamp(hls.y+nL*0.04*u_grain*a,0.0,1.0);',
-                    '  hls.z=clamp(hls.z+nS*0.005*u_grain*a,0.0,1.0);',
-                    '  col=hls2rgb(hls);',
-                    '  gl_FragColor = vec4(col * a, a);',
-                    '}'
-                ].join('\n');
-
-                var gl = null;
-                function startShader() {
-                    gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false })
-                      || canvas.getContext('experimental-webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
-                    if (!gl) return false;
-
-                    function mk(type, src) { var sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; }
-                    var prog = gl.createProgram();
-                    gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS));
-                    gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS));
-                    gl.linkProgram(prog);
-                    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
-                    gl.useProgram(prog);
-
-                    var buf = gl.createBuffer();
-                    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-                    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-                    var aPos = gl.getAttribLocation(prog, 'a_pos');
-                    gl.enableVertexAttribArray(aPos);
-                    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-                    var u = {};
-                    ['u_time','u_freq','u_warp','u_col0','u_col1','u_cx','u_cy','u_rx','u_ry','u_grain']
-                        .forEach(function (n) { u[n] = gl.getUniformLocation(prog, n); });
-
-                    var dark = document.documentElement.getAttribute('data-theme') !== 'light';
-                    gl.uniform1f(u.u_freq, 0.40);
-                    gl.uniform1f(u.u_warp, 0.40);
-                    gl.uniform3fv(u.u_col0, [1.0, 0.314, 0.110]);                                  /* #FF501C */
-                    gl.uniform3fv(u.u_col1, dark ? [0.545, 0.247, 0.314] : [0.973, 0.631, 0.706]); /* sangria / pink */
-                    gl.uniform1f(u.u_rx, 0.42);
-                    gl.uniform1f(u.u_ry, 0.42);
-                    gl.uniform1f(u.u_grain, 0.06);
-                    gl.clearColor(0, 0, 0, 0);
-                    gl.enable(gl.BLEND);
-                    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-
-                    var RES = 0.5;
-                    function size() {
-                        canvas.width  = Math.max(2, Math.round(window.innerWidth  * RES));
-                        canvas.height = Math.max(2, Math.round(window.innerHeight * RES));
-                        gl.viewport(0, 0, canvas.width, canvas.height);
-                    }
-                    size();
-                    window.addEventListener('resize', size, { passive: true });
-
-                    var cx = target.cx, cy = target.cy, time = 0;
-                    var last = Date.now(), lastDraw = 0, running = true;
-                    var MIN_FRAME = 1000 / 30;   /* the motion is slow; 30fps is plenty */
-
-                    document.addEventListener('visibilitychange', function () {
-                        running = !document.hidden;
-                        if (running) { last = Date.now(); requestAnimationFrame(loop); }
-                    });
-
-                    function loop() {
-                        if (!running) return;
-                        requestAnimationFrame(loop);
-                        var now = Date.now();
-                        if (now - lastDraw < MIN_FRAME) return;
-                        lastDraw = now;
-
-                        var dt = Math.min((now - last) / 1000, 0.25);
-                        last = now;
-                        time += dt * 0.10;                        /* the app's base speed */
-                        /* Time-based easing, so the bloom takes the same wall
-                           clock however fast the device draws. */
-                        var kPos = 1 - Math.exp(-dt / 0.55);
-                        cx += (target.cx - cx) * kPos;
-                        cy += (target.cy - cy) * kPos;
-                        gl.clear(gl.COLOR_BUFFER_BIT);
-                        gl.uniform1f(u.u_cx, cx);
-                        gl.uniform1f(u.u_cy, cy);
-                        gl.uniform1f(u.u_time, time);
-                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-                    }
-                    requestAnimationFrame(loop);
-                    return true;
-                }
-
-                function startFallback() {
-                    canvas.style.display = 'none';
-                    layer.classList.add('is-live');
-                    function apply() {
-                        cssFallback.style.opacity = String(target.op);
-                        cssFallback.style.transform =
-                            'translate(' + ((target.cx - 0.5) * 60).toFixed(1) + '%,' +
-                                          ((0.5 - target.cy) * 60).toFixed(1) + '%)';
-                    }
-                    apply();
-                    layer.dataset.apply = '1';
-                    layer._apply = apply;
-                }
-
-                var shaderOn = !lowPower && startShader();
-                if (!shaderOn) startFallback();
-
-                function applyOpacity() {
-                    if (shaderOn) layer.style.opacity = String(target.op);
-                    else if (layer._apply) layer._apply();
-                }
-                applyOpacity();
-
-                /* Stations: each marked section sets where the entity sits and
-                   how present it is once that section reaches mid-viewport. */
-                var stationObserver = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (!entry.isIntersecting) return;
-                        var v = entry.target.getAttribute('data-blob').split(',');
-                        target.cx = parseFloat(v[0]);
-                        target.cy = parseFloat(v[1]);
-                        target.op = parseFloat(v[2]);
-                        applyOpacity();
-                    });
-                }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-
-                stations.forEach(function (el) { stationObserver.observe(el); });
-            })();
 
             /* ---- 3. Exploration carousel ----
                Swiping is the browser's own scroll-snap; this only keeps the dots in
