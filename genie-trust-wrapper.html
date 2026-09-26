@@ -888,7 +888,9 @@
                which would put the overflow out of reach on the leading edge. */
             margin: auto;
         }
-        .gx-tabs.is-live .gx-tabpanel { display: flex; }
+        /* :not([hidden]) matters: any author display value overrides the hidden
+           attribute's display:none, so without it every panel paints at once. */
+        .gx-tabs.is-live .gx-tabpanel:not([hidden]) { display: flex; }
         /* Heading inside each panel: the only label when scripting is off. */
         .gx-tab-h {
             margin: 0;
