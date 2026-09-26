@@ -871,16 +871,16 @@
             overscroll-behavior: contain;       /* panning to the edge must not grab the page */
             -webkit-overflow-scrolling: touch;
             background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-top: 0;
+            border: 0;
+            border-bottom: 1px solid var(--color-border);
             cursor: grab;
         }
         .gx-tabpanel.is-panning { cursor: grabbing; user-select: none; }
         .gx-tabpanel img {
             display: block;
-            max-width: none;                    /* natural size: never shrink the notes */
+            max-width: none;
             width: auto;
-            height: auto;
+            height: 100%;                       /* fill the frame, so nothing is cut off top or bottom */
         }
         /* Heading inside each panel: the only label when scripting is off. */
         .gx-tab-h {
@@ -893,9 +893,16 @@
         .gx-tabs.is-live .gx-tab-h { display: none; }
         .gx-tabs.is-live .gx-tabpanel + .gx-tabpanel { margin-top: 0; }
         .gx-tabs:not(.is-live) .gx-tabpanel { border-top: 1px solid var(--color-border); margin-top: var(--space-lg); }
+        .gx-tabhint { text-align: center; }
 
         /* Edge fades, so a pannable export does not read as a cropped one. */
-        .gx-tabwrap { position: relative; }
+        /* The frame breaks out to the full viewport so a wide flow shows more at
+           once; the strip and the hint above and below it keep the page margins. */
+        .gx-tabwrap {
+            position: relative;
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
+        }
         .gx-tabwrap::before,
         .gx-tabwrap::after {
             content: '';
@@ -908,8 +915,8 @@
             transition: opacity var(--timing-normal) ease;
             z-index: 1;
         }
-        .gx-tabwrap::before { left: 1px;  background: linear-gradient(to right, var(--color-surface), transparent); }
-        .gx-tabwrap::after  { right: 1px; background: linear-gradient(to left,  var(--color-surface), transparent); }
+        .gx-tabwrap::before { left: 0;  background: linear-gradient(to right, var(--color-surface), transparent); }
+        .gx-tabwrap::after  { right: 0; background: linear-gradient(to left,  var(--color-surface), transparent); }
         .gx-tabwrap.can-left::before  { opacity: 1; }
         .gx-tabwrap.can-right::after  { opacity: 1; }
 
