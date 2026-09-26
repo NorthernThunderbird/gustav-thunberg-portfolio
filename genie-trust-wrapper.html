@@ -824,20 +824,21 @@
         .gx-tabs { margin-block: var(--space-2xl); }
         .gx-tabstrip {
             display: none;                      /* the strip only means something once JS runs */
-            gap: var(--space-xs);
-            overflow-x: auto;
-            scrollbar-width: none;
+            /* Ten labels do not fit one row at this width. Wrapping keeps every tab
+               visible; a horizontal scroll would hide some behind an affordance
+               that is easy to miss. */
+            flex-wrap: wrap;
+            gap: 0 var(--space-xs);
             border-bottom: 1px solid var(--color-border);
         }
         .gx-tabs.is-live .gx-tabstrip { display: flex; }
-        .gx-tabstrip::-webkit-scrollbar { display: none; }
         .gx-tab {
             -webkit-appearance: none;
             appearance: none;
             position: relative;
             flex: none;
             margin: 0;
-            padding: 0.7rem 1rem;
+            padding: 0.6rem 0.85rem;
             border: 0;
             border-radius: 0;
             background: transparent;
@@ -853,8 +854,8 @@
         .gx-tab:hover { color: var(--color-text-primary); }
         .gx-tab-underline {                     /* a real element, not a pseudo */
             position: absolute;
-            left: 0.7rem;
-            right: 0.7rem;
+            left: 0.85rem;
+            right: 0.85rem;
             bottom: -1px;
             height: 2px;
             background: var(--gx-accent);
@@ -1427,6 +1428,13 @@
             .gx-stage::before, .gx-cutout.gx-glow::before { transition: none; opacity: 1; }
         }
     </style>
+    <noscript>
+        <style>
+            /* The panels ship hidden so a script that fails cannot stack them all.
+               Without scripting there is no tab to press, so reveal them instead. */
+            .gx-tabs .gx-tabpanel[hidden] { display: block; }
+        </style>
+    </noscript>
 </head>
 <body>
     <!-- Global navbar is injected here by nav.js (shared across all pages) -->
@@ -1820,41 +1828,76 @@
                     <div class="gx-wide gx-tabs gx-reveal" data-tabs>
                         <div class="gx-tabstrip" role="tablist" aria-label="Technical details">
                             <button type="button" class="gx-tab" role="tab"
-                                    id="tab-voiceover-talkback" aria-controls="panel-voiceover-talkback" aria-selected="true" tabindex="0">VoiceOver / Talkback<span class="gx-tab-underline"></span></button>
+                                    id="tab-current-context" aria-controls="panel-current-context" aria-selected="true" tabindex="0">Current context<span class="gx-tab-underline"></span></button>
                             <button type="button" class="gx-tab" role="tab"
-                                    id="tab-conversation-states" aria-controls="panel-conversation-states" aria-selected="false" tabindex="-1">Conversation states<span class="gx-tab-underline"></span></button>
+                                    id="tab-prompt-suggestion-logic" aria-controls="panel-prompt-suggestion-logic" aria-selected="false" tabindex="-1">Prompt suggestion logic<span class="gx-tab-underline"></span></button>
                             <button type="button" class="gx-tab" role="tab"
-                                    id="tab-book-card-variants" aria-controls="panel-book-card-variants" aria-selected="false" tabindex="-1">Book card variants<span class="gx-tab-underline"></span></button>
+                                    id="tab-component-states" aria-controls="panel-component-states" aria-selected="false" tabindex="-1">Component states<span class="gx-tab-underline"></span></button>
                             <button type="button" class="gx-tab" role="tab"
-                                    id="tab-returning-user" aria-controls="panel-returning-user" aria-selected="false" tabindex="-1">Returning user<span class="gx-tab-underline"></span></button>
+                                    id="tab-spacing" aria-controls="panel-spacing" aria-selected="false" tabindex="-1">Spacing<span class="gx-tab-underline"></span></button>
                             <button type="button" class="gx-tab" role="tab"
-                                    id="tab-error-and-retry" aria-controls="panel-error-and-retry" aria-selected="false" tabindex="-1">Error and retry<span class="gx-tab-underline"></span></button>
+                                    id="tab-color" aria-controls="panel-color" aria-selected="false" tabindex="-1">Color<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-theme" aria-controls="panel-theme" aria-selected="false" tabindex="-1">Theme<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-a11y" aria-controls="panel-a11y" aria-selected="false" tabindex="-1">A11y<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-error" aria-controls="panel-error" aria-selected="false" tabindex="-1">Error<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-generic-error" aria-controls="panel-generic-error" aria-selected="false" tabindex="-1">Generic error<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-limit-exceeded" aria-controls="panel-limit-exceeded" aria-selected="false" tabindex="-1">Limit exceeded<span class="gx-tab-underline"></span></button>
                         </div>
                         <div class="gx-tabwrap">
-                            <div class="gx-tabpanel" role="tabpanel" id="panel-voiceover-talkback" aria-labelledby="tab-voiceover-talkback" tabindex="0">
-                                <h3 class="gx-tab-h">VoiceOver / Talkback</h3>
-                                <img src="material/chat-specs/voiceover-talkback.webp" alt="Chat screens annotated 1 to 3, each with a VoiceOver and Talkback specification card giving the spoken label and its Swedish localisation"
-                                     width="2000" height="1132" loading="lazy" decoding="async">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-current-context" aria-labelledby="tab-current-context" tabindex="0">
+                                <h3 class="gx-tab-h">Current context</h3>
+                                <img src="material/chat-specs/current-context.webp" alt="Genie opening for a returning reader: it recalls the book in progress and offers suggestion chips beneath it"
+                                     width="1129" height="1600" loading="lazy" decoding="async">
                             </div>
-                            <div class="gx-tabpanel" role="tabpanel" id="panel-conversation-states" aria-labelledby="tab-conversation-states" tabindex="0">
-                                <h3 class="gx-tab-h">Conversation states</h3>
-                                <img src="material/chat-specs/conversation-states.webp" alt="The conversation across its states: a single result card, an empty thread, and a long scrolled answer with several book cards"
-                                     width="2000" height="1169" loading="lazy" decoding="async">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-prompt-suggestion-logic" aria-labelledby="tab-prompt-suggestion-logic" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Prompt suggestion logic</h3>
+                                <img src="material/chat-specs/prompt-suggestion-logic.webp" alt="The prompt suggestion chips in their variants, one and two lines, across three columns"
+                                     width="3636" height="1132" loading="lazy" decoding="async">
                             </div>
-                            <div class="gx-tabpanel" role="tabpanel" id="panel-book-card-variants" aria-labelledby="tab-book-card-variants" tabindex="0">
-                                <h3 class="gx-tab-h">Book card variants</h3>
-                                <img src="material/chat-specs/book-card-variants.webp" alt="The book card in every variant: default, multiple authors, missing cover, purchase, part two, downloading, downloaded, coming soon, finished, loading skeleton and failed to load"
-                                     width="2000" height="849" loading="lazy" decoding="async">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-component-states" aria-labelledby="tab-component-states" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Component states</h3>
+                                <img src="material/chat-specs/component-states.webp" alt="The book card in every state: default, multiple authors, missing cover, purchase, part two, downloading, downloaded, coming soon, finished, loading skeleton and failed to load"
+                                     width="3769" height="1600" loading="lazy" decoding="async">
                             </div>
-                            <div class="gx-tabpanel" role="tabpanel" id="panel-returning-user" aria-labelledby="tab-returning-user" tabindex="0">
-                                <h3 class="gx-tab-h">Returning user</h3>
-                                <img src="material/chat-specs/returning-user.webp" alt="The returning-reader opening: Genie recalls the book in progress and offers suggestion chips beneath it"
-                                     width="1411" height="2000" loading="lazy" decoding="async">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-spacing" aria-labelledby="tab-spacing" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Spacing</h3>
+                                <img src="material/chat-specs/spacing.webp" alt="Spacing annotations across a conversation: 8px between label and text container, 24px between messages, 16px between elements inside one container"
+                                     width="2407" height="1600" loading="lazy" decoding="async">
                             </div>
-                            <div class="gx-tabpanel" role="tabpanel" id="panel-error-and-retry" aria-labelledby="tab-error-and-retry" tabindex="0">
-                                <h3 class="gx-tab-h">Error and retry</h3>
-                                <img src="material/chat-specs/error-and-retry.webp" alt="The failure state: a truncated answer followed by an error line and a retry button"
-                                     width="1321" height="2000" loading="lazy" decoding="async">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-color" aria-labelledby="tab-color" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Color</h3>
+                                <img src="material/chat-specs/color.webp" alt="Colour specification for the conversation surface and its cards"
+                                     width="2737" height="1600" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-theme" aria-labelledby="tab-theme" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Theme</h3>
+                                <img src="material/chat-specs/theme.webp" alt="The same conversation side by side in dark and light theme"
+                                     width="1415" height="1600" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-a11y" aria-labelledby="tab-a11y" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">A11y</h3>
+                                <img src="material/chat-specs/a11y.webp" alt="Chat screens annotated 1 to 3, each with a VoiceOver and Talkback specification card giving the spoken label and its Swedish localisation"
+                                     width="2827" height="1600" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-error" aria-labelledby="tab-error" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Error</h3>
+                                <img src="material/chat-specs/error.webp" alt="An answer that fails midway, with an inline error line and a retry button"
+                                     width="1057" height="1600" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-generic-error" aria-labelledby="tab-generic-error" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Generic error</h3>
+                                <img src="material/chat-specs/generic-error.webp" alt="The thinking state beside the full-screen failure: Oops, something went wrong, with a try again button"
+                                     width="2040" height="1600" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-limit-exceeded" aria-labelledby="tab-limit-exceeded" tabindex="0" hidden>
+                                <h3 class="gx-tab-h">Limit exceeded</h3>
+                                <img src="material/chat-specs/limit-exceeded.webp" alt="The state shown when the reader passes the usage limit"
+                                     width="1109" height="1600" loading="lazy" decoding="async">
                             </div>
                         </div>
                         <p class="gx-tabhint">Drag or scroll inside the frame to move across the flow.</p>
