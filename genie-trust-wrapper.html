@@ -838,6 +838,10 @@
             margin-inline: calc(50% - 50vw);
             padding-inline: clamp(1rem, 3.5vw, 3.5rem);
             overflow-x: auto;
+            /* Setting overflow-x alone makes overflow-y compute to auto, which turned
+               the strip into a vertical scroller with a pixel of slack -- enough for
+               it to shift and clip the labels. Pin it. */
+            overflow-y: hidden;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-x: contain;     /* swiping the tabs must not trigger back */
@@ -856,7 +860,9 @@
             flex: none;
             scroll-snap-align: start;
             margin: 0;
-            padding: 0.7rem 0.9rem;
+            /* Whole pixels: a fractional tab height left a pixel of vertical
+               overflow for the strip to scroll on. 10 + 24 + 10 = 44. */
+            padding: 10px 0.9rem;
             border: 0;
             border-radius: 0;
             background: transparent;
@@ -866,7 +872,7 @@
             opacity: 0.58;
             font: inherit;
             font-size: 1.02rem;
-            line-height: 1.3;
+            line-height: 24px;
             white-space: nowrap;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
@@ -878,7 +884,8 @@
             position: absolute;
             left: 0.9rem;
             right: 0.9rem;
-            bottom: -1px;
+            bottom: 0;                          /* -1px overflowed the tab, and the
+                                                   strip counted it as scrollable */
             height: 2px;
             background: var(--gx-accent);
             opacity: 0;
