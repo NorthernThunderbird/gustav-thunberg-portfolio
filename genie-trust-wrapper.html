@@ -831,10 +831,20 @@
             display: none;                      /* the strip only means something once JS runs */
             flex-wrap: nowrap;
             gap: 0 var(--space-xs);
+            /* Full width, so the rule under the tabs runs edge to edge like the
+               frame below it; the inner padding keeps the labels off the edges and
+               gives all ten room to sit in one row on a desktop. */
+            width: 100vw;
+            margin-inline: calc(50% - 50vw);
+            padding-inline: clamp(1rem, 3.5vw, 3.5rem);
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-x: contain;     /* swiping the tabs must not trigger back */
+            /* Snap, so the strip cannot come to rest mid-label and read as
+               knocked out of position. */
+            scroll-snap-type: x proximity;
+            scroll-padding-inline: clamp(1rem, 3.5vw, 3.5rem);
             border-bottom: 1px solid var(--color-border);
         }
         .gx-tabstrip::-webkit-scrollbar { display: none; }
@@ -844,32 +854,37 @@
             appearance: none;
             position: relative;
             flex: none;
+            scroll-snap-align: start;
             margin: 0;
-            padding: 0.6rem 0.85rem;
+            padding: 0.7rem 0.9rem;
             border: 0;
             border-radius: 0;
             background: transparent;
-            color: var(--color-text-muted);
+            /* One colour at three opacities, so the idle label stays legible and
+               the set reads the same in either theme. */
+            color: var(--color-text-primary);
+            opacity: 0.58;
             font: inherit;
-            font-size: 0.92rem;
+            font-size: 1.02rem;
             line-height: 1.3;
             white-space: nowrap;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
-            transition: color var(--timing-fast) ease;
+            transition: opacity var(--timing-fast) ease;
         }
-        .gx-tab:hover { color: var(--color-text-primary); }
+        .gx-tab:hover,
+        .gx-tab:focus-visible { opacity: 0.85; }
         .gx-tab-underline {                     /* a real element, not a pseudo */
             position: absolute;
-            left: 0.85rem;
-            right: 0.85rem;
+            left: 0.9rem;
+            right: 0.9rem;
             bottom: -1px;
             height: 2px;
             background: var(--gx-accent);
             opacity: 0;
             transition: opacity var(--timing-fast) ease;
         }
-        .gx-tab[aria-selected="true"] { color: var(--color-text-primary); }
+        .gx-tab[aria-selected="true"] { opacity: 1; }
         .gx-tab[aria-selected="true"] .gx-tab-underline { opacity: 1; }
 
         .gx-tabpanel {
