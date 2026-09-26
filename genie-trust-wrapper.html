@@ -105,6 +105,11 @@
             background: #050505;
         }
         /* The film is 16:9 and shows in full — no crop, no scale, no drift. */
+        /* The film sits flush under the nav, and the nav's own bottom rule --
+           rgba(255,255,255,0.08) -- drew a 1px line straight across the top of it.
+           The nav keeps its own background, so it stays legible without the rule. */
+        .header { border-bottom-color: transparent; }
+
         .gx-hero-media {
             position: relative;
             width: 100%;
@@ -824,13 +829,15 @@
         .gx-tabs { margin-block: var(--space-2xl); }
         .gx-tabstrip {
             display: none;                      /* the strip only means something once JS runs */
-            /* Ten labels do not fit one row at this width. Wrapping keeps every tab
-               visible; a horizontal scroll would hide some behind an affordance
-               that is easy to miss. */
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0 var(--space-xs);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;     /* swiping the tabs must not trigger back */
             border-bottom: 1px solid var(--color-border);
         }
+        .gx-tabstrip::-webkit-scrollbar { display: none; }
         .gx-tabs.is-live .gx-tabstrip { display: flex; }
         .gx-tab {
             -webkit-appearance: none;
@@ -2897,6 +2904,13 @@
                         t.tabIndex = k === i ? 0 : -1;
                     });
                     panels.forEach(function (pn, k) { pn.hidden = k !== i; });
+                    /* Scroll the strip itself rather than calling scrollIntoView,
+                       which would also move the page. */
+                    var strip = tabs[i].parentNode;
+                    strip.scrollTo({
+                        left: Math.max(0, tabs[i].offsetLeft - (strip.clientWidth - tabs[i].offsetWidth) / 2),
+                        behavior: 'smooth'
+                    });
                     if (focus) tabs[i].focus();
                     edges(panels[i]);
                 }
