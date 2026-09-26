@@ -817,6 +817,111 @@
             .gx-tree-sum::before { transition: none; }
         }
 
+
+        /* ---- Technical details: tabbed, pannable Figma exports ----
+           The panel is a scroll container in both axes and the export sits inside
+           at its natural size, so the notes stay legible and the reader pans. */
+        .gx-tabs { margin-block: var(--space-2xl); }
+        .gx-tabstrip {
+            display: none;                      /* the strip only means something once JS runs */
+            gap: var(--space-xs);
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .gx-tabs.is-live .gx-tabstrip { display: flex; }
+        .gx-tabstrip::-webkit-scrollbar { display: none; }
+        .gx-tab {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            flex: none;
+            margin: 0;
+            padding: 0.7rem 1rem;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            color: var(--color-text-muted);
+            font: inherit;
+            font-size: 0.92rem;
+            line-height: 1.3;
+            white-space: nowrap;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: color var(--timing-fast) ease;
+        }
+        .gx-tab:hover { color: var(--color-text-primary); }
+        .gx-tab-underline {                     /* a real element, not a pseudo */
+            position: absolute;
+            left: 0.7rem;
+            right: 0.7rem;
+            bottom: -1px;
+            height: 2px;
+            background: var(--gx-accent);
+            opacity: 0;
+            transition: opacity var(--timing-fast) ease;
+        }
+        .gx-tab[aria-selected="true"] { color: var(--color-text-primary); }
+        .gx-tab[aria-selected="true"] .gx-tab-underline { opacity: 1; }
+
+        .gx-tabpanel {
+            position: relative;
+            height: min(72vh, 780px);
+            overflow: auto;
+            overscroll-behavior: contain;       /* panning to the edge must not grab the page */
+            -webkit-overflow-scrolling: touch;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-top: 0;
+            cursor: grab;
+        }
+        .gx-tabpanel.is-panning { cursor: grabbing; user-select: none; }
+        .gx-tabpanel img {
+            display: block;
+            max-width: none;                    /* natural size: never shrink the notes */
+            width: auto;
+            height: auto;
+        }
+        /* Heading inside each panel: the only label when scripting is off. */
+        .gx-tab-h {
+            margin: 0;
+            padding: var(--space-md) var(--space-lg) 0;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+        .gx-tabs.is-live .gx-tab-h { display: none; }
+        .gx-tabs.is-live .gx-tabpanel + .gx-tabpanel { margin-top: 0; }
+        .gx-tabs:not(.is-live) .gx-tabpanel { border-top: 1px solid var(--color-border); margin-top: var(--space-lg); }
+
+        /* Edge fades, so a pannable export does not read as a cropped one. */
+        .gx-tabwrap { position: relative; }
+        .gx-tabwrap::before,
+        .gx-tabwrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 56px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--timing-normal) ease;
+            z-index: 1;
+        }
+        .gx-tabwrap::before { left: 1px;  background: linear-gradient(to right, var(--color-surface), transparent); }
+        .gx-tabwrap::after  { right: 1px; background: linear-gradient(to left,  var(--color-surface), transparent); }
+        .gx-tabwrap.can-left::before  { opacity: 1; }
+        .gx-tabwrap.can-right::after  { opacity: 1; }
+
+        .gx-tabhint {
+            margin: var(--space-sm) 0 0;
+            font-size: 0.84rem;
+            color: var(--color-text-muted);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .gx-tabwrap::before, .gx-tabwrap::after { transition: none; }
+        }
+
         /* pillars */
         .gx-pillars {
             display: grid;
@@ -1690,6 +1795,53 @@
                         <p class="gx-p gx-reveal">
                             In June, Genie Chat launched at Midsummer as the heart of Genie's public release.
                         </p>
+                    </div>
+
+                    <div class="gx-prose">
+                        <span class="gx-tree-kicker gx-reveal">Explore technical details</span>
+                    </div>
+
+                    <div class="gx-wide gx-tabs gx-reveal" data-tabs>
+                        <div class="gx-tabstrip" role="tablist" aria-label="Technical details">
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-voiceover-talkback" aria-controls="panel-voiceover-talkback" aria-selected="true" tabindex="0">VoiceOver / Talkback<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-conversation-states" aria-controls="panel-conversation-states" aria-selected="false" tabindex="-1">Conversation states<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-book-card-variants" aria-controls="panel-book-card-variants" aria-selected="false" tabindex="-1">Book card variants<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-returning-user" aria-controls="panel-returning-user" aria-selected="false" tabindex="-1">Returning user<span class="gx-tab-underline"></span></button>
+                            <button type="button" class="gx-tab" role="tab"
+                                    id="tab-error-and-retry" aria-controls="panel-error-and-retry" aria-selected="false" tabindex="-1">Error and retry<span class="gx-tab-underline"></span></button>
+                        </div>
+                        <div class="gx-tabwrap">
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-voiceover-talkback" aria-labelledby="tab-voiceover-talkback" tabindex="0">
+                                <h3 class="gx-tab-h">VoiceOver / Talkback</h3>
+                                <img src="material/chat-specs/voiceover-talkback.webp" alt="Chat screens annotated 1 to 3, each with a VoiceOver and Talkback specification card giving the spoken label and its Swedish localisation"
+                                     width="2000" height="1132" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-conversation-states" aria-labelledby="tab-conversation-states" tabindex="0">
+                                <h3 class="gx-tab-h">Conversation states</h3>
+                                <img src="material/chat-specs/conversation-states.webp" alt="The conversation across its states: a single result card, an empty thread, and a long scrolled answer with several book cards"
+                                     width="2000" height="1169" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-book-card-variants" aria-labelledby="tab-book-card-variants" tabindex="0">
+                                <h3 class="gx-tab-h">Book card variants</h3>
+                                <img src="material/chat-specs/book-card-variants.webp" alt="The book card in every variant: default, multiple authors, missing cover, purchase, part two, downloading, downloaded, coming soon, finished, loading skeleton and failed to load"
+                                     width="2000" height="849" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-returning-user" aria-labelledby="tab-returning-user" tabindex="0">
+                                <h3 class="gx-tab-h">Returning user</h3>
+                                <img src="material/chat-specs/returning-user.webp" alt="The returning-reader opening: Genie recalls the book in progress and offers suggestion chips beneath it"
+                                     width="1411" height="2000" loading="lazy" decoding="async">
+                            </div>
+                            <div class="gx-tabpanel" role="tabpanel" id="panel-error-and-retry" aria-labelledby="tab-error-and-retry" tabindex="0">
+                                <h3 class="gx-tab-h">Error and retry</h3>
+                                <img src="material/chat-specs/error-and-retry.webp" alt="The failure state: a truncated answer followed by an error line and a retry button"
+                                     width="1321" height="2000" loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                        <p class="gx-tabhint">Drag or scroll inside the frame to move across the flow.</p>
                     </div>
                 </section>
 
@@ -2664,6 +2816,90 @@
                 }, { passive: true });
                 syncDots();
             });
+            /* ---- 3c. Technical details: tabs over pannable Figma exports ----
+               Without scripting every panel stays on the page, stacked and each
+               still scrollable, so the flows are never locked behind a control
+               that is not running. */
+            document.querySelectorAll('[data-tabs]').forEach(function (box) {
+                var tabs = Array.prototype.slice.call(box.querySelectorAll('.gx-tab'));
+                var panels = Array.prototype.slice.call(box.querySelectorAll('.gx-tabpanel'));
+                var wrap = box.querySelector('.gx-tabwrap');
+                if (!tabs.length || tabs.length !== panels.length) return;
+
+                function edges(panel) {
+                    var max = panel.scrollWidth - panel.clientWidth;
+                    wrap.classList.toggle('can-left', panel.scrollLeft > 2);
+                    wrap.classList.toggle('can-right', max > 2 && panel.scrollLeft < max - 2);
+                }
+
+                function select(i, focus) {
+                    tabs.forEach(function (t, k) {
+                        t.setAttribute('aria-selected', k === i ? 'true' : 'false');
+                        t.tabIndex = k === i ? 0 : -1;
+                    });
+                    panels.forEach(function (pn, k) { pn.hidden = k !== i; });
+                    if (focus) tabs[i].focus();
+                    edges(panels[i]);
+                }
+
+                tabs.forEach(function (tab, i) {
+                    tab.addEventListener('click', function () { select(i); });
+                    tab.addEventListener('keydown', function (e) {
+                        var to = e.key === 'ArrowRight' ? i + 1
+                               : e.key === 'ArrowLeft'  ? i - 1
+                               : e.key === 'Home'       ? 0
+                               : e.key === 'End'        ? tabs.length - 1 : -1;
+                        if (to < 0 || to > tabs.length - 1) return;
+                        e.preventDefault();
+                        select(to, true);
+                    });
+                });
+
+                panels.forEach(function (panel) {
+                    panel.addEventListener('scroll', function () { edges(panel); }, { passive: true });
+
+                    /* The export is lazy, so at select() time there is nothing to
+                       overflow yet and the fades would never appear. Recheck once
+                       the image has actually arrived. */
+                    var shot = panel.querySelector('img');
+                    if (shot && !shot.complete) {
+                        shot.addEventListener('load', function () { if (!panel.hidden) edges(panel); });
+                    }
+
+                    /* Drag to pan: a plain mouse has no horizontal wheel. Pointer
+                       capture keeps the drag alive outside the frame; touch is left
+                       to the browser's own scrolling. */
+                    var from = null;
+                    panel.addEventListener('pointerdown', function (e) {
+                        if (e.pointerType === 'touch' || e.button !== 0) return;
+                        from = { x: e.clientX, y: e.clientY, l: panel.scrollLeft, t: panel.scrollTop };
+                        panel.setPointerCapture(e.pointerId);
+                        panel.classList.add('is-panning');
+                    });
+                    panel.addEventListener('pointermove', function (e) {
+                        if (!from) return;
+                        panel.scrollLeft = from.l - (e.clientX - from.x);
+                        panel.scrollTop = from.t - (e.clientY - from.y);
+                    });
+                    ['pointerup', 'pointercancel'].forEach(function (evt) {
+                        panel.addEventListener(evt, function (e) {
+                            if (!from) return;
+                            from = null;
+                            panel.classList.remove('is-panning');
+                            if (panel.hasPointerCapture(e.pointerId)) panel.releasePointerCapture(e.pointerId);
+                        });
+                    });
+                });
+
+                window.addEventListener('resize', function () {
+                    var open = panels.filter(function (pn) { return !pn.hidden; })[0];
+                    if (open) edges(open);
+                }, { passive: true });
+
+                box.classList.add('is-live');
+                select(0);
+            });
+
             /* ---- 3b. Brand film ----
                A <video> with <source> children never fires error on itself, so watch
                the sources. Until the film is in the repo the poster stands in for it
