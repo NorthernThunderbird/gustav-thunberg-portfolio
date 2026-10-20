@@ -826,7 +826,16 @@
         /* ---- Technical details: tabbed, pannable Figma exports ----
            The panel is a scroll container in both axes and the export sits inside
            at its natural size, so the notes stay legible and the reader pans. */
-        .gx-tabs { margin-block: var(--space-2xl); }
+        .gx-tabs {
+            margin-block: var(--space-2xl);
+            /* The exports carry their annotation text in white, burnt into the
+               pixels, so the frame holds the dark palette in both themes -- on
+               the light surface those notes disappear into the background.
+               These are the dark theme's own values, so dark mode is unchanged. */
+            --gx-tab-surface: #151515;
+            --gx-tab-line: #2a2a2a;
+            --gx-tab-ink: #ffffff;
+        }
         .gx-tabstrip {
             display: none;                      /* the strip only means something once JS runs */
             flex-wrap: nowrap;
@@ -849,7 +858,8 @@
                knocked out of position. */
             scroll-snap-type: x proximity;
             scroll-padding-inline: clamp(1rem, 3.5vw, 3.5rem);
-            border-bottom: 1px solid var(--color-border);
+            background: var(--gx-tab-surface);
+            border-bottom: 1px solid var(--gx-tab-line);
         }
         .gx-tabstrip::-webkit-scrollbar { display: none; }
         .gx-tabs.is-live .gx-tabstrip { display: flex; }
@@ -866,9 +876,10 @@
             border: 0;
             border-radius: 0;
             background: transparent;
-            /* One colour at three opacities, so the idle label stays legible and
-               the set reads the same in either theme. */
-            color: var(--color-text-primary);
+            /* One colour at three opacities, so the idle label stays legible;
+               it is the frame's ink, not the page's, so the set reads the same
+               in either theme. */
+            color: var(--gx-tab-ink);
             opacity: 0.58;
             font: inherit;
             font-size: 1.02rem;
@@ -902,9 +913,9 @@
             overflow: auto;
             overscroll-behavior: contain;       /* panning to the edge must not grab the page */
             -webkit-overflow-scrolling: touch;
-            background: var(--color-surface);
+            background: var(--gx-tab-surface);
             border: 0;
-            border-bottom: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--gx-tab-line);
             cursor: grab;
         }
         .gx-tabpanel.is-panning { cursor: grabbing; user-select: none; }
@@ -927,11 +938,11 @@
             padding: var(--space-md) var(--space-lg) 0;
             font-size: 0.92rem;
             font-weight: 500;
-            color: var(--color-text-primary);
+            color: var(--gx-tab-ink);
         }
         .gx-tabs.is-live .gx-tab-h { display: none; }
         .gx-tabs.is-live .gx-tabpanel + .gx-tabpanel { margin-top: 0; }
-        .gx-tabs:not(.is-live) .gx-tabpanel { border-top: 1px solid var(--color-border); margin-top: var(--space-lg); }
+        .gx-tabs:not(.is-live) .gx-tabpanel { border-top: 1px solid var(--gx-tab-line); margin-top: var(--space-lg); }
         /* The frame breaks out to the full viewport so a wide flow shows more at
            once; the strip and the hint above and below it keep the page margins. */
         .gx-tabwrap {
