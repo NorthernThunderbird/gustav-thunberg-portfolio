@@ -8,6 +8,113 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="nav.css">
+    <style>
+        /* ------------------------------------------------------------------
+           This page takes the Genie article's type scale and its hero back
+           button. Everything is scoped to .dm, because .section-heading,
+           .content-text and the rest are shared with bookstore-ppb.html and
+           genie.html, which keep the scale they already had.
+           ------------------------------------------------------------------ */
+        .dm {
+            /* --gx-prose. The body size below is a third larger than it was, so
+               the column widens with it and the lines still break sensibly. */
+            --dm-prose: 40rem;
+        }
+
+        /* ---- Back, lifted off its own bar and onto the hero ---- */
+        .dm .hero-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 6;                 /* .video-container sits at 1 */
+            display: flex;
+            align-items: center;
+            padding: clamp(10px, 2vw, 18px) clamp(12px, 2.5vw, 22px);
+        }
+        .dm .hero-btn {
+            height: 42px;
+            min-width: 42px;
+            padding: 0 16px 0 13px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(0, 0, 0, 0.45);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background var(--timing-fast) ease, transform var(--timing-fast) ease;
+        }
+        .dm .hero-btn:hover { background: rgba(0, 0, 0, 0.72); transform: scale(1.05); }
+        .dm .hero-btn i { font-size: 0.875rem; }
+
+        /* ---- Type scale, matched element for element to the Genie article ---- */
+        .dm .article-title {            /* one step above .gx-h2, same family */
+            font-size: clamp(2.3rem, 5.6vw, 3.6rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1.06;
+        }
+        .dm .article-subtitle {
+            font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+            font-weight: 300;
+            line-height: 1.5;
+        }
+        .dm .meta-item {                /* .gx-tag */
+            font-size: 0.78rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+        }
+        .dm .section-heading {          /* .gx-h2 */
+            font-size: clamp(1.9rem, 4.6vw, 3rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 1.08;
+            margin-bottom: var(--space-lg);
+        }
+        .dm .content-text {             /* .gx-p */
+            font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+            font-weight: 300;
+            line-height: 1.55;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-lg);
+        }
+        .dm .point-title {              /* .gx-h3 */
+            font-size: 1.12rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-sm);
+        }
+        .dm .point-text {               /* .gx-domain p */
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--color-text-muted);
+        }
+        .dm .result-number { font-weight: 300; letter-spacing: -0.02em; }
+        .dm .result-label { font-weight: 500; color: var(--color-text-primary); }
+        .dm .result-description { font-size: 0.88rem; line-height: 1.55; }
+        .dm .stat-value { font-weight: 300; letter-spacing: -0.02em; }
+        .dm .stat-label { font-size: 0.78rem; letter-spacing: 0.1em; }
+
+        /* ---- One measure for everything that had the old 564px one ---- */
+        .dm .article-title,
+        .dm .article-subtitle,
+        .dm .article-meta,
+        .dm .section-heading,
+        .dm .content-text,
+        .dm .content-section img.hero-image,
+        .dm .solution-points,
+        .dm .results-grid,
+        .dm .impact-stats { max-width: var(--dm-prose); }
+    </style>
 </head>
 <body>
     <script>
@@ -34,18 +141,8 @@
 
     <!-- Global navbar is injected here by nav.js (shared across all pages) -->
 
-    <main class="article-main">
-        <!-- Back Navigation -->
-        <div class="article-back-nav">
-            <div class="container">
-                <a href="index.html" class="back-link">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <span>Back</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Hero Section with Video -->
+    <main class="article-main dm">
+        <!-- Hero Section with Video — Back rides on the hero, as it does on Genie -->
         <section class="article-hero">
             <div class="video-container">
                 <video
@@ -64,6 +161,12 @@
                     alt="Direct Marketing Consent UX"
                     class="hero-image hidden"
                 >
+            </div>
+            <div class="hero-controls">
+                <a href="index.html" class="hero-btn is-back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Back</span>
+                </a>
             </div>
         </section>
 
